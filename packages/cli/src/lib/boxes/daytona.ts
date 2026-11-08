@@ -22,10 +22,11 @@ const KEEPER_PORT = 4880;
  * Needs only the box's own preview token, never a Daytona API key.
  */
 const KEEPER_JS = `const inUse = process.env.HOME + "/.paradev-box/in-use.sh";
+const started = String(Math.floor(Date.now() / 1000));
 Bun.serve({ port: ${KEEPER_PORT}, hostname: "0.0.0.0", fetch: (req, srv) => (srv.upgrade(req) ? undefined : new Response("ok")), websocket: { message: (ws, m) => ws.send(m) } });
 let ws = null;
 setInterval(() => {
-	const busy = Bun.spawnSync(["sh", inUse]).stdout.toString().trim() === "1";
+	const busy = Bun.spawnSync(["sh", inUse, started]).stdout.toString().trim() === "1";
 	if (busy && !ws) {
 		ws = new WebSocket(process.env.PREVIEW_URL.replace(/^http/, "ws"), { headers: { "x-daytona-preview-token": process.env.PREVIEW_TOKEN } });
 		ws.onclose = () => { ws = null; };
@@ -121,6 +122,7 @@ export async function daytona(): Promise<BoxProvider> {
 
 	const client: BoxProvider = {
 		name: "daytona",
+		homeDir: "/home/ubuntu",
 
 		async create(options) {
 			const body: Record<string, unknown> = {
@@ -156,7 +158,7 @@ export async function daytona(): Promise<BoxProvider> {
 			}
 		},
 
-		async list() {
+		async list(signal) {
 			const boxes: Box[] = [];
 			let cursor: string | undefined;
 			do {
@@ -167,6 +169,7 @@ export async function daytona(): Promise<BoxProvider> {
 				if (cursor) query.set("cursor", cursor);
 				const page = await call<{ items: SandboxDto[]; nextCursor?: string }>(
 					`/sandbox?${query}`,
+					{ signal },
 				);
 				// The label filter is the server's; check it again here so a
 				// sandbox this harness did not create is never shown or touched.

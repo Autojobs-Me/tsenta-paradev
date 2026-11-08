@@ -1,3 +1,4 @@
+import { execFile } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { CLIError } from "@superset/cli-framework";
 import { hostIdFromMachineId } from "@superset/shared/host-info";
@@ -48,19 +49,38 @@ if [ ! -x "$HOME/superset/bin/superset-host" ]; then
 fi
 echo "paradev-cli=$(${BIN} --version)"`;
 
+/** Seconds without terminal or chat activity before a box counts as idle. */
+export const ACTIVE_SECONDS = 120;
+
 /**
- * Prints 1 while the box is in use, else 0, for the providers' keepers.
- * ponytail: "in use" is host-service holding more than one outbound TLS
- * connection, or an agent CLI running. The relay control socket is the
- * baseline and API sockets close within seconds; every Paradev app that lists
- * the host holds an events socket through the relay, each open terminal one
- * more. So a box stays awake while an app is open on it or an agent works.
- * Upgrade path: ask host-service for its client count once it exposes one.
+ * Prints 1 while the box is in use, else 0, for both keepers (Daytona's
+ * preview websocket, Blaxel's keepAlive), which run it every 10-15 s as
+ * `sh <home>/.paradev-box/in-use.sh <start>`, passing their own start time
+ * (epoch seconds) as $1.
+ * ponytail: "in use" is terminal I/O or a chat write in the last 2 minutes.
+ * The kernel stamps a pty's atime when its program reads input and its mtime
+ * when it writes output (at most every 8 s), so a recent /dev/pts/N means
+ * someone typed or something printed, which covers an agent that is working
+ * in a terminal. A chat agent runs inside host-service with no pty; every
+ * event of a chat turn is journalled to host-service's chat.db (WAL mode, so
+ * chat.db-wal moves on each write), so a recently written chat.db* under
+ * ~/.paradev/host counts too. The box user's home comes from the script's
+ * own path, since Blaxel's keeper runs as root. An open app, an idle shell or
+ * an agent waiting at its prompt touch nothing, so they no longer hold a box
+ * awake (the old rule counted relay sockets, and every app that lists a host
+ * holds one). A keeper's start counts as activity too, so a fresh wake reads
+ * as busy; the keeper, or the provider's own timer, then gives the full
+ * --idle window before the box stops. Upgrade path: ask host-service for its
+ * running sessions once it exposes them.
  */
-export const IN_USE_SH = `hs=$(pgrep -f 'lib/host-service.js' | head -n 1)
-clients=0; [ -n "$hs" ] && clients=$(ss -Htnp state established '( dport = :443 )' 2>/dev/null | grep -c "pid=$hs,")
-agents=$(pgrep -fc '(^|/)(claude|codex|pdev)( |$)' 2>/dev/null | head -n 1)
-if [ "$clients" -gt 1 ] || [ "\${agents:-0}" -gt 0 ]; then echo 1; else echo 0; fi`;
+export const IN_USE_SH = `now=$(date +%s)
+if [ -n "$1" ] && [ $((now - $1)) -lt ${ACTIVE_SECONDS} ]; then echo 1; exit 0; fi
+for t in $(stat -c '%X %Y' /dev/pts/[0-9]* 2>/dev/null); do
+	if [ $((now - t)) -lt ${ACTIVE_SECONDS} ]; then echo 1; exit 0; fi
+done
+chats="\${0%/.paradev-box/in-use.sh}/.paradev/host"
+if [ -n "$(find "$chats" -maxdepth 2 -name 'chat.db*' -newermt "-${ACTIVE_SECONDS} seconds" 2>/dev/null | head -n 1)" ]; then echo 1; exit 0; fi
+echo 0`;
 
 const SIGN_IN = `printf '%s\\n' "$PARADEV_BOX_KEY" | ${BIN} auth login --api-key=- --organization "$PARADEV_ORG" --json >/dev/null`;
 
@@ -143,6 +163,53 @@ export async function startHostOnBox({
 		PARADEV_ORG: organizationId,
 		PARADEV_IN_USE: IN_USE_SH,
 	});
+}
+
+/**
+ * Signs the box's gh in with this machine's GitHub token and makes it git's
+ * credential helper (which host-service clones with), then copies the git
+ * identity. The token travels in the exec's env and gh reads it from stdin;
+ * it is never in argv on either machine.
+ */
+export const GITHUB_SH = `set -e
+command -v gh >/dev/null 2>&1 || { echo "gh is not installed on the box"; exit 127; }
+printf '%s\\n' "$PARADEV_GH_TOKEN" | gh auth login --hostname github.com --with-token
+gh auth setup-git --hostname github.com
+if [ -n "$PARADEV_GIT_NAME" ]; then git config --global user.name "$PARADEV_GIT_NAME"; fi
+if [ -n "$PARADEV_GIT_EMAIL" ]; then git config --global user.email "$PARADEV_GIT_EMAIL"; fi`;
+
+/** stdout of a local command, or "" if it is missing or fails. */
+function readLocal(file: string, args: string[]): Promise<string> {
+	return new Promise((resolve) =>
+		execFile(file, args, { timeout: 15_000 }, (error, stdout) =>
+			resolve(error ? "" : stdout.trim()),
+		),
+	);
+}
+
+export async function signInGitHubOnBox(
+	provider: BoxProvider,
+	box: Box,
+): Promise<{ name: string; email: string }> {
+	const [token, name, email] = await Promise.all([
+		// github.com's token even when GH_HOST names an Enterprise host: the
+		// box signs in to github.com with it.
+		readLocal("gh", ["auth", "token", "--hostname", "github.com"]),
+		readLocal("git", ["config", "--global", "--get", "user.name"]),
+		readLocal("git", ["config", "--global", "--get", "user.email"]),
+	]);
+	if (!token) {
+		throw new CLIError(
+			"This machine has no GitHub login to copy",
+			"Run: gh auth login",
+		);
+	}
+	await run(provider, box, "Signing in to GitHub", GITHUB_SH, {
+		PARADEV_GH_TOKEN: token,
+		PARADEV_GIT_NAME: name,
+		PARADEV_GIT_EMAIL: email,
+	});
+	return { name, email };
 }
 
 export async function waitOnline(

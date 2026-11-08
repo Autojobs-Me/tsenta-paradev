@@ -1,11 +1,18 @@
 import * as p from "@clack/prompts";
-import { number, positional, string } from "@superset/cli-framework";
+import {
+	boolean,
+	CLIError,
+	number,
+	positional,
+	string,
+} from "@superset/cli-framework";
 import { createApiClient } from "../../../lib/api-client";
 import {
 	boxKeyName,
 	newIdentity,
 	prepareBox,
 	signInBox,
+	signInGitHubOnBox,
 	startHostOnBox,
 	waitOnline,
 } from "../../../lib/boxes/bootstrap";
@@ -19,6 +26,16 @@ import { command } from "../../../lib/command";
 import { resolveOrganizationFromContext } from "../../../lib/resolve-org";
 import { revokeKeysNamed } from "../../../lib/ssh-host-setup/host-key";
 import { log } from "../../../lib/ssh-host-setup/log";
+import setupProject from "../../projects/setup/command";
+
+type SetupInput = Parameters<typeof setupProject.run>[0];
+
+function reason(error: unknown): string {
+	if (error instanceof CLIError && error.suggestion) {
+		return `${error.message}. ${error.suggestion}`;
+	}
+	return error instanceof Error ? error.message : String(error);
+}
 
 export default command({
 	sandbox: false,
@@ -49,6 +66,14 @@ export default command({
 			"Base image to use instead of the bundled box image (Daytona and Blaxel)",
 		),
 		org: string().desc("Organization (id, slug, or name); defaults to active"),
+		github: boolean().desc(
+			"Sign the box in to GitHub as you (copies this machine's gh login and git name and email)",
+		),
+		project: string()
+			.variadic()
+			.desc(
+				"Project id to clone onto the box into ~/projects (repeatable; private repos need --github)",
+			),
 	},
 	run: async ({ ctx, args, options, signal }) => {
 		const organization = await resolveOrganizationFromContext(
@@ -130,8 +155,49 @@ export default command({
 			throw error;
 		}
 
+		// Optional extras: a failure warns and the box stays.
+		let github = false;
+		if (options.github) {
+			try {
+				const who = await signInGitHubOnBox(client, box);
+				github = true;
+				log.success(
+					`Signed the box in to GitHub${who.name ? ` (git commits as ${who.name})` : ""}`,
+				);
+			} catch (error) {
+				log.warn(`GitHub sign-in on the box failed: ${reason(error)}`);
+			}
+		}
+		const projects: string[] = [];
+		const parentDir = `${client.homeDir}/projects`;
+		for (const projectId of options.project ?? []) {
+			spinner.start(`Setting up project ${projectId} on ${name}`);
+			try {
+				// The same path `superset projects setup <id> --host <box>
+				// --parent-dir <dir>` takes, including its fallback to this
+				// machine's own row when the box does not know the project.
+				await setupProject.run({
+					ctx: {
+						...ctx,
+						api,
+						config: { ...ctx.config, organizationId: organization.id },
+					},
+					args: { id: projectId },
+					options: { host: hostId, parentDir } as SetupInput["options"],
+					signal,
+				});
+				projects.push(projectId);
+				spinner.stop(`Set up project ${projectId} in ${parentDir}`);
+			} catch (error) {
+				spinner.stop(`Project ${projectId} was not set up`);
+				log.warn(reason(error));
+			}
+		}
+
 		log.warn(
-			"Sign the box in to GitHub and your agents once, from a terminal in a workspace on it: gh auth login, then claude or codex.",
+			github
+				? "Sign your agents in once, from a terminal in a workspace on the box: claude or codex."
+				: "Sign the box in to GitHub and your agents once, from a terminal in a workspace on it: gh auth login, then claude or codex.",
 		);
 		log.outro(
 			`${name} is ready. Pick it as the host when you create a workspace.`,
@@ -144,6 +210,8 @@ export default command({
 				hostId,
 				region: box.region ?? null,
 				organizationId: organization.id,
+				github,
+				projects,
 			},
 			message: `${name} (${hostId}) is online`,
 		};

@@ -1,8 +1,8 @@
 import * as p from "@clack/prompts";
-import { boolean, CLIError, positional } from "@superset/cli-framework";
+import { boolean, CLIError, positional, string } from "@superset/cli-framework";
 import { createApiClient } from "../../../lib/api-client";
 import { boxKeyName } from "../../../lib/boxes/bootstrap";
-import { findBox, LABELS } from "../../../lib/boxes/index";
+import { assertExpectedHost, findBox, LABELS } from "../../../lib/boxes/index";
 import { command } from "../../../lib/command";
 import { revokeKeysNamed } from "../../../lib/ssh-host-setup/host-key";
 
@@ -13,9 +13,13 @@ export default command({
 	args: [positional("box").required().desc("provider:id, id, or name")],
 	options: {
 		yes: boolean().desc("Delete without asking"),
+		expectHost: string().desc(
+			"Refuse unless the box belongs to this host id (the app passes the host it acts on)",
+		),
 	},
 	run: async ({ ctx, args, options }) => {
 		const { provider, box } = await findBox(args.box as string);
+		assertExpectedHost(box, options.expectHost);
 		if (!options.yes) {
 			if (!process.stdin.isTTY) {
 				throw new CLIError("Pass --yes to delete without a prompt.");

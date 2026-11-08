@@ -78,6 +78,8 @@ export async function e2b(): Promise<BoxProvider> {
 
 	return {
 		name: "e2b",
+		// The base template's default user.
+		homeDir: "/home/user",
 
 		async create(options) {
 			const dto = await call<SandboxDto>("/v2/sandboxes", {
@@ -110,14 +112,16 @@ export async function e2b(): Promise<BoxProvider> {
 			}
 		},
 
-		async list() {
+		async list(signal) {
 			const query = new URLSearchParams({
 				metadata: new URLSearchParams({ [LABELS.box]: "1" }).toString(),
 				limit: "100",
 			});
 			query.append("state", "running");
 			query.append("state", "paused");
-			const rows = await call<SandboxDto[]>(`/v2/sandboxes?${query}`);
+			const rows = await call<SandboxDto[]>(`/v2/sandboxes?${query}`, {
+				signal,
+			});
 			return rows
 				.filter((row) => row.metadata?.[LABELS.box] === "1")
 				.map(toBox);

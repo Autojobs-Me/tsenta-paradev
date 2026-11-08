@@ -24,13 +24,16 @@ import { type Box, type BoxProvider, LABELS } from "./types";
  */
 const API = "https://api.blaxel.ai/v0";
 const KEEPER = "paradev-keeper";
+const BL_TOKEN_TIMEOUT_MS = 15_000;
+
+const BOX_HOME = "/home/ubuntu";
 
 /** Holds a keepAlive process through the box's own sandbox-api while it is in use. */
 function keeperScript(idleSeconds: number): string {
-	return `last=$(date +%s); next=0
+	return `started=$(date +%s); last=$started; next=0
 while :; do
 	now=$(date +%s)
-	if [ "$(sh /home/ubuntu/.paradev-box/in-use.sh)" = 1 ]; then last=$now; fi
+	if [ "$(sh ${BOX_HOME}/.paradev-box/in-use.sh "$started")" = 1 ]; then last=$now; fi
 	if [ $((now - last)) -lt ${idleSeconds} ] && [ "$now" -ge "$next" ]; then
 		curl -fsS -X POST http://127.0.0.1:8080/process -H 'Content-Type: application/json' \\
 			-d '{"command":"sleep 60","keepAlive":true,"timeout":60}' >/dev/null 2>&1 || true
@@ -81,11 +84,20 @@ export async function blaxel(): Promise<BoxProvider> {
 	}
 	const apiKey = credential("BL_API_KEY");
 	let token = apiKey;
-	const bearer = async (): Promise<string> => {
+	const bearer = async (signal?: AbortSignal | null): Promise<string> => {
 		if (token) return token;
+		// A `bl token` stuck on a refresh is killed rather than left behind:
+		// after 15 s, or when the caller gives up (listBoxes' timeout).
 		const stdout = await new Promise<string>((resolve, reject) =>
-			execFile("bl", ["token", workspace], (error, out) =>
-				error ? reject(error) : resolve(out),
+			execFile(
+				"bl",
+				["token", workspace],
+				{
+					timeout: BL_TOKEN_TIMEOUT_MS,
+					killSignal: "SIGKILL",
+					signal: signal ?? undefined,
+				},
+				(error, out) => (error ? reject(error) : resolve(out)),
 			),
 		).catch(() => "");
 		token = stdout.trim().split("\n").pop();
@@ -102,7 +114,7 @@ export async function blaxel(): Promise<BoxProvider> {
 		const response = await fetch(url.startsWith("http") ? url : API + url, {
 			...init,
 			headers: {
-				Authorization: `Bearer ${await bearer()}`,
+				Authorization: `Bearer ${await bearer(init.signal)}`,
 				"X-Blaxel-Workspace": workspace as string,
 				"Content-Type": "application/json",
 				...init.headers,
@@ -195,6 +207,7 @@ export async function blaxel(): Promise<BoxProvider> {
 
 	const client: BoxProvider = {
 		name: "blaxel",
+		homeDir: BOX_HOME,
 
 		async create(options) {
 			const name = `pdb-${options.labels[LABELS.host]?.slice(0, 12) ?? crypto.randomUUID().slice(0, 12)}`;
@@ -234,8 +247,8 @@ export async function blaxel(): Promise<BoxProvider> {
 			}
 		},
 
-		async list() {
-			const rows = await call<SandboxDto[]>("/sandboxes");
+		async list(signal) {
+			const rows = await call<SandboxDto[]>("/sandboxes", { signal });
 			return rows
 				.filter((row) => row.metadata.labels?.[LABELS.box] === "1")
 				.map(toBox);

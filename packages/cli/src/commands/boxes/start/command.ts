@@ -1,7 +1,7 @@
-import { CLIError, positional } from "@superset/cli-framework";
+import { CLIError, positional, string } from "@superset/cli-framework";
 import { createApiClient } from "../../../lib/api-client";
 import { startHostOnBox, waitOnline } from "../../../lib/boxes/bootstrap";
-import { findBox, LABELS } from "../../../lib/boxes/index";
+import { assertExpectedHost, findBox, LABELS } from "../../../lib/boxes/index";
 import { command } from "../../../lib/command";
 
 export default command({
@@ -9,8 +9,14 @@ export default command({
 	description:
 		"Start (or resume) a box and its host; this is the wake command a box's host carries",
 	args: [positional("box").required().desc("provider:id, id, or name")],
-	run: async ({ ctx, args, signal }) => {
+	options: {
+		expectHost: string().desc(
+			"Refuse unless the box belongs to this host id (the app passes the host it acts on)",
+		),
+	},
+	run: async ({ ctx, args, options, signal }) => {
 		const { provider, box } = await findBox(args.box as string);
+		assertExpectedHost(box, options.expectHost);
 		const organizationId = box.labels[LABELS.org];
 		const hostId = box.labels[LABELS.host];
 		if (!organizationId || !hostId) {

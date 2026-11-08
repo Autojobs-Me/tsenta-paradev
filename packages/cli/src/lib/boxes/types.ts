@@ -39,6 +39,24 @@ export interface CreateBoxOptions {
 	image?: string;
 }
 
+/**
+ * One box as `boxes list --json --providers-only` prints it: the provider's
+ * view only, read without Paradev's API. The desktop app parses this shape
+ * (apps/desktop/src/lib/trpc/routers/boxes/list-boxes.ts).
+ */
+export interface BoxStatus {
+	provider: ProviderName;
+	id: string;
+	/** `provider:id`, what every boxes command accepts. */
+	ref: string;
+	name: string;
+	state: string;
+	running: boolean;
+	region: string | null;
+	hostId: string | null;
+	organizationId: string | null;
+}
+
 export interface ExecResult {
 	exitCode: number;
 	output: string;
@@ -46,10 +64,12 @@ export interface ExecResult {
 
 export interface BoxProvider {
 	readonly name: ProviderName;
+	/** The home of the user exec runs as (absolute, since host-service does not expand ~). */
+	readonly homeDir: string;
 	create(options: CreateBoxOptions): Promise<Box>;
 	get(id: string): Promise<Box | null>;
 	/** Boxes this harness created (carrying the paradev-box label). */
-	list(): Promise<Box[]>;
+	list(signal?: AbortSignal): Promise<Box[]>;
 	/** Run a POSIX sh script as the box's default user and wait for it. */
 	exec(
 		id: string,
