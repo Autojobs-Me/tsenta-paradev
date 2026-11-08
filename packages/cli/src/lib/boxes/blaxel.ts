@@ -58,7 +58,8 @@ interface ProcessDto {
 	logs?: string;
 }
 
-function contextWorkspace(): string | undefined {
+/** The workspace `bl login` made current, read from ~/.blaxel/config.yaml. */
+export function contextWorkspace(): string | undefined {
 	try {
 		const config = readFileSync(
 			join(homedir(), ".blaxel", "config.yaml"),
@@ -162,17 +163,33 @@ export async function blaxel(): Promise<BoxProvider> {
 		return { url, name };
 	}
 
+	/**
+	 * Kills every keeper and every keep-alive process on the box (sandbox-api
+	 * runs them as root, so only its own kill endpoint reaches them). With
+	 * none left, the box goes to standby about 20 s later. Throws if one
+	 * survives, because a box that will not sleep keeps billing.
+	 */
 	async function stopKeepers(id: string): Promise<void> {
 		const { metadata } = await waitDeployed(id);
-		const processes = await call<{ name: string; status: string }[]>(
-			`${metadata.url}/process`,
+		const processes = await call<
+			{ name: string; status: string; keepAlive?: boolean }[]
+		>(`${metadata.url}/process`);
+		const holding = processes.filter(
+			(process) =>
+				process.status === "running" &&
+				(process.name.startsWith(KEEPER) || process.keepAlive),
 		);
-		for (const process of processes) {
-			if (process.name.startsWith(KEEPER) && process.status === "running") {
-				await call(`${metadata.url}/process/${process.name}/kill`, {
-					method: "POST",
-				}).catch(() => {});
-			}
+		const failed: string[] = [];
+		for (const process of holding) {
+			await call(`${metadata.url}/process/${process.name}/kill`, {
+				method: "DELETE",
+			}).catch(() => failed.push(process.name));
+		}
+		if (failed.length) {
+			throw new CLIError(
+				`Could not stop ${failed.join(", ")} on Blaxel box ${id}`,
+				"It stays awake (and billed) until they end.",
+			);
 		}
 	}
 
@@ -268,16 +285,13 @@ export async function blaxel(): Promise<BoxProvider> {
 			await processStart(box.id, {
 				name: `${KEEPER}-${Date.now().toString(36)}`,
 				command: keeperScript(idle),
+				// No restartOnFailure: stop kills it, and a restart would undo that.
 				timeout: 0,
-				restartOnFailure: true,
-				maxRestarts: -1,
 			});
 		},
 
 		async stop(id) {
 			await stopKeepers(id);
-			// Drop the keep-alive the keeper holds; standby follows in about 20 s.
-			await client.exec(id, "sudo -n pkill -x sleep 2>/dev/null || true");
 		},
 
 		async remove(id) {

@@ -1,4 +1,5 @@
 import { CLIError } from "@superset/cli-framework";
+import { contextWorkspace } from "./blaxel";
 import { credential } from "./credentials";
 import type { Box, BoxProvider, ProviderName } from "./types";
 import { PROVIDERS } from "./types";
@@ -10,7 +11,12 @@ export function configuredProviders(): ProviderName[] {
 	return PROVIDERS.filter((name) => {
 		if (name === "daytona") return Boolean(credential("DAYTONA_API_KEY"));
 		if (name === "e2b") return Boolean(credential("E2B_API_KEY"));
-		return Boolean(credential("BL_API_KEY") || credential("BL_WORKSPACE"));
+		// A `bl login` counts: the provider gets its token from the bl CLI.
+		return Boolean(
+			credential("BL_API_KEY") ||
+				credential("BL_WORKSPACE") ||
+				contextWorkspace(),
+		);
 	});
 }
 
