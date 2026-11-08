@@ -9,6 +9,7 @@
  * scripts/fork/build.sh sets everything.
  */
 
+import { join } from "node:path";
 import type { Configuration } from "electron-builder";
 import baseConfig, { displayName as baseDisplayName } from "./electron-builder";
 import pkg from "./package.json";
@@ -18,6 +19,7 @@ import { localizeMacDisplayName } from "./scripts/localize-display-name";
 const productName = "Superset Boxes";
 const displayName = `${baseDisplayName} Boxes`;
 const scheme = "superset-boxes";
+const linuxName = "paradev-boxes";
 
 const config: Configuration = {
 	...baseConfig,
@@ -50,14 +52,49 @@ const config: Configuration = {
 		},
 	},
 
+	// Linux: its own executable, window class and package, so the deb and rpm
+	// install beside Paradev's instead of claiming /usr/bin/superset, its
+	// desktop file and its dock entry (the base config names all of them
+	// "superset"). The icon is named because build/icons also holds the
+	// canary and dev icons.
 	linux: {
 		...baseConfig.linux,
+		executableName: linuxName,
+		icon: join(pkg.resources, "build/icons/icon.png"),
 		synopsis: `${pkg.description} (Boxes)`,
+		target: ["AppImage", "deb", "rpm"],
 		desktop: {
-			...baseConfig.linux?.desktop,
-			entry: { ...baseConfig.linux?.desktop?.entry, Name: displayName },
+			entry: {
+				...baseConfig.linux?.desktop?.entry,
+				Name: displayName,
+				StartupWMClass: linuxName,
+			},
+			desktopActions: {
+				"new-window": { Name: "New Window", Exec: `${linuxName} --new-window` },
+			},
 		},
-		artifactName: `paradev-boxes-\${version}-\${arch}.\${ext}`,
+		artifactName: `${linuxName}-\${version}-\${arch}.\${ext}`,
+	},
+	deb: { ...baseConfig.deb, packageName: linuxName },
+	rpm: { packageName: linuxName },
+
+	// Windows: NSIS x64 like the base. Signed through Azure Trusted Signing
+	// (electron-builder's native support, the account autojobs-electron-v3
+	// used) only when its service principal and account are configured;
+	// otherwise unsigned, and SmartScreen warns on first run.
+	win: {
+		...baseConfig.win,
+		artifactName: `Paradev-Boxes-\${version}-\${arch}.\${ext}`,
+		...(process.env.AZURE_CLIENT_ID && process.env.AZURE_SIGNING_ACCOUNT
+			? {
+					azureSignOptions: {
+						publisherName: process.env.AZURE_PUBLISHER_NAME ?? "",
+						endpoint: process.env.AZURE_SIGNING_ENDPOINT ?? "",
+						codeSigningAccountName: process.env.AZURE_SIGNING_ACCOUNT,
+						certificateProfileName: process.env.AZURE_SIGNING_PROFILE ?? "",
+					},
+				}
+			: {}),
 	},
 };
 

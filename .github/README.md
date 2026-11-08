@@ -103,25 +103,48 @@ These are real credentials on a machine an agent controls. Prefer scoped,
 expiring GitHub tokens. Delete a box (which also revokes its Paradev key)
 rather than abandoning it.
 
-## Build the macOS app
+## Download or build
+
+Each canary sync publishes [`boxes-canary`](https://github.com/AgnayS/paradev-boxes/releases/tag/boxes-canary):
+
+| Platform | Files | Notes |
+| --- | --- | --- |
+| macOS arm64 | `.dmg`, `.zip` | Unsigned unless signing secrets are set. Right-click, then Open the first time. |
+| Linux x64, arm64 | `.AppImage`, `.deb`, `.rpm` | Installs as `paradev-boxes` beside Paradev's own package. Updates itself. |
+| Windows x64 | `.exe` (NSIS) | **Experimental.** Only the launch is tested, in CI. It is meant as a client for boxes and other remote hosts, whose terminals run on the box. Local workspaces will not work: Paradev's terminal daemon has no Windows support (ConPTY, named pipes). SmartScreen warns on unsigned builds. |
+
+CI builds each platform on its own runner. It then launches the packaged app
+and checks that it is still running after 30 s, and checks that its bundled
+CLI carries `boxes` (`scripts/fork/smoke.sh`).
+
+To build locally:
 
 ```sh
 curl -fsSL https://bun.sh/install | bash -s bun-v1.4.3   # the version in .bun-version
 bun install
-scripts/fork/build.sh            # apps/desktop/release/Paradev-Boxes-*.dmg
-FORK_DIR_ONLY=1 scripts/fork/build.sh   # just the .app
+scripts/fork/build.sh                    # this machine's platform and arch
+scripts/fork/build.sh linux arm64        # or name them: mac|linux|win, arm64|x64
+FORK_DIR_ONLY=1 scripts/fork/build.sh    # just the unpacked app
 ```
 
-The result is "Paradev Boxes" with its own bundle id, URL scheme
-(`superset-boxes`), app data (`~/.paradev-boxes`) and notification port, so it
-installs beside Paradev and Paradev Canary. Telemetry is off: no PostHog key
-and no Sentry DSN. It signs you in to Paradev's hosted backend like the
-official app.
+The result is "Paradev Boxes" with its own app id, URL scheme
+(`superset-boxes`), app data (`~/.paradev-boxes`), Linux package
+(`paradev-boxes`) and notification port. It installs beside Paradev and
+Paradev Canary. Telemetry is off: no PostHog key and no Sentry DSN. It signs
+you in to Paradev's hosted backend like the official app. On one machine,
+Paradev and Paradev Boxes register the same local host, so quit one before
+opening the other.
 
-The app is ad-hoc signed unless `CSC_NAME` names a keychain identity. An
-ad-hoc build cannot update itself, so CI publishes an update feed only for
-signed builds. Paradev and Paradev Boxes on one Mac register the same local
-host, so quit one before opening the other.
+### Signing
+
+| Platform | Secrets (repository settings) | Without them |
+| --- | --- | --- |
+| macOS | `CSC_NAME` (a keychain identity), `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID` | Ad-hoc signed, not notarized, and no self-update. |
+| Windows | Secrets `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`. Variables `AZURE_SIGNING_ENDPOINT`, `AZURE_SIGNING_ACCOUNT`, `AZURE_SIGNING_PROFILE`, `AZURE_PUBLISHER_NAME` | Unsigned, and SmartScreen warns. Azure Trusted Signing goes through electron-builder's own `azureSignOptions`. |
+
+An update manifest (`latest-mac.yml`, `latest.yml`) is published only for a
+signed build. An unsigned build cannot install updates, so without a manifest
+it finds none instead of failing. Linux always gets `latest-linux*.yml`.
 
 ## Staying on canary
 
@@ -152,4 +175,5 @@ The fork is built to rebase cleanly:
 - Daytona `linux-vm` boxes would keep processes across sleep (pause), but the
   class is not enabled on every org. Container boxes lose running processes on
   stop, like Paradev's own boxes.
+- Windows: local terminals do not work. Making them work needs four patches to Paradev's terminal daemon (`packages/pty-daemon`, `DaemonSupervisor`), code upstream changes often.
 - No VNC desktop pane on boxes. Paradev only shows it for its own cloud boxes.

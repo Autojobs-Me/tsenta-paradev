@@ -4,8 +4,9 @@
 # moves the `desktop-canary` tag to it. Two hours later this rebases the
 # fork's commits (everything after the `fork-base` branch) onto that tag,
 # pushes `main`, re-disables upstream's workflows (new ones start enabled),
-# and builds the app as the `boxes-canary` prerelease. A rebase conflict opens
-# an issue and changes nothing.
+# builds the app for macOS arm64, Linux x64 and arm64, and Windows x64, checks
+# each one launches, and publishes them as the `boxes-canary` prerelease. A
+# rebase conflict opens an issue and changes nothing.
 #
 # Secret FORK_SYNC_TOKEN: a fine-grained token for this repository with
 # Contents, Workflows, Actions and Issues set to read and write. Without it the
@@ -38,6 +39,9 @@ jobs:
     timeout-minutes: 20
     outputs:
       changed: ${{ steps.rebase.outputs.changed }}
+      sha: ${{ steps.rebase.outputs.sha }}
+      canary: ${{ steps.rebase.outputs.canary }}
+      version: ${{ steps.rebase.outputs.version }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
@@ -60,21 +64,26 @@ jobs:
           git fetch origin fork-base
           new=$(git rev-parse "upstream-canary^{commit}")
           old=$(git rev-parse origin/fork-base)
+          changed=${FORCE:-false}
           if [ "$new" = "$old" ]; then
             echo "Already on canary $new"
-            echo "changed=${FORCE:-false}" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if ! git rebase --onto "$new" "$old" main; then
+          elif ! git rebase --onto "$new" "$old" main; then
             files=$(git diff --name-only --diff-filter=U | head -20)
             git rebase --abort
             body=$(printf 'Rebasing the fork commits from %s onto Paradev canary %s stopped on conflicts in:\n\n```\n%s\n```\n\nResolve locally: `git fetch upstream tag desktop-canary && git rebase --onto desktop-canary origin/fork-base main`, push main, then push the canary commit to fork-base.' "${old:0:9}" "${new:0:9}" "$files")
             gh issue create --title "Fork sync: rebase onto canary ${new:0:9} conflicts" --body "$body"
             exit 1
+          else
+            git push --force-with-lease=main origin main
+            git push --force origin "$new:refs/heads/fork-base"
+            changed=true
           fi
-          git push --force-with-lease=main origin main
-          git push --force origin "$new:refs/heads/fork-base"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+          # One version and one commit for every platform, so the builds and
+          # their update manifests agree.
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "canary=${new:0:9}" >> "$GITHUB_OUTPUT"
+          echo "version=$(jq -r .version apps/desktop/package.json)-boxes.$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
 
       - name: Keep upstream workflows disabled
         env:
@@ -86,19 +95,38 @@ jobs:
             gh workflow disable "$name" -R "$GITHUB_REPOSITORY" 2>/dev/null || true
           done
 
-  build-macos:
+  build:
+    name: build (${{ matrix.platform }} ${{ matrix.arch }})
     needs: sync
     if: needs.sync.outputs.changed == 'true'
-    runs-on: macos-latest
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-latest, platform: mac, arch: arm64 }
+          - { runner: ubuntu-24.04, platform: linux, arch: x64 }
+          - { runner: ubuntu-24.04-arm, platform: linux, arch: arm64 }
+          - { runner: windows-latest, platform: win, arch: x64 }
+    defaults:
+      run:
+        shell: bash
     steps:
+      # Paradev's component tree nests deeper than Windows' 260-character MAX_PATH.
+      - if: runner.os == 'Windows'
+        run: git config --system core.longpaths true
+
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
-          ref: main
+          ref: ${{ needs.sync.outputs.sha }}
 
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version-file: .bun-version
+
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxkbfile-dev rpm xvfb
 
       - name: Install dependencies
         run: |
@@ -107,32 +135,91 @@ jobs:
           bun run --cwd apps/desktop install:deps
 
       - name: Version
-        id: version
         working-directory: apps/desktop
         run: |
-          version="$(node -p "require('./package.json').version")-boxes.$(date -u +%Y%m%d%H%M%S)"
-          node -e "const fs=require('fs');const p=require('./package.json');p.version='$version';fs.writeFileSync('./package.json',JSON.stringify(p,null,'\t')+'\n')"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          node -e "const fs=require('fs');const p=require('./package.json');p.version='${{ needs.sync.outputs.version }}';fs.writeFileSync('./package.json',JSON.stringify(p,null,'\t')+'\n')"
 
       - name: Build
         env:
+          # pdev has no Windows build; macOS and Linux must ship it.
+          PDEV_BUNDLE_REQUIRED: ${{ matrix.platform != 'win' && '1' || '' }}
           CSC_NAME: ${{ secrets.CSC_NAME }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: scripts/fork/build.sh mac arm64
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_SIGNING_ENDPOINT: ${{ vars.AZURE_SIGNING_ENDPOINT }}
+          AZURE_SIGNING_ACCOUNT: ${{ vars.AZURE_SIGNING_ACCOUNT }}
+          AZURE_SIGNING_PROFILE: ${{ vars.AZURE_SIGNING_PROFILE }}
+          AZURE_PUBLISHER_NAME: ${{ vars.AZURE_PUBLISHER_NAME }}
+        run: scripts/fork/build.sh ${{ matrix.platform }} ${{ matrix.arch }}
+
+      - name: Smoke test
+        run: scripts/fork/smoke.sh ${{ matrix.platform }}
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: boxes-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.zip
+            apps/desktop/release/*.AppImage
+            apps/desktop/release/*.deb
+            apps/desktop/release/*.rpm
+            apps/desktop/release/*.exe
+            apps/desktop/release/*.blockmap
+            apps/desktop/release/latest*.yml
+          retention-days: 7
+          if-no-files-found: error
+
+  publish:
+    needs: [sync, build]
+    # Ship whatever built: one platform failing should not hold back the others.
+    if: ${{ !cancelled() && needs.sync.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          path: out
+          pattern: boxes-*
+          merge-multiple: true
 
       - name: Publish boxes-canary
         env:
           GH_TOKEN: ${{ github.token }}
-          SIGNED: ${{ secrets.APPLE_TEAM_ID != '' }}
+          SHA: ${{ needs.sync.outputs.sha }}
+          VERSION: ${{ needs.sync.outputs.version }}
+          CANARY: ${{ needs.sync.outputs.canary }}
+          MAC_SIGNED: ${{ secrets.APPLE_TEAM_ID != '' }}
+          WIN_SIGNED: ${{ secrets.AZURE_CLIENT_ID != '' }}
         run: |
-          cd apps/desktop/release
-          assets=$(ls *.dmg *.zip *.blockmap)
-          # Only a signed build can update itself; without the manifest an
-          # unsigned build finds no update instead of failing to install one.
-          if [ "$SIGNED" = true ]; then assets="$assets $(ls *-mac.yml)"; fi
-          gh release delete boxes-canary --cleanup-tag --yes 2>/dev/null || true
-          gh release create boxes-canary $assets --prerelease \
-            --target main --title "Paradev Boxes ${{ steps.version.outputs.version }}" \
-            --notes "Paradev canary $(git rev-parse --short HEAD~0) plus the Paradev Boxes commits. macOS arm64. Unsigned builds: right-click the app and choose Open the first time."
+          set -euo pipefail
+          cd out
+          ls -la
+          [ -n "$(ls)" ] || { echo "::error::no platform built"; exit 1; }
+          # A mac or Windows build can only update itself when signed; without
+          # its manifest an unsigned build finds no update instead of failing
+          # to install one. Linux updates need no signature.
+          [ "$MAC_SIGNED" = true ] || rm -f latest-mac.yml
+          [ "$WIN_SIGNED" = true ] || rm -f latest.yml
+          platforms=$(ls | sed -nE 's/.*\.(dmg|AppImage|exe)$/\1/p' | sort -u | sed 's/dmg/macOS/;s/AppImage/Linux/;s/exe/Windows/' | paste -sd, -)
+          notes=$(printf 'Paradev canary %s plus the Paradev Boxes commits (%s). Built: %s.\n\n- macOS: unsigned builds need right-click, Open the first time.\n- Linux: AppImage, deb or rpm, x64 and arm64. Updates itself.\n- Windows: experimental, launch-tested only. Meant as a client for boxes and other remote hosts; local workspaces will not work (no Windows terminal daemon upstream). SmartScreen warns on unsigned builds.\n\nSee the README for providers and known gaps.' "$CANARY" "${SHA:0:9}" "$platforms")
+          # Move the tag and swap assets in place rather than deleting the
+          # release, so the update feed never 404s mid-publish: binaries
+          # first, manifests last, then drop assets from older builds.
+          if gh release view boxes-canary >/dev/null 2>&1; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/boxes-canary" -f sha="$SHA" -F force=true >/dev/null
+            gh release edit boxes-canary --prerelease --title "Paradev Boxes $VERSION" --notes "$notes"
+          else
+            gh release create boxes-canary --prerelease --target "$SHA" --title "Paradev Boxes $VERSION" --notes "$notes"
+          fi
+          mapfile -t binaries < <(find . -maxdepth 1 -type f ! -name '*.yml' -printf '%f\n')
+          mapfile -t manifests < <(find . -maxdepth 1 -type f -name '*.yml' -printf '%f\n')
+          gh release upload boxes-canary "${binaries[@]}" --clobber
+          [ "${#manifests[@]}" -eq 0 ] || gh release upload boxes-canary "${manifests[@]}" --clobber
+          for old in $(gh release view boxes-canary --json assets --jq '.assets[].name'); do
+            [ -e "$old" ] || gh release delete-asset boxes-canary "$old" --yes
+          done
