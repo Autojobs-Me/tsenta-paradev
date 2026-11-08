@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-# Builds Paradev Boxes for macOS from this checkout, against Paradev's hosted
-# backend, with telemetry off.
-#   scripts/fork/build-mac.sh [arm64|x64]      dmg + zip in apps/desktop/release
-#   FORK_DIR_ONLY=1 scripts/fork/build-mac.sh  just the .app (faster)
+# Builds Paradev Boxes from this checkout, against Paradev's hosted backend,
+# with telemetry off. Installers land in apps/desktop/release.
+#   scripts/fork/build.sh [mac|linux|win] [arm64|x64]   defaults: this machine
+#   FORK_DIR_ONLY=1 scripts/fork/build.sh               just the unpacked app
 # Signing: CSC_NAME="Apple Development: ..." (or a Developer ID) signs with that
 # keychain identity; unset, the app is ad-hoc signed. APPLE_ID,
 # APPLE_APP_SPECIFIC_PASSWORD and APPLE_TEAM_ID notarize.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-arch="${1:-$(uname -m)}"
-[ "$arch" = x86_64 ] && arch=x64
-[ "$arch" = aarch64 ] && arch=arm64
+case "${1:-$(uname -s)}" in
+	mac | Darwin) platform=mac ;;
+	linux | Linux) platform=linux ;;
+	win | MINGW* | MSYS* | CYGWIN* | Windows_NT) platform=win ;;
+	*) echo "Unknown platform: $1 (use mac, linux or win)" >&2; exit 1 ;;
+esac
+arch="${2:-$(uname -m)}"
+case "$arch" in x86_64 | amd64) arch=x64 ;; aarch64) arch=arm64 ;; esac
 
 want_bun="$(cat .bun-version)"
 if [ "$(bun --version)" != "$want_bun" ]; then
@@ -43,5 +48,5 @@ bun run clean:dev
 bun run generate:icons
 bun run compile:app
 CSC_IDENTITY_AUTO_DISCOVERY=false bun run package -- \
-	--publish never --config electron-builder.fork.ts "--$arch" ${FORK_DIR_ONLY:+--dir}
-ls -d release/mac*/*.app
+	--publish never --config electron-builder.fork.ts "--$platform" "--$arch" ${FORK_DIR_ONLY:+--dir}
+ls release

@@ -108,8 +108,8 @@ rather than abandoning it.
 ```sh
 curl -fsSL https://bun.sh/install | bash -s bun-v1.4.3   # the version in .bun-version
 bun install
-scripts/fork/build-mac.sh            # apps/desktop/release/Paradev-Boxes-*.dmg
-FORK_DIR_ONLY=1 scripts/fork/build-mac.sh   # just the .app
+scripts/fork/build.sh            # apps/desktop/release/Paradev-Boxes-*.dmg
+FORK_DIR_ONLY=1 scripts/fork/build.sh   # just the .app
 ```
 
 The result is "Paradev Boxes" with its own bundle id, URL scheme

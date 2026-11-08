@@ -6,7 +6,7 @@
  * product name (which names userData, logs and the single-instance lock),
  * URL scheme, and release feed. Build with SUPERSET_WORKSPACE_NAME=boxes so
  * the runtime scheme (superset-boxes) and app home (~/.paradev-boxes) match;
- * scripts/fork/build-mac.sh sets everything.
+ * scripts/fork/build.sh sets everything.
  */
 
 import type { Configuration } from "electron-builder";
