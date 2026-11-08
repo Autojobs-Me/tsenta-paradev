@@ -146,6 +146,37 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-boxes-
 
+      # electron-builder downloads Electron from GitHub releases at package
+      # time, and that download answers 504 for minutes at a stretch. Fetch
+      # it here with patient retries, check it against Electron's published
+      # SHA256 sums, and leave it where electron-builder looks (its flat cache
+      # file), so packaging never depends on a lucky download. The cache step
+      # above keeps it for later runs.
+      - name: Prefetch Electron
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./apps/desktop/package.json').devDependencies.electron")
+          case "${{ matrix.platform }}" in
+            mac) os=darwin; dir="$HOME/Library/Caches/electron" ;;
+            linux) os=linux; dir="$HOME/.cache/electron" ;;
+            win) os=win32; dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          name="electron-v$version-$os-${{ matrix.arch }}.zip"
+          base="https://github.com/electron/electron/releases/download/v$version"
+          mkdir -p "$dir"
+          fetch() { curl -fsSL --retry 30 --retry-all-errors --retry-delay 20 --retry-max-time 1500 -o "$2" "$1"; }
+          fetch "$base/SHASUMS256.txt" "$RUNNER_TEMP/SHASUMS256.txt"
+          want=$(grep " \*\?$name\$" "$RUNNER_TEMP/SHASUMS256.txt" | cut -d' ' -f1)
+          [ -n "$want" ] || { echo "::error::$name not in SHASUMS256.txt"; exit 1; }
+          sha() { if command -v sha256sum >/dev/null; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1; }
+          if [ -f "$dir/$name" ] && [ "$(sha "$dir/$name")" = "$want" ]; then
+            echo "Cached: $name"; exit 0
+          fi
+          fetch "$base/$name" "$dir/$name.part"
+          [ "$(sha "$dir/$name.part")" = "$want" ] || { echo "::error::$name checksum mismatch"; exit 1; }
+          mv "$dir/$name.part" "$dir/$name"
+          echo "Fetched: $name"
+
       - name: Install dependencies
         run: |
           bun install --frozen --ignore-scripts
