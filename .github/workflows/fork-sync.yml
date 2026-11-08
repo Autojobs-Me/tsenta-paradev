@@ -7,9 +7,10 @@
 # and builds the app as the `boxes-canary` prerelease. A rebase conflict opens
 # an issue and changes nothing.
 #
-# Needs secret FORK_SYNC_TOKEN: a fine-grained token for this repository with
-# Contents, Workflows and Issues set to read and write. GITHUB_TOKEN cannot push
-# the upstream commits that change workflow files.
+# Secret FORK_SYNC_TOKEN: a fine-grained token for this repository with
+# Contents, Workflows, Actions and Issues set to read and write. Without it the
+# job falls back to GITHUB_TOKEN, which works until upstream changes a
+# workflow file (GitHub refuses that push without the Workflows permission).
 name: Fork sync
 
 on:
@@ -23,6 +24,7 @@ on:
         default: false
 
 permissions:
+  actions: write
   contents: write
   issues: write
 
@@ -42,12 +44,12 @@ jobs:
           ref: main
           fetch-depth: 0
           filter: blob:none
-          token: ${{ secrets.FORK_SYNC_TOKEN }}
+          token: ${{ secrets.FORK_SYNC_TOKEN || github.token }}
 
       - name: Rebase onto Paradev canary
         id: rebase
         env:
-          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN || github.token }}
           FORCE: ${{ inputs.force_build }}
         run: |
           set -euo pipefail
@@ -76,7 +78,7 @@ jobs:
 
       - name: Keep upstream workflows disabled
         env:
-          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN || github.token }}
         run: |
           for wf in .github/workflows/*.yml; do
             name=$(basename "$wf")
