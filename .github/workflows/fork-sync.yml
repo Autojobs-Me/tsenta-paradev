@@ -4,7 +4,7 @@
 # moves the `desktop-canary` tag to it. Two hours later this rebases the
 # fork's commits (everything after the `fork-base` branch) onto that tag,
 # pushes `main`, re-disables upstream's workflows (new ones start enabled),
-# builds the app for macOS arm64, Linux x64 and arm64, and Windows x64, checks
+# builds the app for macOS arm64 and Windows x64 (Linux is ready but off), checks
 # each one launches, and publishes them as the `boxes-canary` prerelease. A
 # rebase conflict opens an issue and changes nothing.
 #
@@ -106,9 +106,11 @@ jobs:
       matrix:
         include:
           - { runner: macos-latest, platform: mac, arch: arm64 }
-          - { runner: ubuntu-24.04, platform: linux, arch: x64 }
-          - { runner: ubuntu-24.04-arm, platform: linux, arch: arm64 }
           - { runner: windows-latest, platform: win, arch: x64 }
+          # Linux desktop builds work (build.sh linux x64|arm64, smoke-tested)
+          # but are not shipped for now. To ship them, add:
+          #   - { runner: ubuntu-24.04, platform: linux, arch: x64 }
+          #   - { runner: ubuntu-24.04-arm, platform: linux, arch: arm64 }
     defaults:
       run:
         shell: bash

@@ -127,7 +127,7 @@ Each canary sync publishes [`boxes-canary`](https://github.com/AgnayS/paradev-bo
 | Platform | Files | Notes |
 | --- | --- | --- |
 | macOS arm64 | `.dmg`, `.zip` | Unsigned unless signing secrets are set. Right-click, then Open the first time. |
-| Linux x64, arm64 | `.AppImage`, `.deb`, `.rpm` | Package `paradev-boxes`, command `paradev-boxes-app`, beside Paradev's own package. Updates itself. |
+| Linux x64, arm64 | not published yet | Builds and passes the smoke test (`scripts/fork/build.sh linux x64`): AppImage, `.deb` and `.rpm`, package `paradev-boxes`, command `paradev-boxes-app`. Off in CI until it is needed. |
 | Windows x64 | `.exe` (NSIS) | **Experimental.** Only the launch is tested, in CI. It is meant as a client for boxes and other remote hosts, whose terminals run on the box. Local workspaces will not work: Paradev's terminal daemon has no Windows support (ConPTY, named pipes). SmartScreen warns on unsigned builds. |
 
 CI builds each platform on its own runner. It then launches the packaged app
