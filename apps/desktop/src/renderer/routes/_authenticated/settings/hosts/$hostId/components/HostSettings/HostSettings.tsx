@@ -16,7 +16,7 @@ import { HighlightText } from "renderer/routes/_authenticated/settings/component
 import { useSettingsSearchQuery } from "renderer/stores/settings-state";
 import type { CandidateRow } from "./components/AddMemberDropdown";
 import { AddMemberDropdown } from "./components/AddMemberDropdown";
-import { BoxSection } from "./components/BoxSection";
+import { BoxSection } from "./components/BoxSection"; // Paradev Boxes fork
 import { CloudWorkspaceAccessSection } from "./components/CloudWorkspaceAccessSection";
 import { DeleteHostSection } from "./components/DeleteHostSection";
 import { HostHeader } from "./components/HostHeader";
@@ -261,10 +261,12 @@ export function HostSettings({ hostId }: HostSettingsProps) {
 					/>
 				</section>
 
+				{/* Paradev Boxes fork */}
 				<BoxSection
 					organizationId={host.organizationId}
 					hostId={hostId}
 					hostName={host.name}
+					isOnline={hostIsOnline}
 				/>
 
 				{isOwner || isOrgOwner ? (

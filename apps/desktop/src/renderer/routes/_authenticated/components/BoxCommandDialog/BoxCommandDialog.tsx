@@ -11,17 +11,19 @@ import {
 import { toast } from "@superset/ui/sonner";
 import { Spinner } from "@superset/ui/spinner";
 import { cn } from "@superset/ui/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LuCheck, LuTriangleAlert } from "react-icons/lu";
+import { type BoxHost, useRefreshBoxStates } from "renderer/hooks/useBoxHosts";
 import {
 	BOX_PROVIDER_LABELS,
-	type Box,
 	type BoxAction,
 	buildBoxCommand,
 } from "renderer/lib/boxes";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { CommandTerminal } from "renderer/routes/_authenticated/components/CommandTerminal";
+import { useV2WorkspaceCreateDefaultsStore } from "renderer/stores/v2-workspace-create-defaults";
 
 type Phase = "confirm" | "running" | "success" | "failed";
 
@@ -29,15 +31,16 @@ interface BoxCommandDialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	action: BoxAction;
-	box: Box;
+	box: Pick<BoxHost, "provider" | "id" | "ref" | "hostId">;
 	organizationId: string;
 	hostName: string;
 }
 
 /**
- * Wakes, stops or deletes a box by running `superset boxes` in a terminal,
+ * Wakes, stops or deletes a box by running `paradev-boxes` in a terminal,
  * so the CLI can ask for a provider API key. Waking and stopping start as the
- * dialog opens; deleting waits for a confirm.
+ * dialog opens; deleting waits for a confirm. The app renders one, from
+ * `BoxDialogHost`; open it with `useBoxDialogStore`.
  */
 export function BoxCommandDialog({
 	open,
@@ -50,17 +53,32 @@ export function BoxCommandDialog({
 	const { t } = useLingui();
 	const navigate = useNavigate();
 	const cloudUtils = cloudTrpc.useUtils();
+	const refreshBoxStates = useRefreshBoxStates();
+	const queryClient = useQueryClient();
 	const [phase, setPhase] = useState<Phase>("confirm");
 	const [run, setRun] = useState<{ command: string; attempt: number } | null>(
 		null,
 	);
 	const terminalBoxRef = useRef<HTMLDivElement>(null);
 	const provider = BOX_PROVIDER_LABELS[box.provider];
-	const command = buildBoxCommand(action, box, organizationId);
+	// The dialog lives in the app layout, so a bad reference must not throw
+	// while rendering; it ends in the failed state instead.
+	const command = useMemo(() => {
+		try {
+			return buildBoxCommand(action, box, organizationId);
+		} catch {
+			return null;
+		}
+	}, [action, box, organizationId]);
 	const running = phase === "running";
 
 	useEffect(() => {
 		if (!open) return;
+		if (!command) {
+			setRun(null);
+			setPhase("failed");
+			return;
+		}
 		if (action === "delete") {
 			setRun(null);
 			setPhase("confirm");
@@ -71,6 +89,7 @@ export function BoxCommandDialog({
 	}, [open, action, command]);
 
 	const start = () => {
+		if (!command) return;
 		setRun((prev) => ({ command, attempt: (prev?.attempt ?? 0) + 1 }));
 		setPhase("running");
 	};
@@ -87,11 +106,18 @@ export function BoxCommandDialog({
 	};
 
 	const handleExit = (exitCode: number | null) => {
+		// Even a failed command can have changed the box at its provider.
+		refreshBoxStates();
 		if (exitCode !== 0) {
 			setPhase("failed");
 			return;
 		}
 		if (action === "delete") {
+			// A deleted box must not stay the new-workspace default.
+			const createDefaults = useV2WorkspaceCreateDefaultsStore.getState();
+			if (createDefaults.lastHostId === box.hostId) {
+				createDefaults.setLastHostId(null);
+			}
 			// Leave the host's page before the roster drops the host from under it.
 			onOpenChange(false);
 			toast.success(t({ message: `Deleted "${hostName}"` }));
@@ -102,6 +128,12 @@ export function BoxCommandDialog({
 		}
 		setPhase("success");
 		invalidateHosts();
+		if (action === "start") {
+			// While the box was down its project lists cached as unknown, which
+			// hides "Set up project" and keeps project settings stale.
+			void queryClient.invalidateQueries({ queryKey: ["project", "list"] });
+			void queryClient.invalidateQueries({ queryKey: ["host-project"] });
+		}
 	};
 
 	return (

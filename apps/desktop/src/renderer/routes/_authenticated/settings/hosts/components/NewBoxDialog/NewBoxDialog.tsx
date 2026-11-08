@@ -1,5 +1,6 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
+import { Checkbox } from "@superset/ui/checkbox";
 import {
 	Dialog,
 	DialogContent,
@@ -19,9 +20,11 @@ import {
 import { Spinner } from "@superset/ui/spinner";
 import { cn } from "@superset/ui/utils";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { LuCheck, LuTriangleAlert } from "react-icons/lu";
+import { useHostProjects } from "renderer/hooks/host-projects/useHostProjects";
 import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
+import { useRefreshBoxStates } from "renderer/hooks/useBoxHosts";
 import {
 	BOX_PROVIDER_LABELS,
 	BOX_PROVIDERS,
@@ -30,6 +33,7 @@ import {
 } from "renderer/lib/boxes";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { CommandTerminal } from "renderer/routes/_authenticated/components/CommandTerminal";
+import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { parseOnlineHostId } from "../SetUpOverSshDialog/utils/parseOnlineHostId";
 import {
 	BOX_SIZES,
@@ -38,6 +42,7 @@ import {
 	DEFAULT_BOX_SIZE_ID,
 	isValidBoxName,
 	isValidBoxRegion,
+	isValidProjectId,
 	parseWholeNumber,
 } from "./utils/buildBoxesCreateCommand";
 
@@ -53,6 +58,7 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 	const navigate = useNavigate();
 	const organizationId = useActiveOrganizationId();
 	const cloudUtils = cloudTrpc.useUtils();
+	const refreshBoxStates = useRefreshBoxStates();
 	const fieldId = useId();
 	const [phase, setPhase] = useState<Phase>("form");
 	const [provider, setProvider] = useState<BoxProvider>("daytona");
@@ -61,12 +67,32 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 	const [disk, setDisk] = useState("10");
 	const [idle, setIdle] = useState("60");
 	const [region, setRegion] = useState("");
+	const [projectIds, setProjectIds] = useState<string[]>([]);
+	// Off until asked for: it copies a full-scope gh token onto the sandbox.
+	const [github, setGithub] = useState(false);
 	const [run, setRun] = useState<{ command: string; attempt: number } | null>(
 		null,
 	);
 	const [hostId, setHostId] = useState<string | null>(null);
 	const outputRef = useRef("");
 	const terminalBoxRef = useRef<HTMLDivElement>(null);
+	const { machineId } = useLocalHostService();
+	const { projects: hostProjects } = useHostProjects();
+
+	// The CLI clones a project the box does not know from this device's own
+	// row, so only this device's projects with a repository are offered.
+	const setupProjects = useMemo(
+		() =>
+			hostProjects
+				.filter(
+					(project) =>
+						project.hostIds.includes(machineId) &&
+						Boolean(project.repoUrl) &&
+						isValidProjectId(project.id),
+				)
+				.sort((a, b) => a.name.localeCompare(b.name)),
+		[hostProjects, machineId],
+	);
 
 	useEffect(() => {
 		if (open) {
@@ -78,6 +104,9 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 	const size = BOX_SIZES.find((option) => option.id === sizeId);
 	const diskGb = parseWholeNumber(disk, 1);
 	const idleMinutes = parseWholeNumber(idle, 0);
+	const pickedProjectIds = projectIds.filter((id) =>
+		setupProjects.some((project) => project.id === id),
+	);
 	const trimmedName = name.trim();
 	const trimmedRegion = region.trim();
 	const nameInvalid = trimmedName !== "" && !isValidBoxName(trimmedName);
@@ -93,6 +122,8 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 					diskGb,
 					idleMinutes,
 					region: trimmedRegion || undefined,
+					projectIds: pickedProjectIds,
+					github,
 				}
 			: null;
 	const canStart =
@@ -115,6 +146,14 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 		setPhase("running");
 	};
 
+	const toggleProject = (projectId: string, picked: boolean) => {
+		setProjectIds((current) =>
+			picked
+				? [...current.filter((id) => id !== projectId), projectId]
+				: current.filter((id) => id !== projectId),
+		);
+	};
+
 	const cancel = () => {
 		setRun(null);
 		setPhase("form");
@@ -127,6 +166,8 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 	};
 
 	const handleExit = (exitCode: number | null) => {
+		// Even a failed create can have changed what the provider lists.
+		refreshBoxStates();
 		if (exitCode === 0) {
 			setHostId(parseOnlineHostId(outputRef.current));
 			setPhase("success");
@@ -286,6 +327,63 @@ export function NewBoxDialog({ open, onOpenChange }: NewBoxDialogProps) {
 								spellCheck={false}
 								disabled={locked}
 							/>
+						</div>
+					</div>
+					{setupProjects.length > 0 && (
+						<div className="space-y-1.5">
+							<p className="text-xs font-medium">
+								<Trans>Set up projects on the box</Trans>
+							</p>
+							<div className="max-h-24 space-y-1.5 overflow-y-auto rounded-md border border-border/60 px-3 py-2">
+								{setupProjects.map((project) => (
+									<div key={project.id} className="flex items-center gap-2">
+										<Checkbox
+											id={`${fieldId}-project-${project.id}`}
+											checked={pickedProjectIds.includes(project.id)}
+											onCheckedChange={(checked) =>
+												toggleProject(project.id, checked === true)
+											}
+											disabled={locked}
+										/>
+										<Label
+											htmlFor={`${fieldId}-project-${project.id}`}
+											className="min-w-0 font-normal"
+										>
+											<span className="truncate">{project.name}</span>
+											{project.repoOwner && project.repoName && (
+												<span className="truncate text-xs text-muted-foreground">
+													{project.repoOwner}/{project.repoName}
+												</span>
+											)}
+										</Label>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
+					<div className="flex items-start gap-2">
+						<Checkbox
+							id={`${fieldId}-github`}
+							checked={github}
+							onCheckedChange={(checked) => setGithub(checked === true)}
+							disabled={locked}
+							className="mt-0.5"
+						/>
+						<div className="min-w-0 space-y-0.5">
+							<Label
+								htmlFor={`${fieldId}-github`}
+								className="leading-snug font-normal"
+							>
+								<Trans>
+									Sign the box in to GitHub with your gh login (needed for
+									private repositories)
+								</Trans>
+							</Label>
+							<p className="text-xs text-muted-foreground">
+								<Trans>
+									Your gh token, git name and email are copied to the box.
+								</Trans>
+							</p>
 						</div>
 					</div>
 					<div className="flex items-center justify-between gap-4">

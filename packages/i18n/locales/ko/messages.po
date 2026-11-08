@@ -18141,6 +18141,9 @@ msgstr "{hostName}에 프로젝트 설정"
 msgid "Set up project…"
 msgstr "프로젝트 설정…"
 
+msgid "Set up projects on the box"
+msgstr "박스에 프로젝트 설정"
+
 msgid "Set up this project for Paradev"
 msgstr "이 프로젝트를 Paradev에 맞게 설정하기"
 
@@ -18576,6 +18579,9 @@ msgstr "이 기기에서 로그아웃"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "{0} 프로필을 다른 계정으로 로그인합니다. 다른 프로필, 시스템 기본값, 실행 중인 에이전트에는 영향을 주지 않습니다."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "gh 로그인으로 박스를 GitHub에 로그인 (비공개 저장소에 필요)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "시스템 기본 {0} 로그인을 다른 계정으로 바꿉니다. 이 머신의 현재 기본 로그인을 대체하며, 프로필과 실행 중인 에이전트에는 영향을 주지 않습니다."
@@ -18735,6 +18741,9 @@ msgstr "Slack 연동"
 
 msgid "Slate"
 msgstr "슬레이트"
+
+msgid "Sleeping"
+msgstr "절전 중"
 
 msgid "Slider"
 msgstr "슬라이더"
@@ -20337,6 +20346,10 @@ msgstr "평가 기준표"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "<0>{0}</0>이(가) Paradev 릴레이에 연결되어 있지 않아 실행을 건너뛰었습니다. 해당 기기의 설정 > 원격 액세스에서 릴레이 접근이 켜져 있는지 확인한 뒤 다시 실행하세요."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "박스 <0>{0}</0>이(가) 오프라인이라 실행을 건너뛰었습니다. 깨운 뒤 다시 실행하세요."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "이 기기가 Paradev 릴레이에 연결되어 있지 않아 실행을 건너뛰었습니다. 자동화는 이 기기에서 실행되더라도 릴레이를 거칩니다. 릴레이 접근을 활성화한 뒤 다시 실행하세요."
 
@@ -21725,6 +21738,9 @@ msgstr "방금 {0}에서 업데이트되었습니다."
 msgid "Updates"
 msgstr "업데이트"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "이 빌드에는 업데이트가 게시되지 않습니다. 새 빌드는 Paradev Boxes 릴리스 페이지에서 다운로드하세요."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "{0}(으)로 업데이트 중"
@@ -23049,6 +23065,9 @@ msgstr "이메일 주소 (선택)"
 
 msgid "Your first agent"
 msgstr "첫 번째 에이전트"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "gh 토큰과 git 이름, 이메일이 박스로 복사됩니다."
 
 msgid "Your GitHub account"
 msgstr "내 GitHub 계정"

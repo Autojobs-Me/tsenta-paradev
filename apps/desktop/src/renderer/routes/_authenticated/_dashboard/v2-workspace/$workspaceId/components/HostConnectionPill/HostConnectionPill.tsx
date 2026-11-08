@@ -3,6 +3,7 @@ import { i18n } from "@superset/i18n";
 import { useWorkspaceHostUrl } from "@superset/workspace-client";
 import { Link } from "@tanstack/react-router";
 import { useKnownHosts } from "renderer/hooks/known-hosts/useKnownHosts";
+import { useWakeBox } from "renderer/hooks/useWakeBox"; // Paradev Boxes fork
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { useSandboxAccess } from "renderer/routes/_authenticated/providers/SandboxAccessProvider";
 import { useHostReachability } from "../../../hooks/useHostReachability";
@@ -11,7 +12,6 @@ import { LOCAL_HOST_SERVICE_DETAIL } from "../../../providers/WorkspaceProvider/
 import { useCountdown } from "../../hooks/useCountdown";
 import { useChatSessionChecksFailing } from "../../hooks/usePaneRegistry/components/ChatPane/components/AcpChatPane/hooks/useChatSessionLiveness";
 import { ConnectionPill, WAKE_UP_ESTIMATE_SECONDS } from "../ConnectionPill";
-import { useWakeBox } from "./hooks/useWakeBox";
 
 /** The open workspace's host connection, shown only while it is not answering. */
 export function HostConnectionPill() {
@@ -51,6 +51,7 @@ export function HostConnectionPill() {
 			(workspace.hostId === machineId
 				? t({ message: "This device" })
 				: t({ message: "Unknown host" })));
+	// Paradev Boxes fork: an unreachable box host offers Wake.
 	const wakeBox = useWakeBox(
 		workspace.organizationId,
 		workspace.hostId,
@@ -101,10 +102,9 @@ export function HostConnectionPill() {
 							: t({ message: "Connecting…" });
 
 	if (usageRefusal?.workspaceId === workspace.hostId) return null;
-	if (!isDegraded && !isAccessDenied && !isCheckFailing) return wakeBox.dialog;
+	if (!isDegraded && !isAccessDenied && !isCheckFailing) return null;
 
 	return (
-		<>
 		<ConnectionPill
 			label={label}
 			detail={detail}
@@ -127,12 +127,11 @@ export function HostConnectionPill() {
 							{t({ message: "Host settings" })}
 						</Link>
 					) : null}
+					{/* Paradev Boxes fork */}
 					{isDegraded && !isAccessDenied ? wakeBox.button : null}
 				</>
 			}
 			onRetry={isCheckFailing ? retryChecks : onRetry}
 		/>
-		{wakeBox.dialog}
-		</>
 	);
 }

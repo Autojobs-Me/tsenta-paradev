@@ -18141,6 +18141,9 @@ msgstr "{hostName} üzerinde projeyi kur"
 msgid "Set up project…"
 msgstr "Projeyi kur…"
 
+msgid "Set up projects on the box"
+msgstr "Sandbox'ta projeleri kur"
+
 msgid "Set up this project for Paradev"
 msgstr "Bu projeyi Paradev için kur"
 
@@ -18576,6 +18579,9 @@ msgstr "Bu cihazda oturumu kapat"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "{0} profilini farklı bir hesaba geçirin. Diğer profiller, sistem varsayılanı ve çalışan ajanlar etkilenmez."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "Sandbox'ı gh oturumunuzla GitHub'a bağlayın (özel depolar için gerekli)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "Sistem varsayılanı olan {0} oturumunu farklı bir hesaba geçirin. Bu makinedeki mevcut varsayılan oturumun yerini alır; profiller ve çalışan ajanlar etkilenmez."
@@ -18735,6 +18741,9 @@ msgstr "Slack entegrasyonu"
 
 msgid "Slate"
 msgstr "Arduvaz"
+
+msgid "Sleeping"
+msgstr "Uykuda"
 
 msgid "Slider"
 msgstr "Kaydırıcı"
@@ -20337,6 +20346,10 @@ msgstr "Değerlendirme ölçeği"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "<0>{0}</0> Paradev rölesine bağlı olmadığı için çalıştırma atlandı. O cihazda Ayarlar > Uzaktan erişim bölümünde röle erişiminin açık olduğundan emin olun, sonra yeniden çalıştırın."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "Sandbox <0>{0}</0> çevrimdışı olduğu için çalıştırma atlandı. Uyandırın ve yeniden çalıştırın."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "Bu cihaz Paradev rölesine bağlı olmadığı için çalıştırma atlandı. Otomasyonlar bu cihazda çalışsa bile röle üzerinden gider. Röle erişimini etkinleştirip yeniden çalıştırın."
 
@@ -21725,6 +21738,9 @@ msgstr "Az önce {0} sürümünden güncellendi."
 msgid "Updates"
 msgstr "Güncellemeler"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "Bu sürüm için güncelleme yayımlanmıyor. Yeni sürümleri Paradev Boxes yayınlar sayfasından indirin."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "{0} sürümüne güncelleniyor"
@@ -23049,6 +23065,9 @@ msgstr "E-posta adresiniz (isteğe bağlı)"
 
 msgid "Your first agent"
 msgstr "İlk ajanınız"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "gh belirteciniz ile git adınız ve e-postanız sandbox'a kopyalanır."
 
 msgid "Your GitHub account"
 msgstr "GitHub hesabınız"

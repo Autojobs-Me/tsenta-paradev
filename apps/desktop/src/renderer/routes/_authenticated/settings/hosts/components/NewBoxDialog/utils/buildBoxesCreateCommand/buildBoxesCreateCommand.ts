@@ -1,8 +1,9 @@
 import { quoteShellToken } from "renderer/lib/argv";
 import {
+	BOXES_LAUNCHER,
 	type BoxProvider,
 	isBoxProvider,
-	withOrganizationSignIn,
+	withBoxesPreamble,
 } from "renderer/lib/boxes";
 
 export interface BoxSize {
@@ -28,6 +29,10 @@ export interface BoxesCreateOptions {
 	/** 0 keeps the box running until someone stops it. */
 	idleMinutes: number;
 	region?: string;
+	/** Projects (ids on this device) to clone onto the box once it is online. */
+	projectIds?: readonly string[];
+	/** Copy this device's gh login and git name and email to the box. */
+	github?: boolean;
 }
 
 const MAX_WHOLE_NUMBER = 1_000_000;
@@ -60,6 +65,13 @@ export function isValidBoxRegion(region: string): boolean {
 	return BOX_WORD.test(region);
 }
 
+/** Project ids are UUIDs; anything that could read as an option is refused. */
+const PROJECT_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
+
+export function isValidProjectId(projectId: string): boolean {
+	return PROJECT_ID.test(projectId);
+}
+
 /** The shell command the New box dialog runs. */
 export function buildBoxesCreateCommand(
 	options: BoxesCreateOptions,
@@ -80,8 +92,12 @@ export function buildBoxesCreateCommand(
 	if (options.region !== undefined && !isValidBoxRegion(options.region)) {
 		throw new Error("Invalid region");
 	}
+	const projectIds = [...new Set(options.projectIds ?? [])];
+	if (!projectIds.every(isValidProjectId)) {
+		throw new Error("Invalid project id");
+	}
 
-	const args = ["superset", "boxes", "create"];
+	const args = [BOXES_LAUNCHER, "create"];
 	if (options.name !== undefined) args.push(quoteShellToken(options.name));
 	args.push(
 		"--provider",
@@ -99,5 +115,9 @@ export function buildBoxesCreateCommand(
 		args.push("--region", quoteShellToken(options.region));
 	}
 	args.push("--org", quoteShellToken(organizationId));
-	return withOrganizationSignIn(organizationId, args.join(" "));
+	for (const projectId of projectIds) {
+		args.push("--project", quoteShellToken(projectId));
+	}
+	if (options.github) args.push("--github");
+	return withBoxesPreamble(organizationId, args.join(" "));
 }

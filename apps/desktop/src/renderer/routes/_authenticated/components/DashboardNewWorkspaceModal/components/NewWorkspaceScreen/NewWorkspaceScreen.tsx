@@ -49,6 +49,7 @@ import {
 import { ModePicker } from "renderer/routes/_authenticated/components/AgentComposer/components/ModePicker";
 import { useGitHubMentionProviders } from "renderer/routes/_authenticated/components/AgentComposer/hooks/useGitHubMentionProviders";
 import { draftLinkedContext } from "renderer/routes/_authenticated/components/AgentComposer/utils/linkedContextChips";
+import { BoxWakeButton } from "renderer/routes/_authenticated/components/BoxWakeButton"; // Paradev Boxes fork
 import { CreateEnvironmentFlow } from "renderer/routes/_authenticated/components/CreateEnvironmentFlow";
 import { EnvironmentPickerPill } from "renderer/routes/_authenticated/components/EnvironmentPickerPill";
 import { MachineSizePickerPill } from "renderer/routes/_authenticated/components/MachineSizePickerPill";
@@ -1119,6 +1120,11 @@ export function NewWorkspaceScreen({
 							</div>
 							<div className="flex shrink-0 items-center gap-1.5">
 								{setupButton}
+								{/* Paradev Boxes fork */}
+								<BoxWakeButton
+									hostId={hostId}
+									presence={selectedRemoteHostPresence}
+								/>
 								{selectedAgent !== "none" && (
 									<ModelPicker
 										configOptions={launchOptions}
@@ -1221,6 +1227,11 @@ export function NewWorkspaceScreen({
 							{contextPickers}
 						</div>
 						{setupButton}
+						{/* Paradev Boxes fork */}
+						<BoxWakeButton
+							hostId={hostId}
+							presence={selectedRemoteHostPresence}
+						/>
 					</div>
 				</div>
 			</div>

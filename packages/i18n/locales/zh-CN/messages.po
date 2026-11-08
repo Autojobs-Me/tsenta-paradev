@@ -18141,6 +18141,9 @@ msgstr "在{hostName}上设置项目"
 msgid "Set up project…"
 msgstr "配置项目…"
 
+msgid "Set up projects on the box"
+msgstr "在实例上设置项目"
+
 msgid "Set up this project for Paradev"
 msgstr "为Paradev配置这个项目"
 
@@ -18576,6 +18579,9 @@ msgstr "在此设备上退出登录"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "将{0}配置文件切换到另一个账户。其他配置文件、系统默认登录和运行中的智能体不受影响。"
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "用你的 gh 登录让实例登录 GitHub（私有仓库需要）"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "将系统默认的{0}登录切换到另一个账户。它会替换本机当前的默认登录；配置文件和运行中的智能体不受影响。"
@@ -18735,6 +18741,9 @@ msgstr "Slack集成"
 
 msgid "Slate"
 msgstr "石板灰"
+
+msgid "Sleeping"
+msgstr "休眠中"
 
 msgid "Slider"
 msgstr "滑块"
@@ -20337,6 +20346,10 @@ msgstr "评分表"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "这次运行被跳过了，因为<0>{0}</0>没有连接到Paradev中继。请确认该设备的“设置>远程访问”中开启了中继访问，然后重新运行。"
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "由于实例 <0>{0}</0> 离线，本次运行已跳过。唤醒后再运行一次。"
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "这次运行被跳过了，因为此设备没有连接到Paradev中继。即使自动化在本设备上运行，也要经过中继。请启用中继访问，然后重新运行。"
 
@@ -21725,6 +21738,9 @@ msgstr "刚刚从 {0} 更新。"
 msgid "Updates"
 msgstr "更新"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "此版本不发布更新。请从 Paradev Boxes 的发布页面下载新版本。"
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "正在更新到 {0}"
@@ -23049,6 +23065,9 @@ msgstr "你的邮箱（选填）"
 
 msgid "Your first agent"
 msgstr "你的第一个智能体"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "你的 gh 令牌以及 git 姓名和邮箱会复制到实例。"
 
 msgid "Your GitHub account"
 msgstr "你的 GitHub 账号"

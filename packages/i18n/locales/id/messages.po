@@ -18141,6 +18141,9 @@ msgstr "Siapkan proyek di {hostName}"
 msgid "Set up project…"
 msgstr "Siapkan proyek…"
 
+msgid "Set up projects on the box"
+msgstr "Siapkan proyek di box"
+
 msgid "Set up this project for Paradev"
 msgstr "Siapkan proyek ini untuk Paradev"
 
@@ -18576,6 +18579,9 @@ msgstr "Keluar dari perangkat ini"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "Masukkan profil {0} ke akun lain. Profil lain, bawaan sistem, dan agen yang berjalan tidak terpengaruh."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "Masukkan box ke GitHub dengan login gh Anda (diperlukan untuk repositori privat)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "Masukkan login {0} bawaan sistem ke akun lain. Ini menggantikan sesi masuk bawaan di mesin ini; profil dan agen yang berjalan tidak terpengaruh."
@@ -18735,6 +18741,9 @@ msgstr "Integrasi Slack"
 
 msgid "Slate"
 msgstr "Batu tulis"
+
+msgid "Sleeping"
+msgstr "Tidur"
 
 msgid "Slider"
 msgstr "Slider"
@@ -20337,6 +20346,10 @@ msgstr "Rubriknya"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "Run dilewati karena <0>{0}</0> tidak terhubung ke relay Paradev. Pastikan akses relay aktif di Pengaturan > Akses Jarak Jauh pada perangkat itu, lalu jalankan lagi."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "Proses dilewati karena box <0>{0}</0> sedang offline. Bangunkan box, lalu jalankan lagi."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "Run dilewati karena perangkat ini tidak terhubung ke relay Paradev. Otomatisasi melewati relay bahkan saat berjalan di perangkat ini. Aktifkan akses relay, lalu jalankan lagi."
 
@@ -21725,6 +21738,9 @@ msgstr "Baru saja diperbarui dari {0}."
 msgid "Updates"
 msgstr "Pembaruan"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "Pembaruan tidak diterbitkan untuk build ini. Unduh build baru dari halaman rilis Paradev Boxes."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "Memperbarui ke {0}"
@@ -23049,6 +23065,9 @@ msgstr "Email Anda (opsional)"
 
 msgid "Your first agent"
 msgstr "Agen pertama Anda"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "Token gh, nama, dan email git Anda disalin ke box."
 
 msgid "Your GitHub account"
 msgstr "Akun GitHub Anda"

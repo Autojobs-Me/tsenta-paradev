@@ -99,7 +99,22 @@ function isNetworkError(error: Error | string): boolean {
 // feed host answered that it had. The interactive check keeps telling the user
 // about the second, since they asked.
 function isTransientError(error: Error): boolean {
-	return isNetworkError(error) || isUpstreamServerError(error);
+	return (
+		isNetworkError(error) ||
+		isUpstreamServerError(error) ||
+		isMissingFeed(error) // Paradev Boxes fork
+	);
+}
+
+// Paradev Boxes fork: a build whose release publishes no manifest for its
+// platform (CI publishes macOS and Windows feeds only for signed builds) has
+// nothing to update from; that is not a failed update.
+function isMissingFeed(error: Error | string): boolean {
+	const message = typeof error === "string" ? error : error.message;
+	return (
+		message.includes("Cannot find channel") ||
+		(/\b404\b/.test(message) && message.includes(".yml"))
+	);
 }
 
 // Free bytes on the volume backing the updater caches, which sit beside our app
@@ -354,6 +369,22 @@ export function checkForUpdatesInteractive(): void {
 			}
 		})
 		.catch((error) => {
+			// Paradev Boxes fork: no feed is not "up to date"; say where builds are.
+			if (isMissingFeed(error)) {
+				emitStatus(AUTO_UPDATE_STATUS.IDLE);
+				dialog.showMessageBox({
+					type: "info",
+					title: i18n._(msg({ message: "No Updates" })),
+					message: i18n._(
+						msg({
+							message:
+								"Updates aren't published for this build. Download new builds from the Paradev Boxes releases page.",
+						}),
+					),
+					detail: "https://github.com/AgnayS/paradev-boxes/releases",
+				});
+				return;
+			}
 			if (isNetworkError(error)) {
 				log.info("[auto-updater] Network unavailable");
 				emitStatus(AUTO_UPDATE_STATUS.IDLE);

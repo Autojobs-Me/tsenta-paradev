@@ -1,4 +1,4 @@
-/** Where a box can run. Mirrors the providers `superset boxes` supports. */
+/** Where a box can run. Mirrors the providers `paradev-boxes` supports. */
 export const BOX_PROVIDERS = ["daytona", "e2b", "blaxel"] as const;
 
 export type BoxProvider = (typeof BOX_PROVIDERS)[number];
@@ -22,4 +22,14 @@ export interface Box {
 	provider: BoxProvider;
 	id: string;
 	ref: string;
+}
+
+/**
+ * A box host's id, which box commands pass as `--expect-host`: nothing a
+ * shell treats specially, and no leading dash that would read as an option.
+ */
+const BOX_HOST_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+
+export function isBoxHostId(value: string): boolean {
+	return BOX_HOST_ID_PATTERN.test(value);
 }

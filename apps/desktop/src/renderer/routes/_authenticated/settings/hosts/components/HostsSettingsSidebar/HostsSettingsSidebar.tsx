@@ -15,7 +15,7 @@ import {
 	SettingsListSidebar,
 	settingsListItemClass,
 } from "../../../components/SettingsListSidebar";
-import { NewBoxButton } from "../NewBoxButton";
+import { NewBoxButton } from "../NewBoxButton"; // Paradev Boxes fork
 import { SetUpOverSshDialog } from "../SetUpOverSshDialog";
 
 interface HostRow {
@@ -73,6 +73,7 @@ export function HostsSettingsSidebar({
 			<SettingsListSidebar
 				listHeader={
 					<>
+						{/* Paradev Boxes fork: a fragment, to add "Create a box" */}
 						<button
 							type="button"
 							onClick={() => setSshDialogOpen(true)}

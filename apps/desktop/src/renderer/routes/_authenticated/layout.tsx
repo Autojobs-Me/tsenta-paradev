@@ -62,6 +62,7 @@ import { setPaneWorkspaceRunState } from "renderer/stores/tabs/workspace-run";
 import { useWorkspaceInitStore } from "renderer/stores/workspace-init";
 import { MOCK_ORG_ID, NOTIFICATION_EVENTS } from "shared/constants";
 import { AgentHooks } from "./components/AgentHooks";
+import { BoxDialogHost } from "./components/BoxDialogHost"; // Paradev Boxes fork
 import { DockBadgeController } from "./components/DockBadgeController";
 import { FileAutoSave } from "./components/FileAutoSave";
 import { FileMenuListener } from "./components/FileMenuListener";
@@ -378,6 +379,7 @@ function AuthenticatedLayout() {
 									<TeardownLogsDialog />
 									<Paywall />
 									<InviteMemberDialog />
+									<BoxDialogHost /* Paradev Boxes fork */ />
 								</WorkerPoolContextProvider>
 							</TagFolderWorkspacesProvider>
 						</HostWorkspacesProvider>

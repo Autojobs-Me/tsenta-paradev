@@ -18141,6 +18141,9 @@ msgstr "{hostName}でプロジェクトをセットアップ"
 msgid "Set up project…"
 msgstr "プロジェクトをセットアップ…"
 
+msgid "Set up projects on the box"
+msgstr "ボックスにプロジェクトをセットアップ"
+
 msgid "Set up this project for Paradev"
 msgstr "このプロジェクトをParadev向けにセットアップ"
 
@@ -18576,6 +18579,9 @@ msgstr "このデバイスからサインアウト"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "{0}プロファイルを別のアカウントにサインインし直します。他のプロファイル、システムデフォルト、実行中のエージェントは影響を受けません。"
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "gh のログインでボックスを GitHub にサインイン（プライベートリポジトリに必要）"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "システムデフォルトの{0}ログインを別のアカウントにサインインし直します。このマシンの現在のデフォルトサインインが置き換わります。プロファイルと実行中のエージェントは影響を受けません。"
@@ -18735,6 +18741,9 @@ msgstr "Slack連携"
 
 msgid "Slate"
 msgstr "スレート"
+
+msgid "Sleeping"
+msgstr "スリープ中"
 
 msgid "Slider"
 msgstr "Slider"
@@ -20337,6 +20346,10 @@ msgstr "ルーブリック"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "<0>{0}</0> がParadevリレーに接続されていないため、実行はスキップされました。そのデバイスの「設定 > リモートアクセス」でリレーアクセスが有効になっていることを確認し、もう一度実行してください。"
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "ボックス <0>{0}</0> がオフラインのため、実行はスキップされました。起動してから、もう一度実行してください。"
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "このデバイスがParadevリレーに接続されていないため、実行はスキップされました。オートメーションはこのデバイスで実行される場合もリレーを経由します。リレーアクセスを有効にしてから、もう一度実行してください。"
 
@@ -21725,6 +21738,9 @@ msgstr "{0}からたった今更新しました。"
 msgid "Updates"
 msgstr "アップデート"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "このビルドにはアップデートが公開されていません。新しいビルドは Paradev Boxes のリリースページからダウンロードしてください。"
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "{0}に更新中"
@@ -23049,6 +23065,9 @@ msgstr "メールアドレス（任意）"
 
 msgid "Your first agent"
 msgstr "最初のエージェント"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "gh トークンと git の名前・メールアドレスがボックスにコピーされます。"
 
 msgid "Your GitHub account"
 msgstr "あなたの GitHub アカウント"

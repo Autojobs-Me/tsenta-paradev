@@ -18141,6 +18141,9 @@ msgstr "在{hostName}上設定專案"
 msgid "Set up project…"
 msgstr "配置專案…"
 
+msgid "Set up projects on the box"
+msgstr "在執行個體上設定專案"
+
 msgid "Set up this project for Paradev"
 msgstr "為Paradev配置這個專案"
 
@@ -18576,6 +18579,9 @@ msgstr "在此裝置上登出"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "將{0}配置檔案切換到另一個帳戶。其他配置檔案、系統預設登入和執行中的代理程式不受影響。"
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "用你的 gh 登入讓執行個體登入 GitHub（私人存放庫需要）"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "將系統預設的{0}登入切換到另一個帳戶。它會替換本機目前的預設登入；配置檔案和執行中的代理程式不受影響。"
@@ -18735,6 +18741,9 @@ msgstr "Slack整合"
 
 msgid "Slate"
 msgstr "石板灰"
+
+msgid "Sleeping"
+msgstr "休眠中"
 
 msgid "Slider"
 msgstr "滑桿"
@@ -20337,6 +20346,10 @@ msgstr "評分表"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "這次執行被跳過了，因為<0>{0}</0>沒有連線到Paradev中繼。請確認該裝置的「設定>遠端存取」中開啟了中繼存取，然後重新執行。"
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "由於執行個體 <0>{0}</0> 離線，本次執行已略過。喚醒後再執行一次。"
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "這次執行被跳過了，因為此裝置沒有連線到Paradev中繼。即使自動化在本裝置上執行，也要經過中繼。請啟用中繼存取，然後重新執行。"
 
@@ -21725,6 +21738,9 @@ msgstr "剛剛從 {0} 更新。"
 msgid "Updates"
 msgstr "更新"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "此版本不發布更新。請從 Paradev Boxes 的發行頁面下載新版本。"
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "正在更新至 {0}"
@@ -23049,6 +23065,9 @@ msgstr "你的電子郵件（選填）"
 
 msgid "Your first agent"
 msgstr "你的第一個代理程式"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "你的 gh 權杖以及 git 名稱和電子郵件會複製到執行個體。"
 
 msgid "Your GitHub account"
 msgstr "你的 GitHub 帳號"

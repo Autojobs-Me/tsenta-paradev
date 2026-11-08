@@ -18141,6 +18141,9 @@ msgstr "Thiết lập dự án trên {hostName}"
 msgid "Set up project…"
 msgstr "Thiết lập dự án…"
 
+msgid "Set up projects on the box"
+msgstr "Thiết lập dự án trên box"
+
 msgid "Set up this project for Paradev"
 msgstr "Thiết lập dự án này cho Paradev"
 
@@ -18576,6 +18579,9 @@ msgstr "Đăng xuất khỏi thiết bị này"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "Đăng nhập hồ sơ {0} bằng một tài khoản khác. Các hồ sơ khác, mặc định hệ thống và agent đang chạy không bị ảnh hưởng."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "Đăng nhập GitHub cho box bằng phiên gh của bạn (cần cho kho riêng tư)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "Đăng nhập lần đăng nhập {0} mặc định của hệ thống bằng một tài khoản khác. Nó thay cho lần đăng nhập mặc định hiện tại trên máy này; các hồ sơ và agent đang chạy không bị ảnh hưởng."
@@ -18735,6 +18741,9 @@ msgstr "Tích hợp Slack"
 
 msgid "Slate"
 msgstr "Xám đá"
+
+msgid "Sleeping"
+msgstr "Đang ngủ"
 
 msgid "Slider"
 msgstr "Slider"
@@ -20337,6 +20346,10 @@ msgstr "Thang chấm"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "Lần chạy bị bỏ qua vì <0>{0}</0> chưa kết nối tới relay của Paradev. Hãy đảm bảo đã bật truy cập relay trong Cài đặt > Truy cập từ xa trên thiết bị đó, rồi chạy lại."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "Lượt chạy đã bị bỏ qua vì box <0>{0}</0> đang ngoại tuyến. Hãy đánh thức box rồi chạy lại."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "Lần chạy bị bỏ qua vì thiết bị này chưa kết nối tới relay của Paradev. Tự động hóa luôn đi qua relay kể cả khi chạy trên chính thiết bị này. Hãy bật truy cập relay rồi chạy lại."
 
@@ -21725,6 +21738,9 @@ msgstr "Vừa cập nhật từ {0}."
 msgid "Updates"
 msgstr "Cập nhật"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "Bản dựng này không có bản cập nhật được phát hành. Tải bản dựng mới từ trang phát hành của Paradev Boxes."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "Đang cập nhật lên {0}"
@@ -23049,6 +23065,9 @@ msgstr "Email của bạn (không bắt buộc)"
 
 msgid "Your first agent"
 msgstr "Agent đầu tiên của bạn"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "Token gh, tên và email git của bạn được sao chép sang box."
 
 msgid "Your GitHub account"
 msgstr "Tài khoản GitHub của bạn"

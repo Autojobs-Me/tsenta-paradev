@@ -19,6 +19,11 @@ import {
 	HiOutlineServer,
 } from "react-icons/hi2";
 import { useParadevShell } from "renderer/hooks/useParadevShell";
+// Paradev Boxes fork
+import {
+	BoxHostState,
+	BoxWakeMenuItems,
+} from "renderer/routes/_authenticated/components/BoxHostMenu";
 import { CloudGlyph } from "renderer/routes/_authenticated/components/CloudGlyph";
 import {
 	FORM_PICKER_MENU_CLASS,
@@ -203,6 +208,8 @@ export function DevicePicker({
 															: host.version}
 												</span>
 											)}
+											{/* Paradev Boxes fork */}
+											<BoxHostState hostId={host.id} isOnline={host.isOnline} />
 											<OnlineDot online={host.isOnline} />
 											{isSelected && (
 												<HiCheck className="ml-auto size-4 shrink-0" />
@@ -210,6 +217,8 @@ export function DevicePicker({
 										</DropdownMenuItem>
 									);
 								})}
+								{/* Paradev Boxes fork */}
+								<BoxWakeMenuItems hosts={otherHosts} />
 							</DropdownMenuSubContent>
 						</DropdownMenuSub>
 					</>

@@ -18141,6 +18141,9 @@ msgstr "Nastavit projekt na {hostName}"
 msgid "Set up project…"
 msgstr "Nastavit projekt…"
 
+msgid "Set up projects on the box"
+msgstr "Nastavit projekty na boxu"
+
 msgid "Set up this project for Paradev"
 msgstr "Připravit tento projekt pro Paradev"
 
@@ -18576,6 +18579,9 @@ msgstr "Odhlásit se z tohoto zařízení"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "Přihlaste profil {0} k jinému účtu. Ostatních profilů, systémově výchozího přihlášení ani běžících agentů se to nedotkne."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "Přihlásit box do GitHubu pomocí vašeho přihlášení gh (nutné pro soukromé repozitáře)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "Přihlaste systémově výchozí přihlášení {0} k jinému účtu. Nahradí to současné výchozí přihlášení na tomto počítači; profilů ani běžících agentů se to nedotkne."
@@ -18735,6 +18741,9 @@ msgstr "Integrace se Slackem"
 
 msgid "Slate"
 msgstr "Břidlicová"
+
+msgid "Sleeping"
+msgstr "Spí"
 
 msgid "Slider"
 msgstr "Posuvník"
@@ -20337,6 +20346,10 @@ msgstr "Hodnoticí tabulka"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "Běh byl přeskočen, protože <0>{0}</0> není připojen k Paradev relay. Zkontrolujte, že je na tom zařízení zapnutý přístup přes relay v Nastavení > Vzdálený přístup, a spusťte ji znovu."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "Spuštění bylo přeskočeno, protože box <0>{0}</0> je offline. Probuďte ho a spusťte znovu."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "Běh byl přeskočen, protože toto zařízení není připojené k Paradev relay. Automatizace jdou přes relay, i když běží na tomto zařízení. Povolte přístup přes relay a spusťte ji znovu."
 
@@ -21725,6 +21738,9 @@ msgstr "Právě aktualizováno z {0}."
 msgid "Updates"
 msgstr "Aktualizace"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "Pro toto sestavení se aktualizace nezveřejňují. Nová sestavení stáhněte ze stránky vydání Paradev Boxes."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "Aktualizace na {0}"
@@ -23049,6 +23065,9 @@ msgstr "Váš e-mail (nepovinné)"
 
 msgid "Your first agent"
 msgstr "Váš první agent"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "Váš token gh, jméno a e-mail pro git se zkopírují do boxu."
 
 msgid "Your GitHub account"
 msgstr "Váš účet na GitHubu"

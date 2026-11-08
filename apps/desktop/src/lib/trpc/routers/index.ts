@@ -4,6 +4,7 @@ import { createAnalyticsRouter } from "./analytics";
 import { createAttachmentsRouter } from "./attachments";
 import { createAuthRouter } from "./auth";
 import { createAutoUpdateRouter } from "./auto-update";
+import { createBoxesRouter } from "./boxes"; // Paradev Boxes fork
 import { createBrowserRouter } from "./browser/browser";
 import { createBrowserHistoryRouter } from "./browser-history";
 import { createChangesRouter } from "./changes";
@@ -46,6 +47,7 @@ export const createAppRouter = (getWindow: () => BrowserWindow | null) => {
 		screenshots: createScreenshotsRouter(),
 		auth: createAuthRouter(),
 		autoUpdate: createAutoUpdateRouter(),
+		boxes: createBoxesRouter(), // Paradev Boxes fork: provider state of boxes
 		window: createWindowRouter(),
 		projects: createProjectsRouter(getWindow),
 		workspaces: createWorkspacesRouter(),

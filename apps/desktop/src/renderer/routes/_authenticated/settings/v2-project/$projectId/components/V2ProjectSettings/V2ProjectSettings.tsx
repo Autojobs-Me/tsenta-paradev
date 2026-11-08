@@ -166,6 +166,8 @@ export function V2ProjectSettings({
 					hostUrl={targetHostUrl}
 					hostName={targetHostName}
 					isRemoteTarget={isRemoteTarget}
+					hostId={targetHostId} // Paradev Boxes fork
+					isHostOnline={selectedHost?.isOnline ?? false} // Paradev Boxes fork
 					onChanged={() => refetchHostProject()}
 				/>
 			}

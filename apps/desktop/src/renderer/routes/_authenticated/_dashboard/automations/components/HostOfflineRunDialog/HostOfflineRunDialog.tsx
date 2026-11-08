@@ -13,6 +13,8 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { LuTriangleAlert } from "react-icons/lu";
 import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
+import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId"; // Paradev Boxes fork
+import { useWakeBox } from "renderer/hooks/useWakeBox"; // Paradev Boxes fork
 import { ExposeViaRelayConfirmDialog } from "renderer/routes/_authenticated/components/ExposeViaRelayConfirmDialog";
 import { useEnableRelayAccess } from "../../hooks/useEnableRelayAccess";
 import { useRelayHostTarget } from "../../hooks/useRelayHostTarget";
@@ -38,6 +40,14 @@ export function HostOfflineRunDialog({
 	const { gateFeature } = usePaywall();
 	const [confirmOpen, setConfirmOpen] = useState(false);
 	const { enableRelay, isPending } = useEnableRelayAccess();
+	// Paradev Boxes fork: an offline box host is woken from here.
+	const wakeBox = useWakeBox(
+		useActiveOrganizationId(),
+		remoteHost && !remoteHost.isOnline && !remoteHost.isConnecting
+			? hostId
+			: null,
+		remoteHost?.name,
+	);
 
 	const handleConfirm = () => {
 		setConfirmOpen(false);
@@ -65,6 +75,17 @@ export function HostOfflineRunDialog({
 										the Paradev relay. Automations go through the relay even
 										when they run on this device. Enable relay access, then run
 										it again.
+									</Trans>
+								</p>
+							) : wakeBox.open ? (
+								// Paradev Boxes fork
+								<p>
+									<Trans>
+										The run was skipped because the box{" "}
+										<span className="font-medium text-foreground">
+											{remoteHost?.name}
+										</span>{" "}
+										is offline. Wake it, then run it again.
 									</Trans>
 								</p>
 							) : (
@@ -106,7 +127,11 @@ export function HostOfflineRunDialog({
 						</Button>
 					) : (
 						hostId && (
-							<Button asChild>
+							<Button
+								asChild
+								// Paradev Boxes fork: Wake is the main action for a box.
+								variant={wakeBox.open ? "outline" : undefined}
+							>
 								<Link
 									to="/settings/hosts/$hostId"
 									params={{ hostId }}
@@ -116,6 +141,12 @@ export function HostOfflineRunDialog({
 								</Link>
 							</Button>
 						)
+					)}
+					{/* Paradev Boxes fork */}
+					{wakeBox.open && (
+						<Button onClick={wakeBox.open}>
+							<Trans>Wake box</Trans>
+						</Button>
 					)}
 				</DialogFooter>
 

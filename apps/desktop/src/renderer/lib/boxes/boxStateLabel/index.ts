@@ -1,0 +1,1 @@
+export { boxStateLabel } from "./boxStateLabel";

@@ -1,7 +1,9 @@
+export { boxStateLabel } from "./boxStateLabel";
 export {
+	BOXES_LAUNCHER,
 	type BoxAction,
 	buildBoxCommand,
-	withOrganizationSignIn,
+	withBoxesPreamble,
 } from "./buildBoxCommand";
 export { parseBoxWakeCommand } from "./parseBoxWakeCommand";
 export {
@@ -10,5 +12,6 @@ export {
 	BOX_PROVIDERS,
 	type Box,
 	type BoxProvider,
+	isBoxHostId,
 	isBoxProvider,
 } from "./providers";

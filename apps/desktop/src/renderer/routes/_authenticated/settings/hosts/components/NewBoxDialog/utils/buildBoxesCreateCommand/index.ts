@@ -6,5 +6,6 @@ export {
 	DEFAULT_BOX_SIZE_ID,
 	isValidBoxName,
 	isValidBoxRegion,
+	isValidProjectId,
 	parseWholeNumber,
 } from "./buildBoxesCreateCommand";

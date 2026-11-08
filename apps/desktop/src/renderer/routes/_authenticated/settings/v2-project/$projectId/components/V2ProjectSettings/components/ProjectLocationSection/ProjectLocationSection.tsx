@@ -19,6 +19,7 @@ import { LuFolderOpen } from "react-icons/lu";
 import { RemotePathPicker } from "renderer/components/RemotePathPicker";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
+import { BoxWakeButton } from "renderer/routes/_authenticated/components/BoxWakeButton"; // Paradev Boxes fork
 import { useDashboardSidebarState } from "renderer/routes/_authenticated/hooks/useDashboardSidebarState";
 import { ClickablePath } from "../../../../../../components/ClickablePath";
 import { SetupProjectModal } from "../SetupProjectModal";
@@ -32,6 +33,10 @@ interface ProjectLocationSectionProps {
 	hostUrl: string | null;
 	hostName: string;
 	isRemoteTarget: boolean;
+	/** Paradev Boxes fork: the target host, to offer Wake when it is a box. */
+	hostId?: string | null;
+	/** Paradev Boxes fork: whether the target host is online. */
+	isHostOnline?: boolean;
 	onChanged?: () => void;
 }
 
@@ -44,6 +49,8 @@ export function ProjectLocationSection({
 	hostUrl,
 	hostName,
 	isRemoteTarget,
+	hostId, // Paradev Boxes fork
+	isHostOnline, // Paradev Boxes fork
 	onChanged,
 }: ProjectLocationSectionProps) {
 	const { t } = useLingui();
@@ -191,6 +198,15 @@ export function ProjectLocationSection({
 					<span className="text-sm text-muted-foreground">
 						<Trans>Not set up on {hostName}</Trans>
 					</span>
+					{/* Paradev Boxes fork */}
+					<BoxWakeButton
+						hostId={hostId}
+						hostName={hostName}
+						presence={
+							isRemoteTarget && isHostOnline === false ? "offline" : null
+						}
+						size="sm"
+					/>
 					<Button
 						type="button"
 						variant="outline"

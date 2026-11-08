@@ -18141,6 +18141,9 @@ msgstr "Настроить проект на {hostName}"
 msgid "Set up project…"
 msgstr "Настроить проект…"
 
+msgid "Set up projects on the box"
+msgstr "Настроить проекты в боксе"
+
 msgid "Set up this project for Paradev"
 msgstr "Настроить этот проект под Paradev"
 
@@ -18576,6 +18579,9 @@ msgstr "Выйти на этом устройстве"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "Войдите профилем {0} в другой аккаунт. Другие профили, системный вход по умолчанию и работающие агенты не затрагиваются."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "Войти в GitHub в боксе с вашим входом gh (нужно для приватных репозиториев)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "Войдите системным входом {0} по умолчанию в другой аккаунт. Это заменит текущий основной вход на этой машине; профили и работающие агенты не затрагиваются."
@@ -18735,6 +18741,9 @@ msgstr "Интеграция со Slack"
 
 msgid "Slate"
 msgstr "Грифельный"
+
+msgid "Sleeping"
+msgstr "Спит"
 
 msgid "Slider"
 msgstr "Слайдер"
@@ -20337,6 +20346,10 @@ msgstr "Рубрика"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "Запуск пропущен: <0>{0}</0> не подключён к реле Paradev. Убедитесь, что на том устройстве включён доступ через реле в Настройки > Удалённый доступ, затем запустите снова."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "Запуск пропущен, потому что бокс <0>{0}</0> не в сети. Разбудите его и запустите снова."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "Запуск пропущен: это устройство не подключено к реле Paradev. Автоматизации идут через реле, даже когда выполняются на этом устройстве. Включите доступ через реле и запустите снова."
 
@@ -21725,6 +21738,9 @@ msgstr "Только что обновлено с {0}."
 msgid "Updates"
 msgstr "Обновления"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "Для этой сборки обновления не публикуются. Скачивайте новые сборки со страницы релизов Paradev Boxes."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "Обновление до {0}"
@@ -23049,6 +23065,9 @@ msgstr "Ваш адрес электронной почты (необязате�
 
 msgid "Your first agent"
 msgstr "Ваш первый агент"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "Ваш токен gh, имя и email для git копируются в бокс."
 
 msgid "Your GitHub account"
 msgstr "Ваш аккаунт GitHub"

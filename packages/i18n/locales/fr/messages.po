@@ -18141,6 +18141,9 @@ msgstr "Configurer le projet sur {hostName}"
 msgid "Set up project…"
 msgstr "Configurer le projet…"
 
+msgid "Set up projects on the box"
+msgstr "Configurer des projets sur la boîte"
+
 msgid "Set up this project for Paradev"
 msgstr "Configurer ce projet pour Paradev"
 
@@ -18576,6 +18579,9 @@ msgstr "Se déconnecter de cet appareil"
 msgid "Sign the {0} profile into a different account. Other profiles, the system default, and running agents are unaffected."
 msgstr "Connectez le profil {0} à un autre compte. Les autres profils, la valeur système par défaut et les agents en cours ne sont pas affectés."
 
+msgid "Sign the box in to GitHub with your gh login (needed for private repositories)"
+msgstr "Connecter la boîte à GitHub avec votre connexion gh (nécessaire pour les dépôts privés)"
+
 #. placeholder {0}: AGENT_LABELS[switchTarget.agent]
 msgid "Sign the system-default {0} login into a different account. It replaces the current default sign-in on this machine; profiles and running agents are unaffected."
 msgstr "Connectez la connexion {0} par défaut du système à un autre compte. Elle remplace la connexion par défaut actuelle sur cette machine ; les profils et les agents en cours ne sont pas affectés."
@@ -18735,6 +18741,9 @@ msgstr "Intégration Slack"
 
 msgid "Slate"
 msgstr "Ardoise"
+
+msgid "Sleeping"
+msgstr "En veille"
 
 msgid "Slider"
 msgstr "Curseur"
@@ -20337,6 +20346,10 @@ msgstr "La grille"
 msgid "The run was skipped because <0>{0}</0> isn't connected to the Paradev relay. Make sure relay access is on in Settings > Remote Access on that device, then run it again."
 msgstr "L'exécution a été ignorée car <0>{0}</0> n'est pas connecté au relais Paradev. Vérifiez que l'accès au relais est activé dans Paramètres > Accès distant sur cet appareil, puis relancez-la."
 
+#. placeholder {0}: remoteHost?.name
+msgid "The run was skipped because the box <0>{0}</0> is offline. Wake it, then run it again."
+msgstr "L'exécution a été ignorée car la boîte <0>{0}</0> est hors ligne. Réveillez-la, puis relancez-la."
+
 msgid "The run was skipped because this device isn't connected to the Paradev relay. Automations go through the relay even when they run on this device. Enable relay access, then run it again."
 msgstr "L'exécution a été ignorée car cet appareil n'est pas connecté au relais Paradev. Les automatisations passent par le relais même lorsqu'elles s'exécutent sur cet appareil. Activez l'accès au relais, puis relancez-la."
 
@@ -21725,6 +21738,9 @@ msgstr "Mis à jour à l'instant depuis {0}."
 msgid "Updates"
 msgstr "Mises à jour"
 
+msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
+msgstr "Aucune mise à jour n'est publiée pour cette version. Téléchargez les nouvelles versions depuis la page des versions de Paradev Boxes."
+
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
 msgstr "Mise à jour vers {0}"
@@ -23049,6 +23065,9 @@ msgstr "Votre e-mail (facultatif)"
 
 msgid "Your first agent"
 msgstr "Votre premier agent"
+
+msgid "Your gh token, git name and email are copied to the box."
+msgstr "Votre jeton gh, ainsi que votre nom et votre e-mail git, sont copiés sur la boîte."
 
 msgid "Your GitHub account"
 msgstr "Votre compte GitHub"
