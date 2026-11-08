@@ -1,0 +1,136 @@
+# Paradev Boxes: keep the fork on Paradev's canary and ship a macOS build.
+#
+# Paradev rebuilds its canary from main every 12 h (00:00 and 12:00 UTC) and
+# moves the `desktop-canary` tag to it. Two hours later this rebases the
+# fork's commits (everything after the `fork-base` branch) onto that tag,
+# pushes `main`, re-disables upstream's workflows (new ones start enabled),
+# and builds the app as the `boxes-canary` prerelease. A rebase conflict opens
+# an issue and changes nothing.
+#
+# Needs secret FORK_SYNC_TOKEN: a fine-grained token for this repository with
+# Contents, Workflows and Issues set to read and write. GITHUB_TOKEN cannot push
+# the upstream commits that change workflow files.
+name: Fork sync
+
+on:
+  schedule:
+    - cron: "0 2,14 * * *"
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: Build even if upstream has not moved
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: fork-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      changed: ${{ steps.rebase.outputs.changed }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          token: ${{ secrets.FORK_SYNC_TOKEN }}
+
+      - name: Rebase onto Paradev canary
+        id: rebase
+        env:
+          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN }}
+          FORCE: ${{ inputs.force_build }}
+        run: |
+          set -euo pipefail
+          git config user.name "paradev-boxes-sync"
+          git config user.email "paradev-boxes-sync@users.noreply.github.com"
+          git remote add upstream https://github.com/ParadevAI/Paradev.git
+          git fetch --no-tags upstream "+refs/tags/desktop-canary:refs/tags/upstream-canary"
+          git fetch origin fork-base
+          new=$(git rev-parse "upstream-canary^{commit}")
+          old=$(git rev-parse origin/fork-base)
+          if [ "$new" = "$old" ]; then
+            echo "Already on canary $new"
+            echo "changed=${FORCE:-false}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! git rebase --onto "$new" "$old" main; then
+            files=$(git diff --name-only --diff-filter=U | head -20)
+            git rebase --abort
+            body=$(printf 'Rebasing the fork commits from %s onto Paradev canary %s stopped on conflicts in:\n\n```\n%s\n```\n\nResolve locally: `git fetch upstream tag desktop-canary && git rebase --onto desktop-canary origin/fork-base main`, push main, then push the canary commit to fork-base.' "${old:0:9}" "${new:0:9}" "$files")
+            gh issue create --title "Fork sync: rebase onto canary ${new:0:9} conflicts" --body "$body"
+            exit 1
+          fi
+          git push --force-with-lease=main origin main
+          git push --force origin "$new:refs/heads/fork-base"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Keep upstream workflows disabled
+        env:
+          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN }}
+        run: |
+          for wf in .github/workflows/*.yml; do
+            name=$(basename "$wf")
+            [ "$name" = fork-sync.yml ] && continue
+            gh workflow disable "$name" -R "$GITHUB_REPOSITORY" 2>/dev/null || true
+          done
+
+  build-macos:
+    needs: sync
+    if: needs.sync.outputs.changed == 'true'
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: main
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install dependencies
+        run: |
+          bun install --frozen --ignore-scripts
+          bun run --filter=@superset/i18n build
+          bun run --cwd apps/desktop install:deps
+
+      - name: Version
+        id: version
+        working-directory: apps/desktop
+        run: |
+          version="$(node -p "require('./package.json').version")-boxes.$(date -u +%Y%m%d%H%M%S)"
+          node -e "const fs=require('fs');const p=require('./package.json');p.version='$version';fs.writeFileSync('./package.json',JSON.stringify(p,null,'\t')+'\n')"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        env:
+          CSC_NAME: ${{ secrets.CSC_NAME }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: scripts/fork/build-mac.sh arm64
+
+      - name: Publish boxes-canary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SIGNED: ${{ secrets.APPLE_TEAM_ID != '' }}
+        run: |
+          cd apps/desktop/release
+          assets=$(ls *.dmg *.zip *.blockmap)
+          # Only a signed build can update itself; without the manifest an
+          # unsigned build finds no update instead of failing to install one.
+          if [ "$SIGNED" = true ]; then assets="$assets $(ls *-mac.yml)"; fi
+          gh release delete boxes-canary --cleanup-tag --yes 2>/dev/null || true
+          gh release create boxes-canary $assets --prerelease \
+            --target main --title "Paradev Boxes ${{ steps.version.outputs.version }}" \
+            --notes "Paradev canary $(git rev-parse --short HEAD~0) plus the Paradev Boxes commits. macOS arm64. Unsigned builds: right-click the app and choose Open the first time."
