@@ -128,6 +128,22 @@ jobs:
       - if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libx11-dev libxkbfile-dev rpm xvfb
 
+      # Bun's package store and Electron's downloads: the two slowest steps
+      # that never change between runs of the same lockfile.
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.bun/install/cache
+            ~/Library/Caches/electron
+            ~/Library/Caches/electron-builder
+            ~/.cache/electron
+            ~/.cache/electron-builder
+            ~/AppData/Local/electron/Cache
+            ~/AppData/Local/electron-builder/Cache
+          key: ${{ runner.os }}-${{ matrix.arch }}-boxes-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-boxes-
+
       - name: Install dependencies
         run: |
           bun install --frozen --ignore-scripts
@@ -154,7 +170,14 @@ jobs:
           AZURE_SIGNING_ACCOUNT: ${{ vars.AZURE_SIGNING_ACCOUNT }}
           AZURE_SIGNING_PROFILE: ${{ vars.AZURE_SIGNING_PROFILE }}
           AZURE_PUBLISHER_NAME: ${{ vars.AZURE_PUBLISHER_NAME }}
-        run: scripts/fork/build.sh ${{ matrix.platform }} ${{ matrix.arch }}
+        # One retry: downloads during the build (Electron, the bundled pdev
+        # from GitHub releases) fail transiently, e.g. HTTP 504.
+        run: |
+          for attempt in 1 2; do
+            scripts/fork/build.sh ${{ matrix.platform }} ${{ matrix.arch }} && exit 0
+            echo "::warning::build attempt $attempt failed"
+          done
+          exit 1
 
       - name: Smoke test
         run: scripts/fork/smoke.sh ${{ matrix.platform }}
@@ -222,6 +245,20 @@ jobs:
           mapfile -t manifests < <(find . -maxdepth 1 -type f -name '*.yml' -printf '%f\n')
           gh release upload boxes-canary "${binaries[@]}" --clobber
           [ "${#manifests[@]}" -eq 0 ] || gh release upload boxes-canary "${manifests[@]}" --clobber
+          # Drop assets from older builds, but only for the platforms this run
+          # rebuilt: a leg that failed keeps its previous build.
+          slot() {
+            case "$1" in
+              *.dmg | *.dmg.blockmap | *.zip | *.zip.blockmap | latest-mac.yml) echo mac-arm64 ;;
+              *x86_64.AppImage | *-amd64.deb | *x86_64.rpm | latest-linux.yml) echo linux-x64 ;;
+              *arm64.AppImage | *-arm64.deb | *aarch64.rpm | latest-linux-arm64.yml) echo linux-arm64 ;;
+              *.exe | *.exe.blockmap | latest.yml) echo win-x64 ;;
+              *) echo other ;;
+            esac
+          }
+          built=" "
+          for file in *; do built="$built$(slot "$file") "; done
           for old in $(gh release view boxes-canary --json assets --jq '.assets[].name'); do
-            [ -e "$old" ] || gh release delete-asset boxes-canary "$old" --yes
+            [ -e "$old" ] && continue
+            case "$built" in *" $(slot "$old") "*) gh release delete-asset boxes-canary "$old" --yes ;; esac
           done
