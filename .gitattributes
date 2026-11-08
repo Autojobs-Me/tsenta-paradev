@@ -1,0 +1,3 @@
+# Paradev Boxes: the fork's translations are additions next to upstream's, so
+# rebasing onto canary keeps both sides' entries instead of conflicting.
+packages/i18n/locales/*/messages.po merge=union
