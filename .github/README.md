@@ -15,16 +15,31 @@ Not affiliated with Superset Inc. or the Paradev project. MIT, like upstream.
 ## What you get
 
 ```
-superset boxes create my-box --provider daytona --cpu 4 --memory 8
-superset boxes list
-superset boxes stop my-box          # stops billing compute; the disk stays
-superset boxes start my-box         # wake: about 6 s back to online
-superset boxes delete my-box --yes  # box, its API key and its host row
+paradev-boxes create my-box --provider daytona --cpu 4 --memory 8 \
+  --project <projectId> --github     # clone your projects; sign it in to GitHub
+paradev-boxes list
+paradev-boxes stop my-box            # stops billing compute; the disk stays
+paradev-boxes start my-box           # wake: about 6 s back to online
+paradev-boxes delete my-box --yes    # box, its API key and its host row
 ```
 
-In the app (the Paradev Boxes build), go to Settings, then Hosts, then
-**Create a box**. You pick the box like any other host when you create a
-workspace, and an offline box shows a **Wake box** button.
+`paradev-boxes` is the app's bundled CLI (`superset boxes`). The app installs
+it into Paradev's `~/.paradev/bin`, which is first on PATH in its terminals.
+
+In the app, go to Settings, then Hosts, then **Create a box**. You can pick
+projects to clone onto it and sign it in to GitHub (off by default: it copies
+your gh token to the box). You pick a box like any other host when you create
+a workspace. Wherever a stopped box shows up (New Workspace, the host picker,
+project settings, a skipped automation run, the connection pill, host
+settings) there is a **Wake box** button, and host settings shows the
+provider's own state (Running, Stopped, Sleeping) next to Paradev's online
+status.
+
+Paradev Boxes shares Paradev's app home (`~/.paradev`): the same projects,
+workspaces, sign-in, host-service and terminals. Its window layout and sidebar
+order are its own. Use it instead of Paradev; with both open, quitting the one
+that started host-service leaves the other "Host unreachable" until you restart
+its host-service, and "Quit Completely" in either stops the shared terminals.
 
 Measured on 2026-11-08, from India, against Paradev's own published numbers:
 
@@ -53,8 +68,10 @@ Pick the region nearest you with `--region`.
    with a new per-box API key (sent over env, never argv).
 4. It runs `superset start --daemon`. host-service binds 127.0.0.1 and dials
    out to the relay, so the box needs no public port.
-5. It stores `superset boxes start <provider>:<id>` as the host's wake command.
-   The app only ever runs wake commands of exactly that shape.
+5. It stores `paradev-boxes start <provider>:<id>` as the host's wake command.
+   The app only ever acts on wake commands of exactly that shape, and rebuilds
+   every command it runs from the parsed parts (with `--expect-host`, so a host
+   can never point the app at someone else's box).
 6. It starts a **keeper**, because providers judge idleness by inbound traffic
    and a host's traffic rides its outbound tunnel. While an app or agent is
    using the box:
@@ -110,7 +127,7 @@ Each canary sync publishes [`boxes-canary`](https://github.com/AgnayS/paradev-bo
 | Platform | Files | Notes |
 | --- | --- | --- |
 | macOS arm64 | `.dmg`, `.zip` | Unsigned unless signing secrets are set. Right-click, then Open the first time. |
-| Linux x64, arm64 | `.AppImage`, `.deb`, `.rpm` | Installs as `paradev-boxes` beside Paradev's own package. Updates itself. |
+| Linux x64, arm64 | `.AppImage`, `.deb`, `.rpm` | Package `paradev-boxes`, command `paradev-boxes-app`, beside Paradev's own package. Updates itself. |
 | Windows x64 | `.exe` (NSIS) | **Experimental.** Only the launch is tested, in CI. It is meant as a client for boxes and other remote hosts, whose terminals run on the box. Local workspaces will not work: Paradev's terminal daemon has no Windows support (ConPTY, named pipes). SmartScreen warns on unsigned builds. |
 
 CI builds each platform on its own runner. It then launches the packaged app
@@ -128,12 +145,12 @@ FORK_DIR_ONLY=1 scripts/fork/build.sh    # just the unpacked app
 ```
 
 The result is "Paradev Boxes" with its own app id, URL scheme
-(`superset-boxes`), app data (`~/.paradev-boxes`), Linux package
-(`paradev-boxes`) and notification port. It installs beside Paradev and
-Paradev Canary. Telemetry is off: no PostHog key and no Sentry DSN. It signs
-you in to Paradev's hosted backend like the official app. On one machine,
-Paradev and Paradev Boxes register the same local host, so quit one before
-opening the other.
+(`superset-boxes`), window state, Linux package (`paradev-boxes`) and
+notification port, so it installs beside Paradev and Paradev Canary, and the
+same app home (`~/.paradev`, set by its entry point `apps/desktop/fork/main.cjs`),
+so it sees your Paradev projects and workspaces. Telemetry is off: no PostHog
+key and no Sentry DSN. It signs you in to Paradev's hosted backend like the
+official app.
 
 ### Signing
 
