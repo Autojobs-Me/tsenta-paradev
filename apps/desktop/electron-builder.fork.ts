@@ -5,12 +5,14 @@
  * own identity so it installs beside Paradev and Paradev Canary: bundle id,
  * product name (which names userData, logs and the single-instance lock),
  * URL scheme, and release feed. Build with SUPERSET_WORKSPACE_NAME=boxes so
- * the runtime scheme (superset-boxes) and app home (~/.paradev-boxes) match;
- * scripts/fork/build.sh sets everything.
+ * the runtime scheme (superset-boxes) matches; scripts/fork/build.sh sets
+ * everything. The app home is not its own: the entry point, fork/main.cjs,
+ * points it at Paradev's ~/.paradev before the main bundle loads, so both
+ * apps share projects, workspaces, sign-in, host-service and terminals.
  */
 
 import { join } from "node:path";
-import type { Configuration } from "electron-builder";
+import type { Configuration, FileSet } from "electron-builder";
 import baseConfig, { displayName as baseDisplayName } from "./electron-builder";
 import pkg from "./package.json";
 import { localizeMacDisplayName } from "./scripts/localize-display-name";
@@ -19,7 +21,12 @@ import { localizeMacDisplayName } from "./scripts/localize-display-name";
 const productName = "Superset Boxes";
 const displayName = `${baseDisplayName} Boxes`;
 const scheme = "superset-boxes";
+// The deb and rpm package; also the installer file names.
 const linuxName = "paradev-boxes";
+// The GUI's command (/usr/bin/<this>) and window class. Not "paradev-boxes":
+// that is the launcher fork/main.cjs writes for box wake commands, and a
+// shell without ~/.paradev/bin first would run the GUI instead.
+const linuxExecutable = "paradev-boxes-app";
 
 const config: Configuration = {
 	...baseConfig,
@@ -27,7 +34,15 @@ const config: Configuration = {
 	productName,
 	copyright:
 		"Copyright © 2025-2026 Superset Inc. Paradev Boxes changes © 2026 Agnay Srivastava.",
-	extraMetadata: { ...baseConfig.extraMetadata, productName },
+	extraMetadata: {
+		...baseConfig.extraMetadata,
+		productName,
+		main: "fork/main.cjs",
+	},
+	files: [
+		...((baseConfig.files ?? []) as (string | FileSet)[]),
+		{ from: "fork", to: "fork", filter: ["**/*"] },
+	],
 	afterPack: localizeMacDisplayName(displayName),
 
 	publish: {
@@ -59,7 +74,7 @@ const config: Configuration = {
 	// canary and dev icons.
 	linux: {
 		...baseConfig.linux,
-		executableName: linuxName,
+		executableName: linuxExecutable,
 		icon: join(pkg.resources, "build/icons/icon.png"),
 		synopsis: `${pkg.description} (Boxes)`,
 		target: ["AppImage", "deb", "rpm"],
@@ -67,10 +82,13 @@ const config: Configuration = {
 			entry: {
 				...baseConfig.linux?.desktop?.entry,
 				Name: displayName,
-				StartupWMClass: linuxName,
+				StartupWMClass: linuxExecutable,
 			},
 			desktopActions: {
-				"new-window": { Name: "New Window", Exec: `${linuxName} --new-window` },
+				"new-window": {
+					Name: "New Window",
+					Exec: `${linuxExecutable} --new-window`,
+				},
 			},
 		},
 		artifactName: `${linuxName}-\${version}-\${arch}.\${ext}`,

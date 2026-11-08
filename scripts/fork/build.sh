@@ -6,6 +6,8 @@
 # Signing: CSC_NAME="Apple Development: ..." (or a Developer ID) signs with that
 # keychain identity; unset, the app is ad-hoc signed. APPLE_ID,
 # APPLE_APP_SPECIFIC_PASSWORD and APPLE_TEAM_ID notarize.
+# The app shares Paradev's home (~/.paradev): its entry point,
+# apps/desktop/fork/main.cjs, sets that and writes the paradev-boxes launcher.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
@@ -29,6 +31,9 @@ if [ -f .env ]; then
 fi
 
 export TARGET_ARCH="$arch"
+# Only picks the URL scheme (superset-boxes), so sign-in callbacks reach this
+# app rather than Paradev. The home is Paradev's ~/.paradev, set at launch by
+# apps/desktop/fork/main.cjs before the main bundle reads this name.
 export SUPERSET_WORKSPACE_NAME=boxes
 export DESKTOP_DISPLAY_NAME=Paradev
 export DESKTOP_NOTIFICATIONS_PORT=51761
