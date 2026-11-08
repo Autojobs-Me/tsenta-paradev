@@ -1,0 +1,1 @@
+export { parseBoxWakeCommand } from "./parseBoxWakeCommand";

@@ -987,6 +987,9 @@ msgstr "Đã chọn {count}"
 msgid "{count}/day"
 msgstr "{count}/ngày"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} GB"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} tín dụng sẽ được trừ vào các hóa đơn tiếp theo."
 
@@ -2844,6 +2847,9 @@ msgstr "thiết bị khác"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "Trả lời các câu hỏi trong terminal bên dưới, chẳng hạn mật khẩu."
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "Trả lời các câu hỏi trong terminal bên dưới, chẳng hạn khóa API."
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "Trả lời câu hỏi này trên máy tính, hoặc bỏ qua."
 
@@ -3689,6 +3695,10 @@ msgstr "GB-giờ đã mua còn lại: {prepaid}"
 msgid "Bounce the Dock icon"
 msgstr "Nảy biểu tượng trên Dock"
 
+msgid "Box"
+msgstr "Box"
+
+msgctxt "sandbox host"
 msgid "Box"
 msgstr "Box"
 
@@ -6426,6 +6436,9 @@ msgstr "Tạo"
 msgid "Create \"{newLabel}\""
 msgstr "Tạo \"{newLabel}\""
 
+msgid "Create a box"
+msgstr "Tạo box"
+
 msgid "Create a channel"
 msgstr "Tạo kênh"
 
@@ -6977,6 +6990,9 @@ msgstr "Vẫn xóa"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "Vẫn xóa sẽ bỏ qua hoàn toàn script teardown."
 
+msgid "Delete box"
+msgstr "Xóa box"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "Xóa lệnh {0}"
@@ -7130,6 +7146,9 @@ msgstr "Người dùng đã xóa"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "Đã xóa workspace, nhưng không cập nhật xong thanh bên"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "Xóa sandbox trên {provider} cùng mọi thứ trên ổ đĩa, đồng thời gỡ host này và các workspace của nó. Không thể hoàn tác."
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "Discord và GitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "Phát hiện và kết nối tới các server phát triển trong mạng của bạn."
+
+msgid "Disk (GiB)"
+msgstr "Ổ đĩa (GiB)"
 
 msgid "Disk version"
 msgstr "Phiên bản trên đĩa"
@@ -10138,6 +10160,9 @@ msgstr "Rảnh"
 
 msgid "Idle · branch pushed"
 msgstr "Rảnh · đã push nhánh"
+
+msgid "Idle minutes before it stops"
+msgstr "Số phút không hoạt động trước khi dừng"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "Nếu đến giờ bạn thấy Paradev hữu ích, một star trên GitHub sẽ giúp các lập trình viên khác biết đến nó."
@@ -15605,6 +15630,13 @@ msgstr "Thuộc tính"
 msgid "Provide either id or slug"
 msgstr "Hãy cung cấp id hoặc slug"
 
+msgid "Provider"
+msgstr "Nhà cung cấp"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "Nhà cung cấp: {0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "Việc cấp phát thất bại và sandbox đã bị dỡ bỏ. Không có gì đang chạy và không thể mở workspace này. Hãy tạo cái mới để thử lại."
 
@@ -17248,6 +17280,9 @@ msgstr "Các tiến trình terminal đang chạy vẫn tiếp tục, nhưng kế
 msgid "Runs a local command on your machine"
 msgstr "Chạy một lệnh cục bộ trên máy bạn"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "Chạy một host Paradev trên sandbox tại Daytona, E2B hoặc Blaxel, tính phí vào tài khoản của chính bạn ở đó. Nó hiển thị ở đây như mọi host khác."
+
 msgid "Runs appear here once an automation fires."
 msgstr "Các lần chạy sẽ xuất hiện ở đây khi một tự động hóa được kích hoạt."
 
@@ -17259,6 +17294,9 @@ msgstr "Chạy bên trong ứng dụng Paradev trên thiết bị đó, nên c�
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "Kết quả chạy nằm trong một workspace. Xem diff, merge những gì tốt."
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "Chạy trên sandbox tại {provider}, tính phí vào tài khoản của bạn ở đó."
 
 msgid "Runs that found no host online"
 msgstr "Các lượt chạy không tìm được host trực tuyến"
@@ -18068,6 +18106,9 @@ msgstr "Đặt màu nhóm"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "Đặt biểu tượng thành {0}"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "Đặt số phút không hoạt động là 0 để box chạy liên tục. Lần đầu dùng {providerLabel}, terminal sẽ hỏi khóa API của nó."
 
 msgid "Set project…"
 msgstr "Đặt dự án…"
@@ -19183,6 +19224,9 @@ msgstr "bắt đầu {date}"
 msgid "Starts a fresh session in this workspace"
 msgstr "Bắt đầu một phiên mới trong workspace này"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "Khởi động sandbox trên {provider} và host Paradev trên đó. Việc này có thể mất một phút."
+
 msgid "State"
 msgstr "Trạng thái"
 
@@ -19246,6 +19290,9 @@ msgstr "Dừng"
 msgid "Stop {0}"
 msgstr "Dừng {0}"
 
+msgid "Stop {hostName}"
+msgstr "Dừng {hostName}"
+
 msgid "Stop {label}"
 msgstr "Dừng {label}"
 
@@ -19294,6 +19341,9 @@ msgstr "Đã dừng chuyển {name}"
 
 msgid "Stopping the agent in {what}"
 msgstr "Đang dừng tác nhân trong {what}"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "Dừng sandbox trên {provider}. Ổ đĩa vẫn được giữ, và đánh thức box sẽ khởi động lại nó."
 
 msgid "Stops the agent and sends this now"
 msgstr "Dừng agent và gửi tin nhắn này ngay"
@@ -19977,6 +20027,15 @@ msgstr "Chủ sở hữu của tự động hóa không còn dùng được work
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "Agent tốt nhất sẽ thay đổi.<0/>Quy trình của bạn thì không."
 
+msgid "The box is online."
+msgstr "Box đã trực tuyến."
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "Box đã trực tuyến. Hãy chọn nó khi tạo workspace."
+
+msgid "The box is stopped."
+msgstr "Box đã dừng."
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "Nút giờ đã nổi bật. Tôi đã kiểm tra trong ngăn của bạn."
 
@@ -19997,6 +20056,9 @@ msgstr "Workspace cloud lẽ ra đã khởi động nhưng không phản hồi k
 
 msgid "The code expired. Start again."
 msgstr "Mã đã hết hạn. Hãy bắt đầu lại."
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "Lệnh đã dừng. Lý do có trong output bên dưới."
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "Các lệnh Paradev chạy để thiết lập, chạy và lưu trữ các workspace của dự án này, từ config.toml của repository."
@@ -22090,6 +22152,15 @@ msgstr "Đang chờ tin nhắn đầu tiên của agent con…"
 
 msgid "Waiting for your input"
 msgstr "Đang chờ bạn phản hồi"
+
+msgid "Wake"
+msgstr "Đánh thức"
+
+msgid "Wake {hostName}"
+msgstr "Đánh thức {hostName}"
+
+msgid "Wake box"
+msgstr "Đánh thức box"
 
 msgid "Waking up workspace"
 msgstr "Đang đánh thức workspace"

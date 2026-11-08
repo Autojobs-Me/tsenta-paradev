@@ -987,6 +987,9 @@ msgstr "已选择 {count} 个"
 msgid "{count}/day"
 msgstr "{count}/天"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} GB"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} 的抵扣额将用于后续账单。"
 
@@ -2844,6 +2847,9 @@ msgstr "另一台设备"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "请在下方终端中回答提问，例如输入密码。"
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "请在下方终端中回答提问，例如输入 API 密钥。"
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "请在桌面端回答此问题，或跳过。"
 
@@ -3691,6 +3697,10 @@ msgstr "弹跳程序坞图标"
 
 msgid "Box"
 msgstr "Box"
+
+msgctxt "sandbox host"
+msgid "Box"
+msgstr "实例"
 
 msgid "Branch"
 msgstr "分支"
@@ -6426,6 +6436,9 @@ msgstr "创建"
 msgid "Create \"{newLabel}\""
 msgstr "创建“{newLabel}”"
 
+msgid "Create a box"
+msgstr "创建实例"
+
 msgid "Create a channel"
 msgstr "创建频道"
 
@@ -6977,6 +6990,9 @@ msgstr "仍然删除"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "「仍然删除」将完全跳过清理脚本。"
 
+msgid "Delete box"
+msgstr "删除实例"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "删除命令{0}"
@@ -7130,6 +7146,9 @@ msgstr "已删除的用户"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "工作区已删除，但侧边栏没能更新完"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "删除其在 {provider} 上的沙箱及磁盘上的所有内容，并移除该主机及其工作区。此操作无法撤销。"
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "Discord 和 GitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "发现并连接你网络中的开发服务器。"
+
+msgid "Disk (GiB)"
+msgstr "磁盘 (GiB)"
 
 msgid "Disk version"
 msgstr "磁盘版本"
@@ -10138,6 +10160,9 @@ msgstr "空闲"
 
 msgid "Idle · branch pushed"
 msgstr "空闲 · 分支已推送"
+
+msgid "Idle minutes before it stops"
+msgstr "空闲多少分钟后停止"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "如果你觉得Paradev还不错，一个GitHub星标能帮助更多开发者发现它。"
@@ -15605,6 +15630,13 @@ msgstr "属性"
 msgid "Provide either id or slug"
 msgstr "请提供id或slug"
 
+msgid "Provider"
+msgstr "提供商"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "提供方：{0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "预配失败，沙箱已被销毁。当前没有任何进程在运行，此工作区也无法打开。请新建一个再试。"
 
@@ -17248,6 +17280,9 @@ msgstr "运行中的终端进程会继续，但重启应用后可能无法再看
 msgid "Runs a local command on your machine"
 msgstr "在你的机器上运行本地命令"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "在 Daytona、E2B 或 Blaxel 的沙箱上运行 Paradev 主机，费用计入你在该平台的账户。它会像其他主机一样显示在这里。"
+
 msgid "Runs appear here once an automation fires."
 msgstr "自动化触发后，运行将显示在这里。"
 
@@ -17259,6 +17294,9 @@ msgstr "运行在该设备的 Paradev 应用内，因此更新它意味着更新
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "运行结果会落在一个工作区里。审查差异，把合适的合并进去。"
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "运行在 {provider} 的沙箱上，费用计入你在该平台的账户。"
 
 msgid "Runs that found no host online"
 msgstr "未找到在线主机的运行"
@@ -18068,6 +18106,9 @@ msgstr "设置分组颜色"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "将图标设为{0}"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "将空闲分钟数设为 0 可保持运行。首次使用 {providerLabel} 时，终端会要求输入其 API 密钥。"
 
 msgid "Set project…"
 msgstr "设置项目…"
@@ -19183,6 +19224,9 @@ msgstr "{date} 开始"
 msgid "Starts a fresh session in this workspace"
 msgstr "在这个工作区里开一个新会话"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "启动其在 {provider} 上的沙箱及其中的 Paradev 主机。这可能需要一分钟。"
+
 msgid "State"
 msgstr "状态"
 
@@ -19246,6 +19290,9 @@ msgstr "停止"
 msgid "Stop {0}"
 msgstr "停止{0}"
 
+msgid "Stop {hostName}"
+msgstr "停止 {hostName}"
+
 msgid "Stop {label}"
 msgstr "停止 {label}"
 
@@ -19294,6 +19341,9 @@ msgstr "已停止移动 {name}"
 
 msgid "Stopping the agent in {what}"
 msgstr "正在停止 {what} 中的代理"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "停止其在 {provider} 上的沙箱。磁盘会保留，唤醒实例即可重新启动。"
 
 msgid "Stops the agent and sends this now"
 msgstr "停止智能体并立即发送此消息"
@@ -19977,6 +20027,15 @@ msgstr "该自动化的所有者已无法在此组织中使用云端工作区。
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "最好的智能体会变。<0/>你的工作流不该变。"
 
+msgid "The box is online."
+msgstr "实例已在线。"
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "实例已在线。创建工作区时选择它。"
+
+msgid "The box is stopped."
+msgstr "实例已停止。"
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "按钮现在更醒目了。我已在你的窗格中确认过。"
 
@@ -19997,6 +20056,9 @@ msgstr "云端工作区本应已启动，但没有及时响应。下次运行时
 
 msgid "The code expired. Start again."
 msgstr "代码已过期。请重新开始。"
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "命令已停止。原因见下方输出。"
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "Paradev 在设置、运行和归档此项目的工作区时执行的命令，来自仓库的 config.toml。"
@@ -22090,6 +22152,15 @@ msgstr "正在等待子智能体的第一条消息…"
 
 msgid "Waiting for your input"
 msgstr "等待你的输入"
+
+msgid "Wake"
+msgstr "唤醒"
+
+msgid "Wake {hostName}"
+msgstr "唤醒 {hostName}"
+
+msgid "Wake box"
+msgstr "唤醒实例"
 
 msgid "Waking up workspace"
 msgstr "正在唤醒工作区"

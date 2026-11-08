@@ -987,6 +987,9 @@ msgstr "Выбрано: {count}"
 msgid "{count}/day"
 msgstr "{count}/день"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} ГБ"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} кредита пойдёт в счёт следующих счетов."
 
@@ -2844,6 +2847,9 @@ msgstr "другое устройство"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "Отвечайте на вопросы в терминале ниже, например введите пароль."
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "Отвечайте на вопросы в терминале ниже, например введите ключ API."
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "Ответьте на этот вопрос на компьютере или пропустите его."
 
@@ -3691,6 +3697,10 @@ msgstr "Подпрыгивание значка в Dock"
 
 msgid "Box"
 msgstr "Box"
+
+msgctxt "sandbox host"
+msgid "Box"
+msgstr "Бокс"
 
 msgid "Branch"
 msgstr "Ветка"
@@ -6426,6 +6436,9 @@ msgstr "Создать"
 msgid "Create \"{newLabel}\""
 msgstr "Создать «{newLabel}»"
 
+msgid "Create a box"
+msgstr "Создать бокс"
+
 msgid "Create a channel"
 msgstr "Создать канал"
 
@@ -6977,6 +6990,9 @@ msgstr "Всё равно удалить"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "«Всё равно удалить» полностью пропустит скрипт очистки."
 
+msgid "Delete box"
+msgstr "Удалить бокс"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "Удалить команду {0}"
@@ -7130,6 +7146,9 @@ msgstr "Удалённый пользователь"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "Рабочие области удалены, но обновить боковую панель до конца не удалось"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "Удаляет песочницу в {provider} вместе со всем содержимым диска, а также этот хост и его рабочие области. Это действие нельзя отменить."
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "Discord и GitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "Находить серверы разработки в вашей сети и подключаться к ним."
+
+msgid "Disk (GiB)"
+msgstr "Диск (ГиБ)"
 
 msgid "Disk version"
 msgstr "Версия на диске"
@@ -10138,6 +10160,9 @@ msgstr "Простаивает"
 
 msgid "Idle · branch pushed"
 msgstr "Простаивает · ветка отправлена"
+
+msgid "Idle minutes before it stops"
+msgstr "Минут простоя до остановки"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "Если Paradev вам нравится, звезда на GitHub поможет другим разработчикам его найти."
@@ -15605,6 +15630,13 @@ msgstr "Свойства"
 msgid "Provide either id or slug"
 msgstr "Укажите id или slug"
 
+msgid "Provider"
+msgstr "Провайдер"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "Провайдер: {0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "Создание не удалось, песочница снесена. Ничего не работает, и эту рабочую область нельзя открыть. Создайте новую, чтобы попробовать снова."
 
@@ -17248,6 +17280,9 @@ msgstr "Работающие процессы терминала продолж�
 msgid "Runs a local command on your machine"
 msgstr "Запускает локальную команду на вашей машине"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "Запускает хост Paradev в песочнице Daytona, E2B или Blaxel, оплата идёт с вашего собственного аккаунта там. Он отображается здесь, как любой другой хост."
+
 msgid "Runs appear here once an automation fires."
 msgstr "Запуски появятся здесь, как только сработает автоматизация."
 
@@ -17259,6 +17294,9 @@ msgstr "Работает внутри приложения Paradev на том �
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "Запуски приземляются в рабочую область. Посмотрите diff и объедините то, что подходит."
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "Работает в песочнице {provider}, оплата идёт с вашего аккаунта там."
 
 msgid "Runs that found no host online"
 msgstr "Запуски, не нашедшие хост в сети"
@@ -18068,6 +18106,9 @@ msgstr "Задать цвет группы"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "Установить иконку {0}"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "Укажите 0 минут простоя, чтобы бокс не останавливался. При первом использовании {providerLabel} терминал запросит ключ API."
 
 msgid "Set project…"
 msgstr "Назначить проект…"
@@ -19183,6 +19224,9 @@ msgstr "старт {date}"
 msgid "Starts a fresh session in this workspace"
 msgstr "Запускает новую сессию в этой рабочей области"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "Запускает песочницу в {provider} и хост Paradev в ней. Это может занять минуту."
+
 msgid "State"
 msgstr "Состояние"
 
@@ -19246,6 +19290,9 @@ msgstr "Остановить"
 msgid "Stop {0}"
 msgstr "Остановить {0}"
 
+msgid "Stop {hostName}"
+msgstr "Остановить {hostName}"
+
 msgid "Stop {label}"
 msgstr "Остановить {label}"
 
@@ -19294,6 +19341,9 @@ msgstr "Перенос {name} остановлен"
 
 msgid "Stopping the agent in {what}"
 msgstr "Остановка агента в {what}"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "Останавливает песочницу в {provider}. Диск сохраняется, а пробуждение снова запускает бокс."
 
 msgid "Stops the agent and sends this now"
 msgstr "Останавливает агента и отправляет это сейчас"
@@ -19977,6 +20027,15 @@ msgstr "Владелец автоматизации больше не может
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "Лучший агент будет меняться.<0/>Ваш процесс — нет."
 
+msgid "The box is online."
+msgstr "Бокс в сети."
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "Бокс в сети. Выберите его при создании рабочей области."
+
+msgid "The box is stopped."
+msgstr "Бокс остановлен."
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "Теперь кнопка выделяется. Я проверил это в вашей панели."
 
@@ -19997,6 +20056,9 @@ msgstr "Облачная рабочая область должна была з�
 
 msgid "The code expired. Start again."
 msgstr "Срок действия кода истёк. Начните заново."
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "Команда остановилась. Причина указана в выводе ниже."
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "Команды, которые Paradev выполняет при подготовке, запуске и архивации рабочих областей этого проекта, из config.toml репозитория."
@@ -22090,6 +22152,15 @@ msgstr "Ожидание первого сообщения субагента…
 
 msgid "Waiting for your input"
 msgstr "Ждёт вашего ответа"
+
+msgid "Wake"
+msgstr "Разбудить"
+
+msgid "Wake {hostName}"
+msgstr "Разбудить {hostName}"
+
+msgid "Wake box"
+msgstr "Разбудить бокс"
 
 msgid "Waking up workspace"
 msgstr "Пробуждение рабочей области"

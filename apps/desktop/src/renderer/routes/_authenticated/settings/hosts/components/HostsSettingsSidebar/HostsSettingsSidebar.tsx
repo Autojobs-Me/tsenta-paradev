@@ -15,6 +15,7 @@ import {
 	SettingsListSidebar,
 	settingsListItemClass,
 } from "../../../components/SettingsListSidebar";
+import { NewBoxButton } from "../NewBoxButton";
 import { SetUpOverSshDialog } from "../SetUpOverSshDialog";
 
 interface HostRow {
@@ -71,16 +72,19 @@ export function HostsSettingsSidebar({
 		<>
 			<SettingsListSidebar
 				listHeader={
-					<button
-						type="button"
-						onClick={() => setSshDialogOpen(true)}
-						className={settingsListItemClass(false, "gap-2 w-full text-left")}
-					>
-						<Plus className="size-3.5 shrink-0" />
-						<span className="truncate flex-1">
-							<Trans>Set up a host over SSH</Trans>
-						</span>
-					</button>
+					<>
+						<button
+							type="button"
+							onClick={() => setSshDialogOpen(true)}
+							className={settingsListItemClass(false, "gap-2 w-full text-left")}
+						>
+							<Plus className="size-3.5 shrink-0" />
+							<span className="truncate flex-1">
+								<Trans>Set up a host over SSH</Trans>
+							</span>
+						</button>
+						<NewBoxButton />
+					</>
 				}
 				searchPlaceholder={t({
 					message: "Filter hosts...",

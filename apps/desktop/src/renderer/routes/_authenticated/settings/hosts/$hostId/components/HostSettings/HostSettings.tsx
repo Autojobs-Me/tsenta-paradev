@@ -16,6 +16,7 @@ import { HighlightText } from "renderer/routes/_authenticated/settings/component
 import { useSettingsSearchQuery } from "renderer/stores/settings-state";
 import type { CandidateRow } from "./components/AddMemberDropdown";
 import { AddMemberDropdown } from "./components/AddMemberDropdown";
+import { BoxSection } from "./components/BoxSection";
 import { CloudWorkspaceAccessSection } from "./components/CloudWorkspaceAccessSection";
 import { DeleteHostSection } from "./components/DeleteHostSection";
 import { HostHeader } from "./components/HostHeader";
@@ -259,6 +260,12 @@ export function HostSettings({ hostId }: HostSettingsProps) {
 						onRemove={handleRemove}
 					/>
 				</section>
+
+				<BoxSection
+					organizationId={host.organizationId}
+					hostId={hostId}
+					hostName={host.name}
+				/>
 
 				{isOwner || isOrgOwner ? (
 					<DeleteHostSection

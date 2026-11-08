@@ -987,6 +987,9 @@ msgstr "{count} dipilih"
 msgid "{count}/day"
 msgstr "{count}/hari"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} GB"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} kredit akan dipotong dari tagihan berikutnya."
 
@@ -2844,6 +2847,9 @@ msgstr "perangkat lain"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "Jawab pertanyaan di terminal di bawah, misalnya kata sandi."
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "Jawab pertanyaan di terminal di bawah, misalnya kunci API."
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "Jawab pertanyaan ini di desktop, atau lewati."
 
@@ -3689,6 +3695,10 @@ msgstr "Sisa GB-jam yang dibeli: {prepaid}"
 msgid "Bounce the Dock icon"
 msgstr "Pantulkan ikon Dock"
 
+msgid "Box"
+msgstr "Box"
+
+msgctxt "sandbox host"
 msgid "Box"
 msgstr "Box"
 
@@ -6426,6 +6436,9 @@ msgstr "Buat"
 msgid "Create \"{newLabel}\""
 msgstr "Buat \"{newLabel}\""
 
+msgid "Create a box"
+msgstr "Buat box"
+
 msgid "Create a channel"
 msgstr "Buat kanal"
 
@@ -6977,6 +6990,9 @@ msgstr "Tetap hapus"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "Tetap hapus akan melewati skrip teardown sepenuhnya."
 
+msgid "Delete box"
+msgstr "Hapus box"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "Hapus perintah {0}"
@@ -7130,6 +7146,9 @@ msgstr "Pengguna dihapus"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "Workspace terhapus, tapi tidak bisa menyelesaikan pembaruan sidebar"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "Menghapus sandbox di {provider} beserta semua isi disknya, lalu menghapus host ini dan workspace-nya. Tindakan ini tidak bisa dibatalkan."
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "Discord dan GitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "Menemukan dan terhubung ke server pengembangan di jaringan Anda."
+
+msgid "Disk (GiB)"
+msgstr "Disk (GiB)"
 
 msgid "Disk version"
 msgstr "Versi di disk"
@@ -10138,6 +10160,9 @@ msgstr "Idle"
 
 msgid "Idle · branch pushed"
 msgstr "Idle · branch sudah di-push"
+
+msgid "Idle minutes before it stops"
+msgstr "Menit tidak aktif sebelum berhenti"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "Kalau sejauh ini Anda menikmati Paradev, satu star GitHub membantu developer lain menemukannya."
@@ -15605,6 +15630,13 @@ msgstr "Properti"
 msgid "Provide either id or slug"
 msgstr "Berikan id atau slug"
 
+msgid "Provider"
+msgstr "Penyedia"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "Penyedia: {0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "Provisioning gagal dan sandbox-nya dibongkar. Tidak ada yang berjalan, dan workspace ini tidak bisa dibuka. Buat yang baru untuk mencoba lagi."
 
@@ -17248,6 +17280,9 @@ msgstr "Proses terminal yang berjalan tetap lanjut, tapi output lama mungkin tid
 msgid "Runs a local command on your machine"
 msgstr "Menjalankan perintah lokal di mesin Anda"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "Menjalankan host Paradev di sandbox Daytona, E2B, atau Blaxel, ditagihkan ke akun Anda sendiri di sana. Host ini muncul di sini seperti host lainnya."
+
 msgid "Runs appear here once an automation fires."
 msgstr "Run muncul di sini setelah otomatisasi terpicu."
 
@@ -17259,6 +17294,9 @@ msgstr "Berjalan di dalam aplikasi Paradev di perangkat itu, jadi memperbaruinya
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "Run mendarat di sebuah workspace. Review diff-nya, merge yang bagus."
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "Berjalan di sandbox {provider}, ditagihkan ke akun Anda di sana."
 
 msgid "Runs that found no host online"
 msgstr "Run yang tidak menemukan host online"
@@ -18068,6 +18106,9 @@ msgstr "Setel warna grup"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "Setel ikon menjadi {0}"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "Atur menit tidak aktif ke 0 agar tetap berjalan. Saat pertama kali memakai {providerLabel}, terminal akan meminta kunci API-nya."
 
 msgid "Set project…"
 msgstr "Tetapkan proyek…"
@@ -19183,6 +19224,9 @@ msgstr "mulai {date}"
 msgid "Starts a fresh session in this workspace"
 msgstr "Memulai sesi baru di workspace ini"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "Menyalakan sandbox di {provider} dan host Paradev di dalamnya. Ini bisa memakan waktu satu menit."
+
 msgid "State"
 msgstr "Status"
 
@@ -19246,6 +19290,9 @@ msgstr "Hentikan"
 msgid "Stop {0}"
 msgstr "Hentikan {0}"
 
+msgid "Stop {hostName}"
+msgstr "Hentikan {hostName}"
+
 msgid "Stop {label}"
 msgstr "Hentikan {label}"
 
@@ -19294,6 +19341,9 @@ msgstr "Pemindahan {name} dihentikan"
 
 msgid "Stopping the agent in {what}"
 msgstr "Menghentikan agen di {what}"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "Menghentikan sandbox di {provider}. Disknya tetap ada, dan membangunkan box akan menyalakannya lagi."
 
 msgid "Stops the agent and sends this now"
 msgstr "Menghentikan agen dan mengirim ini sekarang"
@@ -19977,6 +20027,15 @@ msgstr "Pemilik otomatisasi ini tidak bisa lagi menggunakan workspace cloud di o
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "Agen terbaik akan berganti.<0/>Alur kerja Anda tidak perlu."
 
+msgid "The box is online."
+msgstr "Box sudah online."
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "Box sudah online. Pilih box ini saat membuat workspace."
+
+msgid "The box is stopped."
+msgstr "Box sudah berhenti."
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "Tombolnya kini menonjol. Saya sudah memeriksanya di panel Anda."
 
@@ -19997,6 +20056,9 @@ msgstr "Workspace cloud seharusnya sudah berjalan, tetapi tidak merespons tepat 
 
 msgid "The code expired. Start again."
 msgstr "Kode kedaluwarsa. Mulai lagi."
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "Perintah berhenti. Alasannya ada di output di bawah."
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "Perintah yang dijalankan Paradev untuk menyiapkan, menjalankan, dan mengarsipkan workspace proyek ini, dari config.toml repositori."
@@ -22090,6 +22152,15 @@ msgstr "Menunggu pesan pertama dari subagen…"
 
 msgid "Waiting for your input"
 msgstr "Menunggu masukan Anda"
+
+msgid "Wake"
+msgstr "Bangunkan"
+
+msgid "Wake {hostName}"
+msgstr "Bangunkan {hostName}"
+
+msgid "Wake box"
+msgstr "Bangunkan box"
 
 msgid "Waking up workspace"
 msgstr "Membangunkan workspace"

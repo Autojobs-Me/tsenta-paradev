@@ -987,6 +987,9 @@ msgstr "{count}개 선택됨"
 msgid "{count}/day"
 msgstr "하루 {count}개"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} GB"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} 크레딧은 다음 청구서에 적용됩니다."
 
@@ -2844,6 +2847,9 @@ msgstr "다른 기기"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "아래 터미널에서 비밀번호 등 질문에 답하세요."
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "아래 터미널에서 API 키 등 질문에 답하세요."
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "이 질문은 데스크톱에서 답하거나 건너뛰세요."
 
@@ -3689,6 +3695,10 @@ msgstr "구매한 GB 시간 잔여: {prepaid}"
 msgid "Bounce the Dock icon"
 msgstr "Dock 아이콘 튀기기"
 
+msgid "Box"
+msgstr "박스"
+
+msgctxt "sandbox host"
 msgid "Box"
 msgstr "박스"
 
@@ -6426,6 +6436,9 @@ msgstr "만들기"
 msgid "Create \"{newLabel}\""
 msgstr "\"{newLabel}\" 만들기"
 
+msgid "Create a box"
+msgstr "박스 만들기"
+
 msgid "Create a channel"
 msgstr "채널 만들기"
 
@@ -6977,6 +6990,9 @@ msgstr "그래도 삭제"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "그래도 삭제하면 정리 스크립트를 완전히 건너뜁니다."
 
+msgid "Delete box"
+msgstr "박스 삭제"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "명령 {0} 삭제"
@@ -7130,6 +7146,9 @@ msgstr "삭제된 사용자"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "워크스페이스는 삭제했지만 사이드바 업데이트를 끝내지 못했습니다"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "{provider}의 샌드박스를 디스크의 모든 내용과 함께 삭제하고, 이 호스트와 워크스페이스도 제거합니다. 되돌릴 수 없습니다."
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "Discord와 GitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "네트워크에 있는 개발 서버를 찾아 연결합니다."
+
+msgid "Disk (GiB)"
+msgstr "디스크(GiB)"
 
 msgid "Disk version"
 msgstr "디스크 버전"
@@ -10138,6 +10160,9 @@ msgstr "대기 중"
 
 msgid "Idle · branch pushed"
 msgstr "유휴 · 브랜치 푸시됨"
+
+msgid "Idle minutes before it stops"
+msgstr "중지 전 유휴 시간(분)"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "지금까지 Paradev가 마음에 드셨다면 GitHub 스타가 다른 개발자들이 Paradev를 발견하는 데 도움이 됩니다."
@@ -15605,6 +15630,13 @@ msgstr "속성"
 msgid "Provide either id or slug"
 msgstr "id 또는 슬러그 중 하나를 제공하세요"
 
+msgid "Provider"
+msgstr "제공사"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "제공자: {0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "프로비저닝에 실패해 샌드박스가 정리되었습니다. 실행 중인 것은 없으며 이 워크스페이스는 열 수 없습니다. 다시 시도하려면 새로 만드세요."
 
@@ -17248,6 +17280,9 @@ msgstr "실행 중인 터미널 프로세스는 계속되지만, 앱을 다시 �
 msgid "Runs a local command on your machine"
 msgstr "내 컴퓨터에서 로컬 명령을 실행합니다"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "Daytona, E2B 또는 Blaxel의 샌드박스에서 Paradev 호스트를 실행하며, 요금은 해당 서비스의 본인 계정으로 청구됩니다. 다른 호스트와 마찬가지로 여기에 표시됩니다."
+
 msgid "Runs appear here once an automation fires."
 msgstr "자동화가 실행되면 여기에 표시됩니다."
 
@@ -17259,6 +17294,9 @@ msgstr "해당 기기의 Paradev 앱 안에서 실행되므로, 업데이트하�
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "실행 결과는 워크스페이스에 도착합니다. 차이를 검토하고 괜찮은 것만 머지하세요."
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "{provider}의 샌드박스에서 실행되며, 요금은 해당 서비스의 본인 계정으로 청구됩니다."
 
 msgid "Runs that found no host online"
 msgstr "온라인 호스트를 찾지 못한 실행"
@@ -18068,6 +18106,9 @@ msgstr "그룹 색상 설정"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "아이콘을 {0}(으)로 설정"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "유휴 시간을 0으로 설정하면 계속 실행됩니다. {providerLabel}을(를) 처음 사용할 때 터미널에서 API 키를 묻습니다."
 
 msgid "Set project…"
 msgstr "프로젝트 설정…"
@@ -19183,6 +19224,9 @@ msgstr "{date} 시작"
 msgid "Starts a fresh session in this workspace"
 msgstr "이 워크스페이스에서 새 세션을 시작합니다"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "{provider}의 샌드박스와 그 위의 Paradev 호스트를 시작합니다. 1분 정도 걸릴 수 있습니다."
+
 msgid "State"
 msgstr "상태"
 
@@ -19246,6 +19290,9 @@ msgstr "중지"
 msgid "Stop {0}"
 msgstr "{0} 정지"
 
+msgid "Stop {hostName}"
+msgstr "{hostName} 중지"
+
 msgid "Stop {label}"
 msgstr "{label} 중지"
 
@@ -19294,6 +19341,9 @@ msgstr "{name} 옮기기를 중지했습니다"
 
 msgid "Stopping the agent in {what}"
 msgstr "{what}의 에이전트 중지 중"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "{provider}의 샌드박스를 중지합니다. 디스크는 유지되며, 박스를 깨우면 다시 시작됩니다."
 
 msgid "Stops the agent and sends this now"
 msgstr "에이전트를 중지하고 지금 이 메시지를 보냅니다"
@@ -19977,6 +20027,15 @@ msgstr "자동화 소유자가 더 이상 이 조직에서 클라우드 워크�
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "최고의 에이전트는 바뀝니다.<0/>워크플로는 그럴 필요 없습니다."
 
+msgid "The box is online."
+msgstr "박스가 온라인입니다."
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "박스가 온라인입니다. 워크스페이스를 만들 때 선택하세요."
+
+msgid "The box is stopped."
+msgstr "박스가 중지되었습니다."
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "버튼이 이제 눈에 띕니다. 패널에서 확인했습니다."
 
@@ -19997,6 +20056,9 @@ msgstr "클라우드 워크스페이스가 시작되었어야 하지만 제시�
 
 msgid "The code expired. Start again."
 msgstr "코드가 만료되었습니다. 다시 시작하세요."
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "명령이 중지되었습니다. 이유는 아래 출력에 있습니다."
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "Paradev이 이 프로젝트의 워크스페이스를 설정, 실행, 보관할 때 실행하는 명령어(리포지토리의 config.toml)."
@@ -22090,6 +22152,15 @@ msgstr "서브 에이전트의 첫 메시지를 기다리는 중…"
 
 msgid "Waiting for your input"
 msgstr "입력을 기다리는 중"
+
+msgid "Wake"
+msgstr "깨우기"
+
+msgid "Wake {hostName}"
+msgstr "{hostName} 깨우기"
+
+msgid "Wake box"
+msgstr "박스 깨우기"
 
 msgid "Waking up workspace"
 msgstr "워크스페이스 깨우는 중"

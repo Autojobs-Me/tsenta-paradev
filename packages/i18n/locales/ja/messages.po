@@ -987,6 +987,9 @@ msgstr "{count}件を選択中"
 msgid "{count}/day"
 msgstr "{count}/日"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} GB"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} のクレジットは次回以降の請求に充当されます。"
 
@@ -2844,6 +2847,9 @@ msgstr "別のデバイス"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "パスワードなど、下のターミナルでの質問に答えてください。"
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "APIキーなど、下のターミナルでの質問に答えてください。"
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "この質問はデスクトップで回答するか、スキップしてください。"
 
@@ -3691,6 +3697,10 @@ msgstr "Dockアイコンを弾ませる"
 
 msgid "Box"
 msgstr "Box"
+
+msgctxt "sandbox host"
+msgid "Box"
+msgstr "ボックス"
 
 msgid "Branch"
 msgstr "ブランチ"
@@ -6426,6 +6436,9 @@ msgstr "作成"
 msgid "Create \"{newLabel}\""
 msgstr "「{newLabel}」を作成"
 
+msgid "Create a box"
+msgstr "ボックスを作成"
+
 msgid "Create a channel"
 msgstr "チャンネルを作成"
 
@@ -6977,6 +6990,9 @@ msgstr "それでも削除"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "「それでも削除」はティアダウンスクリプトを完全にスキップします。"
 
+msgid "Delete box"
+msgstr "ボックスを削除"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "コマンド{0}を削除"
@@ -7130,6 +7146,9 @@ msgstr "削除されたユーザー"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "ワークスペースは削除しましたが、サイドバーの更新を完了できませんでした"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "{provider} 上のサンドボックスをディスクの内容ごと削除し、このホストとそのワークスペースも削除します。元に戻すことはできません。"
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "DiscordとGitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "ネットワーク上の開発サーバーを検出して接続します。"
+
+msgid "Disk (GiB)"
+msgstr "ディスク (GiB)"
 
 msgid "Disk version"
 msgstr "ディスク上のバージョン"
@@ -10138,6 +10160,9 @@ msgstr "アイドル"
 
 msgid "Idle · branch pushed"
 msgstr "アイドル · ブランチをプッシュ済み"
+
+msgid "Idle minutes before it stops"
+msgstr "停止までのアイドル時間（分）"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "Paradevを気に入っていただけたら、GitHubスターが他の開発者の発見につながります。"
@@ -15605,6 +15630,13 @@ msgstr "プロパティ"
 msgid "Provide either id or slug"
 msgstr "idまたはslugのいずれかを指定してください"
 
+msgid "Provider"
+msgstr "プロバイダー"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "プロバイダー: {0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "プロビジョニングに失敗し、サンドボックスは破棄されました。何も実行されておらず、このワークスペースは開けません。新しく作成してやり直してください。"
 
@@ -17248,6 +17280,9 @@ msgstr "実行中のターミナルプロセスは継続しますが、アプリ
 msgid "Runs a local command on your machine"
 msgstr "マシン上でローカルコマンドを実行します"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "Daytona、E2B、Blaxel のサンドボックス上で Paradev ホストを実行します。料金はそのサービスのご自身のアカウントに請求されます。ほかのホストと同じようにここに表示されます。"
+
 msgid "Runs appear here once an automation fires."
 msgstr "オートメーションが起動すると、ここに実行が表示されます。"
 
@@ -17259,6 +17294,9 @@ msgstr "そのデバイスのParadevアプリ内で動作しているため、�
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "実行結果はワークスペースに入ります。差分を確認し、良いものをマージしてください。"
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "{provider} のサンドボックスで実行され、料金は {provider} のご自身のアカウントに請求されます。"
 
 msgid "Runs that found no host online"
 msgstr "オンラインのホストが見つからなかった実行"
@@ -18068,6 +18106,9 @@ msgstr "グループの色を設定"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "アイコンを{0}に設定"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "アイドル時間を 0 にすると停止しません。{providerLabel} を初めて使うときは、ターミナルで API キーを求められます。"
 
 msgid "Set project…"
 msgstr "プロジェクトを設定…"
@@ -19183,6 +19224,9 @@ msgstr "{date} 開始"
 msgid "Starts a fresh session in this workspace"
 msgstr "このワークスペースで新しいセッションを開始します"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "{provider} 上のサンドボックスと、その上の Paradev ホストを起動します。1 分ほどかかることがあります。"
+
 msgid "State"
 msgstr "状態"
 
@@ -19246,6 +19290,9 @@ msgstr "停止"
 msgid "Stop {0}"
 msgstr "{0}を停止"
 
+msgid "Stop {hostName}"
+msgstr "{hostName} を停止"
+
 msgid "Stop {label}"
 msgstr "{label} を停止"
 
@@ -19294,6 +19341,9 @@ msgstr "{name} の移動を停止しました"
 
 msgid "Stopping the agent in {what}"
 msgstr "{what} のエージェントを停止中"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "{provider} 上のサンドボックスを停止します。ディスクは残り、ボックスを起動すると再開します。"
 
 msgid "Stops the agent and sends this now"
 msgstr "エージェントを停止して、これを今すぐ送信します"
@@ -19977,6 +20027,15 @@ msgstr "このオートメーションの所有者は、この組織でクラウ
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "最良のエージェントは変わります。<0/>ワークフローは変わるべきではありません。"
 
+msgid "The box is online."
+msgstr "ボックスはオンラインです。"
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "ボックスはオンラインです。ワークスペースを作成するときに選択してください。"
+
+msgid "The box is stopped."
+msgstr "ボックスは停止しました。"
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "ボタンが目立つようになりました。ペインで確認済みです。"
 
@@ -19997,6 +20056,9 @@ msgstr "クラウドワークスペースは起動しているはずですが、
 
 msgid "The code expired. Start again."
 msgstr "コードの有効期限が切れました。やり直してください。"
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "コマンドが停止しました。理由は下の出力に表示されています。"
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "このプロジェクトのワークスペースをセットアップ、実行、アーカイブするときに Paradev が実行するコマンド（リポジトリの config.toml）。"
@@ -22090,6 +22152,15 @@ msgstr "サブエージェントの最初のメッセージを待っています
 
 msgid "Waiting for your input"
 msgstr "入力を待っています"
+
+msgid "Wake"
+msgstr "起動"
+
+msgid "Wake {hostName}"
+msgstr "{hostName} を起動"
+
+msgid "Wake box"
+msgstr "ボックスを起動"
 
 msgid "Waking up workspace"
 msgstr "ワークスペースを起動中"

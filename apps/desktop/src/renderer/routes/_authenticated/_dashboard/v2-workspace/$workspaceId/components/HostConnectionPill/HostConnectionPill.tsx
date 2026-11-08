@@ -11,6 +11,7 @@ import { LOCAL_HOST_SERVICE_DETAIL } from "../../../providers/WorkspaceProvider/
 import { useCountdown } from "../../hooks/useCountdown";
 import { useChatSessionChecksFailing } from "../../hooks/usePaneRegistry/components/ChatPane/components/AcpChatPane/hooks/useChatSessionLiveness";
 import { ConnectionPill, WAKE_UP_ESTIMATE_SECONDS } from "../ConnectionPill";
+import { useWakeBox } from "./hooks/useWakeBox";
 
 /** The open workspace's host connection, shown only while it is not answering. */
 export function HostConnectionPill() {
@@ -50,6 +51,11 @@ export function HostConnectionPill() {
 			(workspace.hostId === machineId
 				? t({ message: "This device" })
 				: t({ message: "Unknown host" })));
+	const wakeBox = useWakeBox(
+		workspace.organizationId,
+		workspace.hostId,
+		hostName,
+	);
 	const detail = isLocalRestartInFlight
 		? i18n._(LOCAL_HOST_SERVICE_DETAIL.starting)
 		: isSandbox && !isAccessDenied
@@ -95,9 +101,10 @@ export function HostConnectionPill() {
 							: t({ message: "Connecting…" });
 
 	if (usageRefusal?.workspaceId === workspace.hostId) return null;
-	if (!isDegraded && !isAccessDenied && !isCheckFailing) return null;
+	if (!isDegraded && !isAccessDenied && !isCheckFailing) return wakeBox.dialog;
 
 	return (
+		<>
 		<ConnectionPill
 			label={label}
 			detail={detail}
@@ -110,17 +117,22 @@ export function HostConnectionPill() {
 					: null
 			}
 			actions={
-				settingsHostId ? (
-					<Link
-						to="/settings/hosts/$hostId"
-						params={{ hostId: settingsHostId }}
-						className="shrink-0 rounded-full px-2.5 py-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-					>
-						{t({ message: "Host settings" })}
-					</Link>
-				) : null
+				<>
+					{settingsHostId ? (
+						<Link
+							to="/settings/hosts/$hostId"
+							params={{ hostId: settingsHostId }}
+							className="shrink-0 rounded-full px-2.5 py-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+						>
+							{t({ message: "Host settings" })}
+						</Link>
+					) : null}
+					{isDegraded && !isAccessDenied ? wakeBox.button : null}
+				</>
 			}
 			onRetry={isCheckFailing ? retryChecks : onRetry}
 		/>
+		{wakeBox.dialog}
+		</>
 	);
 }

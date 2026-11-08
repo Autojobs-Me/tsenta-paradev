@@ -987,6 +987,9 @@ msgstr "Wybrano: {count}"
 msgid "{count}/day"
 msgstr "{count}/dzień"
 
+msgid "{cpu} vCPU / {memory} GB"
+msgstr "{cpu} vCPU / {memory} GB"
+
 msgid "{credit} of credit goes toward your next invoices."
 msgstr "{credit} kredytu zostanie odliczone od kolejnych faktur."
 
@@ -2844,6 +2847,9 @@ msgstr "inne urządzenie"
 msgid "Answer any questions in the terminal below, such as a password."
 msgstr "Odpowiadaj na pytania w terminalu poniżej, na przykład podaj hasło."
 
+msgid "Answer any questions in the terminal below, such as an API key."
+msgstr "Odpowiadaj na pytania w terminalu poniżej, na przykład podaj klucz API."
+
 msgid "Answer this question on desktop, or skip it."
 msgstr "Odpowiedz na to pytanie na komputerze lub je pomiń."
 
@@ -3689,6 +3695,10 @@ msgstr "Pozostałe kupione GB-godziny: {prepaid}"
 msgid "Bounce the Dock icon"
 msgstr "Podskakująca ikona w Docku"
 
+msgid "Box"
+msgstr "Box"
+
+msgctxt "sandbox host"
 msgid "Box"
 msgstr "Box"
 
@@ -6426,6 +6436,9 @@ msgstr "Utwórz"
 msgid "Create \"{newLabel}\""
 msgstr "Utwórz „{newLabel}”"
 
+msgid "Create a box"
+msgstr "Utwórz boxa"
+
 msgid "Create a channel"
 msgstr "Utwórz kanał"
 
@@ -6977,6 +6990,9 @@ msgstr "Usuń mimo to"
 msgid "Delete anyway will skip the teardown script entirely."
 msgstr "„Usuń mimo to” całkowicie pominie skrypt sprzątający."
 
+msgid "Delete box"
+msgstr "Usuń boxa"
+
 #. placeholder {0}: index + 1
 msgid "Delete command {0}"
 msgstr "Usuń polecenie {0}"
@@ -7130,6 +7146,9 @@ msgstr "Usunięty użytkownik"
 
 msgid "Deleted workspaces, but couldn’t finish updating the sidebar"
 msgstr "Obszary robocze usunięte, ale nie udało się dokończyć aktualizacji paska bocznego"
+
+msgid "Deletes its sandbox at {provider} with everything on the disk, and removes this host and its workspaces. This can’t be undone."
+msgstr "Usuwa piaskownicę w {provider} razem z całą zawartością dysku oraz tego hosta i jego obszary robocze. Tego nie da się cofnąć."
 
 #. placeholder {0}: account?.sourceLabel
 msgid "Deletes the {0} profile and its saved sign-in on this machine. The account itself is unaffected."
@@ -7454,6 +7473,9 @@ msgstr "Discord i GitHub"
 
 msgid "Discover and connect to development servers on your network."
 msgstr "Wykrywanie serwerów deweloperskich w sieci i łączenie się z nimi."
+
+msgid "Disk (GiB)"
+msgstr "Dysk (GiB)"
 
 msgid "Disk version"
 msgstr "Wersja na dysku"
@@ -10138,6 +10160,9 @@ msgstr "Bezczynny"
 
 msgid "Idle · branch pushed"
 msgstr "Bezczynny · gałąź wypchnięta"
+
+msgid "Idle minutes before it stops"
+msgstr "Minuty bezczynności do zatrzymania"
 
 msgid "If you're enjoying Paradev so far, a GitHub star helps other developers discover it."
 msgstr "Jeśli Paradev przypadł Ci do gustu, gwiazdka na GitHub pomoże innym programistom go odkryć."
@@ -15605,6 +15630,13 @@ msgstr "Właściwości"
 msgid "Provide either id or slug"
 msgstr "Podaj id albo slug"
 
+msgid "Provider"
+msgstr "Dostawca"
+
+#. placeholder {0}: sourceConfig?.label ?? binding.agentId
+msgid "Provider: {0}"
+msgstr "Dostawca: {0}"
+
 msgid "Provisioning failed and the sandbox was torn down. Nothing is running, and this workspace can't be opened. Create a new one to try again."
 msgstr "Provisioning nie powiódł się, a piaskownica została zlikwidowana. Nic nie działa i tego obszaru roboczego nie można otworzyć. Utwórz nowy, aby spróbować ponownie."
 
@@ -17248,6 +17280,9 @@ msgstr "Działające procesy terminala nie zostaną przerwane, ale starsze wyjś
 msgid "Runs a local command on your machine"
 msgstr "Uruchamia lokalne polecenie na Twojej maszynie"
 
+msgid "Runs a Paradev host on a sandbox at Daytona, E2B or Blaxel, billed to your own account there. It shows up here like any other host."
+msgstr "Uruchamia hosta Paradev w piaskownicy w Daytona, E2B lub Blaxel, rozliczanej na Twoim własnym koncie u nich. Pojawia się tu jak każdy inny host."
+
 msgid "Runs appear here once an automation fires."
 msgstr "Uruchomienia pojawią się tutaj, gdy automatyzacja zostanie wyzwolona."
 
@@ -17259,6 +17294,9 @@ msgstr "Działa wewnątrz aplikacji Paradev na tamtym urządzeniu, więc aktuali
 
 msgid "Runs land in a workspace. Review the diff, merge what's good."
 msgstr "Uruchomienia lądują w obszarze roboczym. Przejrzyj różnice, scal to, co dobre."
+
+msgid "Runs on a sandbox at {provider}, billed to your account there."
+msgstr "Działa w piaskownicy w {provider}, rozliczanej na Twoim koncie u nich."
 
 msgid "Runs that found no host online"
 msgstr "Uruchomienia, które nie znalazły hosta online"
@@ -18068,6 +18106,9 @@ msgstr "Ustaw kolor grupy"
 #. placeholder {0}: i18n._(glyph.label)
 msgid "Set icon to {0}"
 msgstr "Ustaw ikonę na {0}"
+
+msgid "Set idle minutes to 0 to keep it running. The first time you use {providerLabel}, the terminal asks for its API key."
+msgstr "Ustaw 0 minut bezczynności, aby box działał bez przerwy. Przy pierwszym użyciu {providerLabel} terminal poprosi o klucz API."
 
 msgid "Set project…"
 msgstr "Ustaw projekt…"
@@ -19183,6 +19224,9 @@ msgstr "start {date}"
 msgid "Starts a fresh session in this workspace"
 msgstr "Startuje świeżą sesję w tym obszarze roboczym"
 
+msgid "Starts its sandbox at {provider} and the Paradev host on it. This can take a minute."
+msgstr "Uruchamia piaskownicę w {provider} i działającego w niej hosta Paradev. Może to potrwać minutę."
+
 msgid "State"
 msgstr "Stan"
 
@@ -19246,6 +19290,9 @@ msgstr "Zatrzymaj"
 msgid "Stop {0}"
 msgstr "Zatrzymaj {0}"
 
+msgid "Stop {hostName}"
+msgstr "Zatrzymaj {hostName}"
+
 msgid "Stop {label}"
 msgstr "Zatrzymaj {label}"
 
@@ -19294,6 +19341,9 @@ msgstr "Zatrzymano przenoszenie {name}"
 
 msgid "Stopping the agent in {what}"
 msgstr "Zatrzymywanie agenta w {what}"
+
+msgid "Stops its sandbox at {provider}. The disk stays, and waking the box starts it again."
+msgstr "Zatrzymuje piaskownicę w {provider}. Dysk zostaje, a wybudzenie boxa uruchamia go ponownie."
 
 msgid "Stops the agent and sends this now"
 msgstr "Zatrzymuje agenta i wysyła to teraz"
@@ -19977,6 +20027,15 @@ msgstr "Właściciel automatyzacji nie może już używać obszarów roboczych w
 msgid "The best agent will change.<0/>Your workflow shouldn't."
 msgstr "Najlepszy agent się zmieni.<0/>Twój workflow nie musi."
 
+msgid "The box is online."
+msgstr "Box jest online."
+
+msgid "The box is online. Pick it when you create a workspace."
+msgstr "Box jest online. Wybierz go podczas tworzenia obszaru roboczego."
+
+msgid "The box is stopped."
+msgstr "Box jest zatrzymany."
+
 msgid "The button now stands out. I checked it in your pane."
 msgstr "Przycisk teraz się wyróżnia. Sprawdziłem to w Twoim panelu."
 
@@ -19997,6 +20056,9 @@ msgstr "Obszar roboczy w chmurze powinien był się uruchomić, ale nie odpowied
 
 msgid "The code expired. Start again."
 msgstr "Kod wygasł. Zacznij od nowa."
+
+msgid "The command stopped. The reason is in the output below."
+msgstr "Polecenie zostało przerwane. Przyczyna jest w danych wyjściowych poniżej."
 
 msgid "The commands Paradev runs to set up, run and archive this project's workspaces, from the repository's config.toml."
 msgstr "Polecenia, które Paradev uruchamia, aby przygotować, uruchomić i zarchiwizować obszary robocze tego projektu, z pliku config.toml w repozytorium."
@@ -22090,6 +22152,15 @@ msgstr "Oczekiwanie na pierwszą wiadomość subagenta…"
 
 msgid "Waiting for your input"
 msgstr "Czeka na Twoją odpowiedź"
+
+msgid "Wake"
+msgstr "Wybudź"
+
+msgid "Wake {hostName}"
+msgstr "Wybudź {hostName}"
+
+msgid "Wake box"
+msgstr "Wybudź boxa"
 
 msgid "Waking up workspace"
 msgstr "Wybudzanie obszaru roboczego"
