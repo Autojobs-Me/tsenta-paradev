@@ -5,8 +5,11 @@
 #   scripts/fork/dev.sh --follow tsenta/batch2   also keep this checkout on origin/<branch>, checked every 5 s,
 #                                                so pushed changes show up in the running app within seconds.
 #                                                --follow DISCARDS local edits: use a checkout you don't edit.
-# It shares Paradev's home (~/.paradev) like the packaged fork does, so it is already signed in and sees your
-# workspaces. Its URL scheme is superset-tsentadev, so sign-in callbacks reach it and not another app.
+# It has its own home (~/.paradev-tsentadev), so it runs its own host-service: one adopted from Paradev would
+# refuse the dev renderer's origin. Sign in once in its window; its URL scheme is superset-tsentadev, so the
+# sign-in callback reaches it and not another app. Paradev's hosted API does not accept the dev origin either,
+# so the app talks to it through scripts/fork/dev-proxy.ts on 127.0.0.1:5938 (API) and :5939 (streams).
+# REMOTE_DEBUGGING_PORT=<port> exposes the window over the Chrome DevTools protocol.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 follow=""
@@ -24,7 +27,7 @@ if [ -f .env ]; then
 fi
 
 export SUPERSET_WORKSPACE_NAME=tsentadev
-export SUPERSET_HOME_DIR="${SUPERSET_HOME_DIR:-$HOME/.paradev}"
+export SUPERSET_HOME_DIR="${SUPERSET_HOME_DIR:-$HOME/.paradev-tsentadev}"
 export DESKTOP_DISPLAY_NAME=Paradev
 export DESKTOP_NOTIFICATIONS_PORT=51762
 export DESKTOP_VITE_PORT="${DESKTOP_VITE_PORT:-5937}"
@@ -37,6 +40,10 @@ export NEXT_PUBLIC_MARKETING_URL=https://paradev.com
 export RELAY_URL=https://relay.superset.sh
 export REALTIME_URL=https://realtime.superset.sh
 unset NEXT_PUBLIC_POSTHOG_KEY NEXT_PUBLIC_POSTHOG_HOST SENTRY_DSN_DESKTOP SENTRY_DSN_HOST_SERVICE SENTRY_AUTH_TOKEN
+# The app reaches Paradev's API through the local dev proxy (see the header).
+export NEXT_PUBLIC_API_URL=http://localhost:5938 NEXT_PUBLIC_STREAMS_URL=http://localhost:5939
+bun scripts/fork/dev-proxy.ts &
+proxy=$!
 
 if [ -n "$follow" ]; then
 	git fetch -q origin "$follow"
@@ -51,8 +58,9 @@ if [ -n "$follow" ]; then
 			[ "$(git rev-parse HEAD:bun.lock)" = "$lock" ] || echo "[tsenta-dev] bun.lock changed: stop this and run dev.sh again to reinstall"
 		done
 	) &
-	trap 'kill $! 2>/dev/null || true' EXIT
+	follower=$!
 fi
+trap 'kill $proxy ${follower:-} 2>/dev/null || true' EXIT
 
 if [ ! -d node_modules ] || [ ! -d apps/desktop/node_modules ]; then
 	bun install --frozen --ignore-scripts

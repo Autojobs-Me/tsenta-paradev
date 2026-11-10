@@ -1,6 +1,6 @@
 # Preview build of a Tsenta UI branch, for looking at it before it ships.
 #
-# Every push to a tsenta/* branch (or a manual run) builds the macOS arm64 app
+# Every push to a tsenta/* branch except the agents' scratch branches (tsenta/wip-*), or a manual run, builds the macOS arm64 app
 # with scripts/fork/build.sh and uploads it as the tsenta-preview-mac-arm64
 # artifact. With the MAC_CERTIFICATE, CSC_NAME and APPLE_* secrets it is signed
 # with Tsenta's Developer ID and notarized; without them it is ad-hoc signed, and
@@ -12,7 +12,7 @@ name: Tsenta preview
 
 on:
   push:
-    branches: ["tsenta/**"]
+    branches: ["tsenta/**", "!tsenta/wip-*"]
     paths:
       - "apps/desktop/**"
       - "packages/**"
