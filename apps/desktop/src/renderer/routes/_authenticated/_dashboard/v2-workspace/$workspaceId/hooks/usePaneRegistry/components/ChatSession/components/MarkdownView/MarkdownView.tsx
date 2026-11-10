@@ -116,6 +116,8 @@ export function MarkdownView({
 				className,
 			)}
 			data-find-item={findItemId}
+			// tsenta:conductor (plan step 11): Conductor's prose in chat.css.
+			data-tsenta="markdown"
 		>
 			{blocks}
 		</div>

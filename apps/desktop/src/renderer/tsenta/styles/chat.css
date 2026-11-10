@@ -21,3 +21,153 @@ html[data-skin="conductor"] [data-tsenta="transcript"]
 	> [data-message-id] {
 	padding-inline: 1.75rem;
 }
+
+/* Markdown (WC §2.5, §4.1) ------------------------------------------------ */
+
+/*
+ * Agent text keeps to Conductor's assistant column, 36rem or 48rem on a
+ * wide window, at the left of the turn. data-tsenta="markdown" is
+ * MarkdownView's root; its blocks are Streamdown roots with Paradev's
+ * renderers, so the rules below key on the elements, as Conductor's
+ * typography plugin does.
+ */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[data-tsenta="markdown"] {
+	max-width: 36rem;
+	color: var(--foreground);
+}
+
+@media (min-width: 64rem) {
+	html[data-skin="conductor"]
+		[data-tsenta="transcript"]
+		[data-tsenta="markdown"] {
+		max-width: 48rem;
+	}
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	:is(p, li) {
+	font-weight: 450;
+	letter-spacing: -0.0067rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	strong {
+	font-weight: 500;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	a:not([data-slot]) {
+	color: var(--foreground);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	a:not([data-slot]):hover {
+	text-decoration: underline;
+}
+
+/* Headings: weight 600 at Conductor's sizes. Streamdown zeroes a block's
+   first margin, so the extra room above a heading is padding, as Paradev's. */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	h1 {
+	font-size: 1.5rem;
+	line-height: 1.85rem;
+	font-weight: 600;
+	letter-spacing: -0.004375rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	h2 {
+	padding-top: 1rem;
+	font-size: 1.1875rem;
+	line-height: 1.75rem;
+	font-weight: 600;
+	letter-spacing: 0.003125rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	h3 {
+	padding-top: 0.5rem;
+	font-size: 1.0625rem;
+	line-height: 1.5rem;
+	font-weight: 600;
+	letter-spacing: -0.005rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	h4 {
+	font-size: 0.9375rem;
+	line-height: 1.375rem;
+	font-weight: 500;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	:is(ul, ol) {
+	padding-left: 1.5rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	li {
+	padding-inline-start: 0.375rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	blockquote {
+	padding-left: 1em;
+	border-left: 4px solid var(--border);
+	color: var(--muted-foreground);
+	font-weight: 500;
+}
+
+/* Inline code: an outlined chip on no fill (file paths keep their icon). */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	:not(pre)
+	> code {
+	padding: 0.1em 0.4em;
+	border: 1px solid var(--input-border);
+	border-radius: calc(var(--radius) - 2px);
+	background-color: transparent;
+	font-size: 0.875em;
+	font-weight: 450;
+	overflow-wrap: anywhere;
+}
+
+/* Fenced code: Conductor's outlined surface with no card fill. */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	[data-chat-code-block] {
+	border: 1px solid var(--input-border);
+	border-radius: 6px;
+	background-color: transparent;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="markdown"]
+	:is(table, th, td) {
+	border-color: var(--border);
+}

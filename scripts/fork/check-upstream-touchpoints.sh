@@ -67,6 +67,8 @@ allowlist=(
 	# skin, and the data-tsenta="transcript" hook chat.css keys on.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/constants.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/Transcript.tsx'
+	# ...and data-tsenta="markdown" on the agent text root, for Conductor's prose.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/MarkdownView/MarkdownView.tsx'
 )
 
 base="${1:-}"
