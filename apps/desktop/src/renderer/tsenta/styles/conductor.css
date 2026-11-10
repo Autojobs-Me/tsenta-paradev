@@ -15,6 +15,8 @@
 @import "./icons.css";
 /* packages/ui primitives: menus, tooltips, dialogs, fields, toasts, scrollbars. */
 @import "./primitives.css";
+/* Shell surfaces: chrome, content sheet, hairlines, resize handles. */
+@import "./shell.css";
 
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(

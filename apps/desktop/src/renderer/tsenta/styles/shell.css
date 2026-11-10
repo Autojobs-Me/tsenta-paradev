@@ -1,0 +1,253 @@
+/*
+ * Tsenta fork: Conductor's shell surfaces (plan step 5; shell-sidebar spec
+ * §0.3, §1.1 to §1.4, §3.1, §3.6; design-system spec §1.2, §1.3;
+ * right-panels spec §1.2, §2.1).
+ *
+ * Conductor paints three surfaces:
+ * - Chrome: the sidebar, the header rows and the right panel, on
+ *   --sheet-surface (#1c1917 dark).
+ * - The content sheet: --background (#141110 dark), edged with 1px
+ *   --separator hairlines (#2c2826 dark).
+ * - Inside header rows (.sheet-canvas) and the right panel, bg-muted and
+ *   bg-accent are 5% and 8% foreground washes over the chrome.
+ *
+ * Paradev already splits its shell the same way, with a tint
+ * (dark:bg-muted/35) for its sidebars and header strips and bg-background
+ * for content. So this file repaints that tint as Conductor's chrome and
+ * recolours the hairlines between the parts, keyed on hooks that already
+ * exist: data-workspace-sidebar, data-pane-area, data-slot and class tokens.
+ * No upstream file is edited.
+ *
+ * Not here: the Linux window border and radius (DS §1.2) need a frameless,
+ * transparent window, and Paradev's Linux window is neither; macOS sidebar
+ * vibrancy is main-process code. Header heights and the pane tab strip are
+ * plan steps 9 and 10.
+ */
+
+/* Surface tokens (SS §0.3, DS §1.3) --------------------------------------- */
+
+/*
+ * Inside the app the sidebar colour is the sheet surface, as under
+ * Conductor's .sheet-surfaces root, so bg-sidebar-background and the washes
+ * below sit on the chrome. Menus and dialogs portal out of <app> and keep the
+ * theme's.
+ */
+/* biome-ignore lint/correctness/noUnknownTypeSelector: app is the custom root element in index.html */
+html[data-skin="conductor"] app {
+	--sidebar-background: var(--sheet-surface);
+}
+
+/* Terminals sit on the content sheet, or on the chrome in the right panel. */
+html[data-skin="conductor"] {
+	--terminal-background: var(--background);
+}
+
+/*
+ * Header rows, for the fork's own .sheet-canvas rows from step 9 on, and the
+ * right pane area: muted and accent become washes over the chrome, so
+ * bg-muted, bg-accent and hover:bg-accent inside them stay quiet.
+ */
+html[data-skin="conductor"] :is(.sheet-canvas, [data-pane-area="right"]) {
+	--muted: color-mix(in srgb, var(--foreground) 5%, var(--sidebar-background));
+	--accent: color-mix(in srgb, var(--foreground) 8%, var(--sidebar-background));
+}
+
+/*
+ * The right pane area is chrome, like Conductor's right panel (RP §1.2,
+ * §2.2). Paradev draws its right panes, and the active tab that joins the
+ * pane below it, with bg-background, so inside the area the background is
+ * the sheet surface. The area is display: contents, so it can only hand
+ * down variables. Menus and dialogs opened from it portal out and keep the
+ * real background.
+ */
+html[data-skin="conductor"] [data-pane-area="right"] {
+	--background: var(--sheet-surface);
+	--terminal-background: var(--sheet-surface);
+}
+
+/* Chrome ------------------------------------------------------------------ */
+
+/*
+ * Paradev tints its chrome with one convention, dark:bg-muted/35 (bg-sidebar
+ * or bg-muted/45 in light): the dashboard and settings sidebars, the pane
+ * tab bars, the v1 top bar and sidebar, the right sidebar's header strips and
+ * the channel tab strip. The header band that runs across the window while
+ * the sidebar is folded to its rail mixes the same colour by another class.
+ * All of them become Conductor's opaque chrome, in light mode too. Keyed on
+ * the dark-mode class itself, so an instance that swapped it out keeps its
+ * own.
+ */
+html[data-skin="conductor"]
+:is(
+	[class~="dark:bg-muted/35"],
+	[class~="dark:bg-[color-mix(in_oklab,var(--muted)_35%,var(--background))]"]
+) {
+	background-color: var(--sheet-surface);
+}
+
+/* Sidebar (SS §3.1) ------------------------------------------------------- */
+
+/*
+ * One --separator hairline between the sidebar and the content. The resize
+ * panel around the dashboard sidebar draws a border-r, and so does the
+ * sidebar inside it, which made two lines; the inner one goes while the
+ * panel draws its own. Folded to its rail with no top bar, the panel drops
+ * its border (border-r-0) and the inner one stays as the divider. The panel
+ * is the element that holds the resize handle (a separator with a value).
+ */
+html[data-skin="conductor"] [data-workspace-sidebar]
+	:has(> [role="separator"][aria-valuenow]),
+html[data-skin="conductor"]
+	[data-workspace-sidebar]
+	:has(> [role="separator"][aria-valuenow])
+	[class~="dark:bg-muted/35"] {
+	border-right-color: var(--separator);
+}
+
+html[data-skin="conductor"]
+	[data-workspace-sidebar]
+	[class~="border-r"]:has(> [role="separator"][aria-valuenow])
+	[class~="dark:bg-muted/35"][class~="border-r"] {
+	border-right-width: 0;
+}
+
+/* Content sheet (SS §1.2, §1.3) ------------------------------------------- */
+
+/*
+ * In the workspace view the center pane area is Conductor's main column, on
+ * the chrome, and the panes' workspace inside it (bg-background) is the
+ * sheet. Today the sheet fills the column; the chrome shows only where the
+ * sheet steps in:
+ * - Below a .sheet-canvas header row (plan step 9) the sheet draws its top
+ *   hairline. With no row above it the sheet starts at the window's top edge,
+ *   where Conductor draws no line, so there it has none.
+ * - While the sidebar is hidden (data-sidebar-state="collapsed" on the
+ *   sidebar wrapper, plan step 8) the sheet leaves a 12px chrome gutter on
+ *   the left and draws its left hairline. With the sidebar open, the
+ *   sidebar's hairline is the sheet's left edge.
+ * Gated on bg-background, so the card layout of Paradev's other shell is left
+ * alone.
+ */
+html[data-skin="conductor"] [data-pane-area="center"]:has(> .bg-background) {
+	background-color: var(--sheet-surface);
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	> .sheet-canvas
+	~ .bg-background {
+	border-top: 1px solid var(--separator);
+}
+
+html[data-skin="conductor"]:has(
+		[data-workspace-sidebar][data-sidebar-state="collapsed"]
+	)
+	[data-pane-area="center"]
+	> .bg-background {
+	width: auto;
+	margin-left: 0.75rem;
+	border-left: 1px solid var(--separator);
+}
+
+/* The right pane area's left edge (RP §2.1). */
+html[data-skin="conductor"]
+:has(> [data-pane-area="right"])[class~="border-l"] {
+	border-left-color: var(--separator);
+}
+
+/* Resize handles (SS §3.6, RP §2.1) --------------------------------------- */
+
+/*
+ * A 2px line, clear at rest, 20% foreground on hover and 35% while dragging
+ * or focused from the keyboard. Colour changes fade over the handles' own
+ * 150ms. Paradev's hit areas are kept: the resize panels clip overflow, so
+ * Conductor's 8px rail centred on the edge would leave a 4px grab area.
+ *
+ * ResizablePanel (the sidebar's right edge, the right pane area's left edge,
+ * the pull request and diff file lists): a 20px handle over the panel's edge,
+ * offset 0.5rem past it (-left-2 or -right-2) and clipped there, whose
+ * ::after is the line. The line now sits against the panel's border, which
+ * stays the hairline. Dragging adds after:bg-border.
+ */
+html[data-skin="conductor"]
+[role="separator"]:is([class~="-left-2"], [class~="-right-2"])::after {
+	width: 2px;
+	background-color: transparent;
+}
+
+html[data-skin="conductor"] [role="separator"][class~="-right-2"]::after {
+	left: auto;
+	right: 0.5rem;
+}
+
+html[data-skin="conductor"] [role="separator"][class~="-left-2"]::after {
+	left: 0.5rem;
+	right: auto;
+}
+
+html[data-skin="conductor"]
+	[role="separator"]:is([class~="-left-2"], [class~="-right-2"]):hover::after {
+	background-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+
+html[data-skin="conductor"]
+	[role="separator"]:is([class~="-left-2"], [class~="-right-2"]):is(
+		[class~="after:bg-border"],
+		:focus-visible
+	)::after {
+	background-color: color-mix(in srgb, var(--foreground) 35%, transparent);
+}
+
+/*
+ * Splits between panes (packages/ui ResizableHandle on react-resizable-panels):
+ * the 1px line is a --separator hairline, and the same 2px highlight is drawn
+ * by ::before. ::after stays the pointer area, which the pane splits widen so
+ * a double-click lands anywhere on the sash. The card layout's transparent
+ * sashes (no bg-border) keep their own look.
+ */
+html[data-skin="conductor"] [data-slot="resizable-handle"].bg-border {
+	background-color: var(--separator);
+}
+
+html[data-skin="conductor"] [data-slot="resizable-handle"].bg-border::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 2px;
+	transform: translateX(-50%);
+	pointer-events: none;
+	background-color: transparent;
+	transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-skin="conductor"]
+	[data-slot="resizable-handle"].bg-border[data-panel-group-direction="vertical"]::before {
+	top: 50%;
+	right: 0;
+	bottom: auto;
+	left: 0;
+	width: auto;
+	height: 2px;
+	transform: translateY(-50%);
+}
+
+html[data-skin="conductor"]
+	[data-slot="resizable-handle"].bg-border[data-resize-handle-state="hover"]::before {
+	background-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+
+html[data-skin="conductor"]
+	[data-slot="resizable-handle"].bg-border:is(
+		[data-resize-handle-state="drag"],
+		:focus-visible
+	)::before {
+	background-color: color-mix(in srgb, var(--foreground) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html[data-skin="conductor"] [data-slot="resizable-handle"].bg-border::before {
+		transition: none;
+	}
+}
