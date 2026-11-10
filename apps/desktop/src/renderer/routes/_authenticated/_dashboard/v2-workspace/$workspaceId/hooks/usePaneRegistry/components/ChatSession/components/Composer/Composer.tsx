@@ -50,9 +50,10 @@ import { useFooterTier } from "renderer/routes/_authenticated/components/AgentCo
 import { useGitHubMentionProviders } from "renderer/routes/_authenticated/components/AgentComposer/hooks/useGitHubMentionProviders";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
-// tsenta:conductor (plan step 12): Conductor's Stop beside Send, its toolbar
-// and its plan-mode card.
+// tsenta:conductor (plan step 12): Conductor's focus hint, Stop beside Send,
+// toolbar and plan-mode card.
 import { TsentaComposerStop } from "renderer/tsenta/composer/components/TsentaComposerStop";
+import { TsentaFocusHint } from "renderer/tsenta/composer/components/TsentaFocusHint";
 import { isPlanMode } from "renderer/tsenta/composer/utils/isPlanMode";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { useChatComposerStore } from "../../../../stores/chatComposerStore";
@@ -699,7 +700,8 @@ export const Composer = memo(function Composer({
 									open={modelPickerOpen}
 								/>
 							)}
-							{/* tsenta:conductor (plan step 12): Stop stays while Send shows. */}
+							{/* tsenta:conductor (plan step 12): the focus hint, and Stop while Send shows. */}
+							<TsentaFocusHint />
 							<TsentaComposerStop onStop={stop} />
 						</>
 					)

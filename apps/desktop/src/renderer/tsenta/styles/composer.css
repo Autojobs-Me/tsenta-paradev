@@ -796,3 +796,48 @@ html[data-skin="conductor"] [data-work-drawer]
 	gap: 0;
 	font-size: 0;
 }
+
+/* Focus hint (CO §2.2) ------------------------------------------------------ */
+
+/*
+ * "⌘J to focus" (Paradev's binding; Conductor's is ⌘L) as a faint pill in
+ * the card's top-right corner, only while the composer is empty, unfocused
+ * and has no suggestion list open. TsentaFocusHint renders it in the
+ * toolbar; it is positioned against the card. The placeholder stops short
+ * of it.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-tsenta="composer-focus-hint"] {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	display: none;
+	padding: 0.25rem 0.5rem;
+	border-radius: 9999px;
+	background-color: var(--muted);
+	color: var(--faint);
+	font-size: 0.75rem;
+	line-height: 1rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	[data-composer-root]:not(:focus-within):has(.prompt-input-editor + span):not(
+		:has([data-composer-menus] > *)
+	)
+	[data-tsenta="composer-focus-hint"] {
+	display: inline-flex;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	[data-composer-root]:not(:focus-within):has(
+		[data-tsenta="composer-focus-hint"]
+	)
+	.prompt-input-editor
+	+ span {
+	right: 8rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
