@@ -638,3 +638,161 @@ html[data-skin="conductor"]
 	background-color: transparent;
 	font-size: 0.75rem;
 }
+
+/* Queue (CO §9) ------------------------------------------------------------- */
+
+/*
+ * The queued messages are Conductor's panel attached to the top of the card:
+ * 12px in from the card's sides, 8px top corners, no bottom border, on the
+ * page background. data-work-drawer is Paradev's own hook on WorkDrawer,
+ * which sits just above the composer.
+ */
+html[data-skin="conductor"] [data-work-drawer] {
+	margin-inline: 0.75rem;
+	border-color: var(--border);
+	border-radius: var(--radius) var(--radius) 0 0;
+	background-color: var(--background);
+}
+
+/* Moving through the queue from the keyboard rings the whole panel. */
+html[data-skin="conductor"] [data-work-drawer]:has(:focus-visible) {
+	box-shadow: 0 0 0 2px var(--ring);
+}
+
+html[data-skin="conductor"] [data-work-drawer] > [data-work-drawer-scroller] {
+	padding: 0.5rem;
+}
+
+/*
+ * The header is Conductor's 40px bar over the list: 12px muted text, the
+ * label in medium weight, the collapse chevron on the right and the
+ * hairline under it. Paradev's header is the toggle itself and stays sticky.
+ */
+html[data-skin="conductor"] [data-work-drawer]
+	[data-drawer-stop="header:queued"] {
+	width: calc(100% + 1rem);
+	min-height: 2.5rem;
+	margin: -0.5rem -0.5rem 0.5rem;
+	padding-inline: 0.75rem;
+	border-bottom: 1px solid var(--border);
+	border-radius: 0;
+	background-color: var(--background);
+	font-size: 0.75rem;
+}
+
+/* Collapsed, the header is all there is: no room under it. */
+html[data-skin="conductor"] [data-work-drawer]
+	[data-drawer-stop="header:queued"][aria-expanded="false"] {
+	margin-bottom: -0.5rem;
+	border-bottom-width: 0;
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop="header:queued"]:hover {
+	background-color: var(--background);
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop="header:queued"]:focus-visible {
+	background-color: var(--accent);
+	color: var(--foreground);
+	box-shadow: none;
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop="header:queued"]
+	> svg:first-child {
+	order: 1;
+	margin-left: auto;
+}
+
+/*
+ * Rows are 40px with a 4px corner, the muted wash on hover and the accent
+ * when selected, and no leading glyph. Their actions (Paradev's Remove, More
+ * with Edit, and Steer) appear on hover or focus, fading in from a 1px blur,
+ * as 28px muted icon buttons with Steer last, where Conductor keeps it.
+ */
+html[data-skin="conductor"] [data-work-drawer] [data-drawer-stop^="queued:"] {
+	min-height: 2.5rem;
+	gap: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: calc(var(--radius) - 4px);
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop^="queued:"]:focus-visible {
+	background-color: var(--accent);
+	box-shadow: none;
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop^="queued:"]
+	> svg.lucide-list-end:first-child {
+	display: none;
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop^="queued:"]
+	> div:last-child {
+	gap: 0.125rem;
+	opacity: 0;
+	filter: blur(1px);
+	transition:
+		opacity 150ms ease-out,
+		filter 150ms ease-out;
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop^="queued:"]:is(
+		:hover,
+		:focus-visible,
+		:focus-within,
+		:has([data-state="open"])
+	)
+	> div:last-child {
+	opacity: 1;
+	filter: none;
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop^="queued:"]
+	> div:last-child
+	> button {
+	width: 1.75rem;
+	height: 1.75rem;
+	padding: 0;
+	border-radius: calc(var(--radius) - 2px);
+	color: var(--muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-work-drawer]
+	[data-drawer-stop^="queued:"]
+	> div:last-child
+	> button:hover {
+	background-color: color-mix(
+		in srgb,
+		var(--muted-foreground) 10%,
+		transparent
+	);
+	color: var(--foreground);
+}
+
+/* Steer is an icon like the others; its name stays for assistive tech. */
+html[data-skin="conductor"] [data-work-drawer]
+	[data-drawer-stop^="queued:"]
+	> div:last-child
+	> button:first-child {
+	order: 1;
+	gap: 0;
+	font-size: 0;
+}
