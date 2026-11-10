@@ -203,6 +203,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 					className,
 				)}
 				data-selected={isSelected || undefined}
+				data-tsenta="ws-row"
+				data-active={isActive || undefined}
+				data-pending={isPending || undefined}
 				{...props}
 			>
 				{/* biome-ignore lint/a11y/useSemanticElements: The row contains nested action buttons, so it cannot be a native button. */}
@@ -222,6 +225,8 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 					onDoubleClick={onDoubleClick}
 					onFocus={handleRowFocus}
 					onBlur={handleRowBlur}
+					data-tsenta="ws-row-inner"
+					data-indent={resolvedIndentation}
 					className={cn(
 						"group relative flex h-7 w-full items-center pr-2",
 						resolvedIndentation === "top-level"
@@ -342,7 +347,10 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 						</Tooltip>
 					)}
 
-					<div className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-1.5">
+					<div
+						data-tsenta="ws-row-main"
+						className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-1.5"
+					>
 						{isRenaming ? (
 							<RenameInput
 								value={renameValue}

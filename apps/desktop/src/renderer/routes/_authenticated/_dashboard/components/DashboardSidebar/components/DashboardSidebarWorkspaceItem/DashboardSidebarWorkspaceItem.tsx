@@ -338,6 +338,7 @@ export function DashboardSidebarWorkspaceItem({
 				indentation={indentation}
 				isBulkSelectable={onSelectionClick != null}
 				isSelected={isSelected}
+				data-unread={isUnread || undefined}
 				onClick={handleExpandedClick}
 				onMouseDown={handleExpandedMouseDown}
 				onContextMenu={handleExpandedContextMenu}

@@ -1,8 +1,9 @@
 /*
- * Tsenta fork: Conductor's left sidebar (plan step 6 on; shell-sidebar spec
- * §3, §4). The fork's own sidebar parts (tsenta/components) carry their
- * Conductor classes; this file only restyles the Paradev controls they reuse,
- * keyed on the data-tsenta wrappers the fork puts around them.
+ * Tsenta fork: Conductor's left sidebar (plan steps 6 and 7; shell-sidebar
+ * spec §3, §4). The fork's own sidebar parts (tsenta/components) carry their
+ * Conductor classes; this file restyles the Paradev parts around them, keyed
+ * on data-tsenta attributes: wrappers the fork puts around Paradev controls,
+ * and hooks on Paradev's own list rows and headers.
  */
 
 /* Header row 1 (SS §3.2) -------------------------------------------------- */
@@ -53,6 +54,80 @@ html[data-skin="conductor"]
 	> svg {
 	width: 0.75rem;
 	height: 0.75rem;
+}
+
+/* Workspace rows (SS §4.7) ----------------------------------------------- */
+
+/*
+ * Paradev's row (DashboardSidebarExpandedWorkspaceRow) at Conductor's size:
+ * 36px tall, 4px apart, 6px in from the sidebar edges, with the same wash
+ * for hover, the open workspace and a multi-selection.
+ */
+html[data-skin="conductor"] [data-tsenta="ws-row"] {
+	margin-inline: 0.375rem;
+	margin-block: 0.125rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row"]:is(:hover, [data-active], [data-selected]) {
+	background-color: var(--sidebar-accent);
+}
+
+html[data-skin="conductor"] [data-tsenta="ws-row-inner"] {
+	height: 2.25rem;
+	padding-right: 0.375rem;
+}
+
+/*
+ * The status glyph sits 20px in under a project (its icon is at 6px), flush
+ * in the top-level lanes (Pinned, Sessions). Rows inside a group keep
+ * Paradev's extra step past the group's chevron.
+ */
+html[data-skin="conductor"]
+[data-tsenta="ws-row-inner"][data-indent="top-level"] {
+	padding-left: 0.375rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row-inner"][data-indent="workspace"] {
+	padding-left: 1.25rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row-inner"][data-indent="grouped"] {
+	padding-left: 2.25rem;
+}
+
+/*
+ * The name (or the rename field) is the first cell of the row's grid. Idle
+ * names are muted at weight 450; unread ones are semibold and bright, and
+ * the open or selected row's name is bright.
+ */
+html[data-skin="conductor"] [data-tsenta="ws-row-main"] > :first-child {
+	font-size: var(--text-sm);
+	line-height: 1.25rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row-main"]
+	> :first-child:not(input) {
+	font-weight: 450;
+	color: var(--sidebar-muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row"]:is([data-active], [data-selected])
+	[data-tsenta="ws-row-main"]
+	> :first-child:not(input) {
+	color: var(--sidebar-accent-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row"][data-unread]
+	[data-tsenta="ws-row-main"]
+	> :first-child:not(input) {
+	font-weight: 600;
+	color: var(--sidebar-accent-foreground);
 }
 
 /* Footer (SS §3.5) -------------------------------------------------------- */
