@@ -195,3 +195,20 @@ html[data-skin="conductor"]
 html[data-skin="conductor"] [data-tsenta="tool-body"] pre {
 	font-weight: 500;
 }
+
+/* Thinking (WC §6.7) ------------------------------------------------------- */
+
+/* The open thought is Conductor's muted prose: every part of it muted. */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[data-tsenta="thinking"]
+	[data-tsenta="markdown"] {
+	color: var(--muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-tsenta="thinking"]
+	[data-tsenta="markdown"]
+	:is(a, strong, em, code, h1, h2, h3, h4, blockquote) {
+	color: inherit;
+}
