@@ -99,8 +99,9 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ApprovalRow/components/OptionButtons/index.ts'
 	# ...and error notices as Conductor's destructive badge.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/NoticeRow/index.ts'
-	# Conductor composer (plan step 12): data-tsenta="composer" on the chat
-	# session's composer and the fork's second Stop in its toolbar, and the
+	# Conductor composer (plan step 12): data-tsenta="composer" and
+	# data-plan-mode on the chat session's composer, the model menu's align
+	# and the fork's second Stop in its toolbar, and the
 	# card, send, stop and mic hooks (data-composer-root, data-composer-send,
 	# data-composer-stop, data-composer-dictate) composer.css keys on in
 	# chat-ui's ComposerBody.

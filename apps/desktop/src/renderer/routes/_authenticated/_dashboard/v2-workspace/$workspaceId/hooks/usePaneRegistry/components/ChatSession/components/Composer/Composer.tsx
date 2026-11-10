@@ -50,8 +50,10 @@ import { useFooterTier } from "renderer/routes/_authenticated/components/AgentCo
 import { useGitHubMentionProviders } from "renderer/routes/_authenticated/components/AgentComposer/hooks/useGitHubMentionProviders";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
-// tsenta:conductor (plan step 12): Conductor's Stop beside Send, and its toolbar.
+// tsenta:conductor (plan step 12): Conductor's Stop beside Send, its toolbar
+// and its plan-mode card.
 import { TsentaComposerStop } from "renderer/tsenta/composer/components/TsentaComposerStop";
+import { isPlanMode } from "renderer/tsenta/composer/utils/isPlanMode";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { useChatComposerStore } from "../../../../stores/chatComposerStore";
 import { CHAT_COLUMN_CLASSNAME, CHAT_GUTTER_CLASSNAME } from "../../constants";
@@ -614,8 +616,11 @@ export const Composer = memo(function Composer({
 		<div
 			ref={rootRef}
 			className={cn(CHAT_GUTTER_CLASSNAME, "pt-1 pb-5")}
-			// tsenta:conductor (plan step 12): the hook composer.css keys on.
+			// tsenta:conductor (plan step 12): the hooks composer.css keys on.
 			data-tsenta="composer"
+			data-plan-mode={
+				isPlanMode({ configOptions, modes, currentModeId }) || undefined
+			}
 			onKeyDownCapture={drawerEntry.onKeyDownCapture}
 			onFocusCapture={() =>
 				useChatComposerStore.getState().markActive(composerId)

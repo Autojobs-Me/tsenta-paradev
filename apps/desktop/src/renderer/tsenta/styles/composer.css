@@ -470,3 +470,24 @@ html[data-skin="conductor"] [data-tsenta="model-picker-menu"]
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 }
+
+/* Plan mode (CO §1.1, §6) --------------------------------------------------- */
+
+/*
+ * Conductor has no plan chip: the card itself turns warm, with 45° stripes
+ * in the top 72px that fade into a solid tint of --plan-border.
+ * data-plan-mode is set on the composer while the chat is in plan mode,
+ * whether plan is the agent's session mode or one of its config options.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"][data-plan-mode]
+	[data-composer-root] {
+	--tsenta-plan-fill: color-mix(in srgb, var(--plan-border) 12%, var(--muted));
+	background:
+		linear-gradient(to bottom, transparent 0, var(--tsenta-plan-fill) 72px),
+		repeating-linear-gradient(
+			45deg,
+			color-mix(in srgb, var(--plan-border) 9%, transparent) 0 7px,
+			transparent 7px 15px
+		),
+		var(--tsenta-plan-fill);
+}
