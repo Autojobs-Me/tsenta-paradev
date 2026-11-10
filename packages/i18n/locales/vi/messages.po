@@ -1117,6 +1117,9 @@ msgstr "Chủ đề {kindLabel}"
 msgid "{label} access to {pluginName}"
 msgstr "Quyền {label} với {pluginName}"
 
+msgid "{label} actions"
+msgstr "Hành động của {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} sẽ trở lại trạng thái chưa thiết lập. Không có gì thay đổi bên trong không gian làm việc: script của bạn và phiên đăng nhập nó duy trì vẫn còn cho đến khi bạn xóa chúng."
 
@@ -2196,6 +2199,9 @@ msgstr "Thêm dự án từ thư mục"
 
 msgid "Add Project from Folder..."
 msgstr "Thêm dự án từ thư mục..."
+
+msgid "Add project…"
+msgstr "Thêm dự án…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Thêm prompt, ví dụ: tìm crash trong $sentry"
@@ -4082,6 +4088,10 @@ msgstr "Đã hủy"
 msgid "Cancelled the invite for {name}"
 msgstr "Đã hủy lời mời cho {name}"
 
+msgid "Cancelling"
+msgstr "Đang hủy"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Hủy vào {0} — chuyển xuống Free khi hết kỳ thanh toán."
@@ -4396,9 +4406,13 @@ msgstr "Check thất bại"
 
 msgid "Checks failing"
 msgstr "Kiểm tra thất bại"
+msgstr "Check thất bại"
 
 msgid "Checks passed"
 msgstr "Check đã qua"
+
+msgid "Checks running"
+msgstr "Check đang chạy"
 
 msgid "Checks Skipped"
 msgstr "Check đã bỏ qua"
@@ -7688,11 +7702,17 @@ msgstr "Mở bản nháp"
 msgid "Draft PR #2841"
 msgstr "PR nháp #2841"
 
+msgid "Draft pull request"
+msgstr "Pull request nháp"
+
 msgid "drafted 3 support replies"
 msgstr "đã soạn 3 câu trả lời hỗ trợ"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Kéo <0>Paradev</0> vào thư mục <1>Ứng dụng</1>"
+
+msgid "Drag a workspace here"
+msgstr "Kéo một workspace vào đây"
 
 msgid "Drag to reorder"
 msgstr "Kéo để sắp xếp lại"
@@ -9662,23 +9682,38 @@ msgstr "Về trang chủ"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Đi lại các bước khi mở lần đầu. Dự án và cài đặt của bạn vẫn giữ nguyên."
 
+msgid "Go to Automations"
+msgstr "Đi tới Tự động hóa"
+
 msgid "Go to home"
 msgstr "Về trang chủ"
 
 msgid "Go to next page"
 msgstr "Tới trang sau"
 
+msgid "Go to Pages"
+msgstr "Đi tới Trang"
+
 msgid "Go to Paradev"
 msgstr "Tới Paradev"
 
+msgid "Go to Plugins"
+msgstr "Đi tới Plugin"
+
 msgid "Go to previous page"
 msgstr "Tới trang trước"
+
+msgid "Go to Pull requests"
+msgstr "Đi tới Pull request"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Vào Cài đặt, rồi Truy cập từ xa"
 
 msgid "Go to Slack integration settings"
 msgstr "Tới cài đặt tích hợp Slack"
+
+msgid "Go to Tasks"
+msgstr "Đi tới Tác vụ"
 
 msgid "Go to workspace"
 msgstr "Đi tới workspace"
@@ -10328,6 +10363,9 @@ msgstr "Trong workspace cục bộ, mã và phiên agent của bạn ở lại t
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "Ở chế độ thủ công, Paradev không đăng nhập cho agent này. Hãy để script của bạn đăng nhập lại rồi tiếp tục, hoặc tắt chế độ thủ công trong cài đặt agent."
+
+msgid "In merge queue"
+msgstr "Trong hàng đợi merge"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Làm việc trực tiếp tại văn phòng San Francisco, năm ngày mỗi tuần. Bạn làm việc trực tiếp với các nhà sáng lập."
@@ -11988,6 +12026,9 @@ msgstr "Merge commit"
 msgid "Merge Commit"
 msgstr "Merge commit"
 
+msgid "Merge conflict"
+msgstr "Xung đột merge"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Merge thất bại: {0}"
@@ -12365,6 +12406,9 @@ msgstr "Từ khóa của tôi"
 msgid "My Tasks"
 msgstr "Tác vụ của tôi"
 
+msgid "My workspaces"
+msgstr "Workspace của tôi"
+
 msgid "Mystery Machinist"
 msgstr "Thợ máy bí ẩn"
 
@@ -12439,6 +12483,12 @@ msgstr "Cần nhập thêm"
 
 msgid "Needs me"
 msgstr "Cần tôi xử lý"
+
+msgid "Needs permission"
+msgstr "Cần cấp quyền"
+
+msgid "Needs plan response"
+msgstr "Cần phản hồi kế hoạch"
 
 msgid "Needs tests"
 msgstr "Cần kiểm thử"
@@ -12556,6 +12606,9 @@ msgstr "Dự án mới"
 
 msgid "New push to branch"
 msgstr "Push mới lên nhánh"
+
+msgid "New section…"
+msgstr "Mục mới…"
 
 msgid "New session"
 msgstr "Phiên mới"
@@ -15102,6 +15155,9 @@ msgstr "Hồng"
 msgid "Pinned"
 msgstr "Đã ghim"
 
+msgid "Pinned workspaces"
+msgstr "Workspace đã ghim"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15761,9 @@ msgstr "Đã merge pull request"
 
 msgid "Pull request not found"
 msgstr "Không tìm thấy pull request"
+
+msgid "Pull request open"
+msgstr "Pull request đang mở"
 
 msgid "Pull request title"
 msgstr "Tiêu đề pull request"
@@ -18155,6 +18214,9 @@ msgstr "Đặt lại một plugin đã cài thành Khả dụng thì mọi ngư�
 
 msgid "Setting saved"
 msgstr "Đã lưu cài đặt"
+
+msgid "Setting up"
+msgstr "Đang thiết lập"
 
 msgid "Setting up in the background..."
 msgstr "Đang thiết lập ở nền..."
@@ -21596,6 +21658,9 @@ msgstr "Chưa xếp hạng"
 msgid "Unranked until {0} days carry usage."
 msgstr "Chưa xếp hạng cho đến khi có {0} ngày hoạt động."
 
+msgid "Unread"
+msgstr "Chưa đọc"
+
 msgid "Unresolve"
 msgstr "Bỏ giải quyết"
 
@@ -21613,6 +21678,9 @@ msgstr "Bỏ stage tệp"
 
 msgid "Unstaged"
 msgstr "Chưa stage"
+
+msgid "Unstarted"
+msgstr "Chưa bắt đầu"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21806,8 @@ msgstr "Vừa cập nhật từ {0}."
 msgid "Updates"
 msgstr "Cập nhật"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Bản dựng này không có bản cập nhật được phát hành. Tải bản dựng mới từ trang phát hành của Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Bản dựng này không có bản cập nhật được phát hành. Tải bản dựng mới từ trang phát hành của Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22218,9 @@ msgstr "Đang chờ dữ liệu hoạt động"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Đang chờ phê duyệt. Hãy giữ hộp thoại này mở."
+
+msgid "Waiting for background tasks"
+msgstr "Đang chờ tác vụ nền"
 
 msgid "Waiting for Checks"
 msgstr "Đang chờ check"

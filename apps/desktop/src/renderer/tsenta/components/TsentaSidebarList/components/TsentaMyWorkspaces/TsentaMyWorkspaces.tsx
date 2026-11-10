@@ -101,7 +101,8 @@ export function TsentaMyWorkspaces({
 	}, [isCollapsed, onFilterQueryChange, setIsFilterExpanded]);
 
 	const label = t({ message: "My workspaces" });
-	const trimmedQuery = filterQuery.trim();
+	// Named as in DashboardSidebar, so the no-match note is Paradev's message.
+	const trimmedFilterQuery = filterQuery.trim();
 	const isFlat = grouping === "none";
 
 	return (
@@ -188,13 +189,13 @@ export function TsentaMyWorkspaces({
 					projects={hiddenProjects}
 					onShow={onShowHiddenProject}
 				/>
-				{(trimmedQuery !== "" ||
+				{(trimmedFilterQuery !== "" ||
 					hostFilter === "local" ||
 					hostFilter === "cloud") &&
 					repos.length === 0 && (
 						<div className="cursor-text select-text px-1.5 py-2 text-muted-foreground text-xs">
-							{trimmedQuery !== ""
-								? t({ message: `No projects match "${trimmedQuery}"` })
+							{trimmedFilterQuery !== ""
+								? t({ message: `No projects match "${trimmedFilterQuery}"` })
 								: hostFilter === "cloud"
 									? t({ message: "No cloud workspaces" })
 									: t({ message: "No local workspaces" })}

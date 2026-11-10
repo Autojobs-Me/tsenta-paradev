@@ -1117,6 +1117,9 @@ msgstr "Tema {kindLabel}"
 msgid "{label} access to {pluginName}"
 msgstr "Akses {label} ke {pluginName}"
 
+msgid "{label} actions"
+msgstr "Aksi {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} kembali menjadi belum diatur. Tidak ada yang berubah di dalam workspace Anda: skrip Anda dan login yang dijaganya tetap ada sampai Anda menghapusnya."
 
@@ -2196,6 +2199,9 @@ msgstr "Tambah Proyek dari Folder"
 
 msgid "Add Project from Folder..."
 msgstr "Tambah Proyek dari Folder..."
+
+msgid "Add project…"
+msgstr "Tambah proyek…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Tambahkan prompt, mis. cari crash di $sentry"
@@ -4082,6 +4088,10 @@ msgstr "Dibatalkan"
 msgid "Cancelled the invite for {name}"
 msgstr "Undangan untuk {name} dibatalkan"
 
+msgid "Cancelling"
+msgstr "Membatalkan"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Berakhir {0} — turun ke Gratis di akhir periode penagihan."
@@ -4399,6 +4409,9 @@ msgstr "Check gagal"
 
 msgid "Checks passed"
 msgstr "Check lulus"
+
+msgid "Checks running"
+msgstr "Check berjalan"
 
 msgid "Checks Skipped"
 msgstr "Check Dilewati"
@@ -7688,11 +7701,17 @@ msgstr "Draf dibuka"
 msgid "Draft PR #2841"
 msgstr "Draft PR #2841"
 
+msgid "Draft pull request"
+msgstr "Draf pull request"
+
 msgid "drafted 3 support replies"
 msgstr "menyusun 3 draf balasan dukungan"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Seret <0>Paradev</0> ke folder <1>Aplikasi</1>"
+
+msgid "Drag a workspace here"
+msgstr "Seret workspace ke sini"
 
 msgid "Drag to reorder"
 msgstr "Seret untuk mengurutkan ulang"
@@ -9662,23 +9681,38 @@ msgstr "Ke beranda"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Ulangi langkah-langkah penggunaan pertama. Proyek dan pengaturan Anda tetap seperti semula."
 
+msgid "Go to Automations"
+msgstr "Buka Otomatisasi"
+
 msgid "Go to home"
 msgstr "Ke beranda"
 
 msgid "Go to next page"
 msgstr "Ke halaman berikutnya"
 
+msgid "Go to Pages"
+msgstr "Buka Halaman"
+
 msgid "Go to Paradev"
 msgstr "Ke Paradev"
 
+msgid "Go to Plugins"
+msgstr "Buka Plugin"
+
 msgid "Go to previous page"
 msgstr "Ke halaman sebelumnya"
+
+msgid "Go to Pull requests"
+msgstr "Buka Pull request"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Buka Pengaturan, lalu Akses Jarak Jauh"
 
 msgid "Go to Slack integration settings"
 msgstr "Ke pengaturan integrasi Slack"
+
+msgid "Go to Tasks"
+msgstr "Buka Tugas"
 
 msgid "Go to workspace"
 msgstr "Ke workspace"
@@ -10328,6 +10362,9 @@ msgstr "Di workspace lokal, kode dan sesi agen Anda tetap di mesin Anda. Workspa
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "Dalam mode manual, Paradev tidak melakukan login untuk agen ini. Minta skrip Anda login lagi, lalu lanjutkan, atau matikan mode manual di pengaturan agen."
+
+msgid "In merge queue"
+msgstr "Dalam antrean merge"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Bekerja langsung di kantor San Francisco, lima hari seminggu. Anda bekerja langsung dengan para pendiri."
@@ -11988,6 +12025,9 @@ msgstr "Merge commit"
 msgid "Merge Commit"
 msgstr "Merge Commit"
 
+msgid "Merge conflict"
+msgstr "Konflik merge"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Merge gagal: {0}"
@@ -12365,6 +12405,9 @@ msgstr "Kata kunci saya"
 msgid "My Tasks"
 msgstr "Tugas Saya"
 
+msgid "My workspaces"
+msgstr "Workspace saya"
+
 msgid "Mystery Machinist"
 msgstr "Masinis Misterius"
 
@@ -12439,6 +12482,12 @@ msgstr "Perlu input"
 
 msgid "Needs me"
 msgstr "Butuh saya"
+
+msgid "Needs permission"
+msgstr "Perlu izin"
+
+msgid "Needs plan response"
+msgstr "Perlu respons rencana"
 
 msgid "Needs tests"
 msgstr "Butuh tes"
@@ -12556,6 +12605,9 @@ msgstr "Proyek baru"
 
 msgid "New push to branch"
 msgstr "Push baru ke branch"
+
+msgid "New section…"
+msgstr "Bagian baru…"
 
 msgid "New session"
 msgstr "Sesi baru"
@@ -15102,6 +15154,9 @@ msgstr "Merah muda"
 msgid "Pinned"
 msgstr "Tersemat"
 
+msgid "Pinned workspaces"
+msgstr "Workspace tersemat"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15760,9 @@ msgstr "Pull request di-merge"
 
 msgid "Pull request not found"
 msgstr "Pull request tidak ditemukan"
+
+msgid "Pull request open"
+msgstr "Pull request terbuka"
 
 msgid "Pull request title"
 msgstr "Judul pull request"
@@ -18155,6 +18213,9 @@ msgstr "Mengembalikan plugin terpasang ke Tersedia membuat semua orang tetap mem
 
 msgid "Setting saved"
 msgstr "Pengaturan disimpan"
+
+msgid "Setting up"
+msgstr "Menyiapkan"
 
 msgid "Setting up in the background..."
 msgstr "Menyiapkan di latar belakang..."
@@ -21596,6 +21657,9 @@ msgstr "Belum berperingkat"
 msgid "Unranked until {0} days carry usage."
 msgstr "Tanpa peringkat sampai ada {0} hari dengan penggunaan."
 
+msgid "Unread"
+msgstr "Belum dibaca"
+
 msgid "Unresolve"
 msgstr "Buka lagi"
 
@@ -21613,6 +21677,9 @@ msgstr "Unstage file"
 
 msgid "Unstaged"
 msgstr "Belum di-stage"
+
+msgid "Unstarted"
+msgstr "Belum dimulai"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21805,8 @@ msgstr "Baru saja diperbarui dari {0}."
 msgid "Updates"
 msgstr "Pembaruan"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Pembaruan tidak diterbitkan untuk build ini. Unduh build baru dari halaman rilis Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Pembaruan tidak diterbitkan untuk build ini. Unduh build baru dari halaman rilis Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22217,9 @@ msgstr "Menunggu data aktivitas"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Menunggu persetujuan. Biarkan dialog ini tetap terbuka."
+
+msgid "Waiting for background tasks"
+msgstr "Menunggu tugas latar belakang"
 
 msgid "Waiting for Checks"
 msgstr "Menunggu Check"

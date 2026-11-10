@@ -1117,6 +1117,9 @@ msgstr "{kindLabel} 테마"
 msgid "{label} access to {pluginName}"
 msgstr "{label}의 {pluginName} 접근 권한"
 
+msgid "{label} actions"
+msgstr "{label} 작업"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label}은(는) 설정되지 않은 상태로 돌아갑니다. 워크스페이스 안에서는 아무것도 바뀌지 않습니다. 스크립트와 스크립트가 유지하는 로그인은 직접 제거할 때까지 남아 있습니다."
 
@@ -2196,6 +2199,9 @@ msgstr "폴더에서 프로젝트 추가"
 
 msgid "Add Project from Folder..."
 msgstr "폴더에서 프로젝트 추가..."
+
+msgid "Add project…"
+msgstr "프로젝트 추가…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "프롬프트를 추가하세요. 예: $sentry에서 크래시 찾기"
@@ -4082,6 +4088,10 @@ msgstr "취소됨"
 msgid "Cancelled the invite for {name}"
 msgstr "{name}에 대한 초대를 취소했습니다"
 
+msgid "Cancelling"
+msgstr "취소 중"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "{0}에 해지됩니다 — 결제 기간이 끝나면 무료 플랜으로 전환됩니다."
@@ -4399,6 +4409,9 @@ msgstr "검사 실패"
 
 msgid "Checks passed"
 msgstr "검사 통과"
+
+msgid "Checks running"
+msgstr "검사 실행 중"
 
 msgid "Checks Skipped"
 msgstr "검사 건너뜀"
@@ -7688,11 +7701,17 @@ msgstr "초안 열림"
 msgid "Draft PR #2841"
 msgstr "초안 PR #2841"
 
+msgid "Draft pull request"
+msgstr "초안 풀 리퀘스트"
+
 msgid "drafted 3 support replies"
 msgstr "지원 답변 3건 초안 작성"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "<0>Paradev</0>를 <1>응용 프로그램</1> 폴더로 드래그하세요"
+
+msgid "Drag a workspace here"
+msgstr "여기로 워크스페이스를 드래그하세요"
 
 msgid "Drag to reorder"
 msgstr "끌어서 순서 변경"
@@ -9662,23 +9681,38 @@ msgstr "홈으로"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "처음 실행 단계를 다시 진행합니다. 프로젝트와 설정은 그대로 유지됩니다."
 
+msgid "Go to Automations"
+msgstr "자동화로 이동"
+
 msgid "Go to home"
 msgstr "홈으로 이동"
 
 msgid "Go to next page"
 msgstr "다음 페이지로 이동"
 
+msgid "Go to Pages"
+msgstr "페이지로 이동"
+
 msgid "Go to Paradev"
 msgstr "Paradev로 가기"
 
+msgid "Go to Plugins"
+msgstr "플러그인으로 이동"
+
 msgid "Go to previous page"
 msgstr "이전 페이지로 이동"
+
+msgid "Go to Pull requests"
+msgstr "풀 리퀘스트로 이동"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "설정에서 원격 액세스로 이동"
 
 msgid "Go to Slack integration settings"
 msgstr "Slack 연동 설정으로 이동"
+
+msgid "Go to Tasks"
+msgstr "작업으로 이동"
 
 msgid "Go to workspace"
 msgstr "워크스페이스로 이동"
@@ -10328,6 +10362,9 @@ msgstr "로컬 워크스페이스에서는 코드와 에이전트 세션이 당�
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "수동 모드에서는 Paradev가 이 에이전트를 로그인시키지 않습니다. 스크립트로 다시 로그인시킨 뒤 계속하거나, 에이전트 설정에서 수동 모드를 끄세요."
+
+msgid "In merge queue"
+msgstr "머지 대기열에 있음"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "샌프란시스코 사무실에서 주 5일 근무합니다. 창업자와 직접 함께 일합니다."
@@ -11988,6 +12025,9 @@ msgstr "머지 커밋"
 msgid "Merge Commit"
 msgstr "머지 커밋"
 
+msgid "Merge conflict"
+msgstr "머지 충돌"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "머지 실패: {0}"
@@ -12365,6 +12405,9 @@ msgstr "내 키워드"
 msgid "My Tasks"
 msgstr "내 작업"
 
+msgid "My workspaces"
+msgstr "내 워크스페이스"
+
 msgid "Mystery Machinist"
 msgstr "수수께끼의 기계공"
 
@@ -12439,6 +12482,12 @@ msgstr "입력 필요"
 
 msgid "Needs me"
 msgstr "내 확인 필요"
+
+msgid "Needs permission"
+msgstr "권한 필요"
+
+msgid "Needs plan response"
+msgstr "계획 응답 필요"
 
 msgid "Needs tests"
 msgstr "테스트 필요"
@@ -12556,6 +12605,9 @@ msgstr "새 프로젝트"
 
 msgid "New push to branch"
 msgstr "브랜치에 새 푸시"
+
+msgid "New section…"
+msgstr "새 섹션…"
 
 msgid "New session"
 msgstr "새 세션"
@@ -15102,6 +15154,9 @@ msgstr "분홍"
 msgid "Pinned"
 msgstr "고정됨"
 
+msgid "Pinned workspaces"
+msgstr "고정된 워크스페이스"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15760,9 @@ msgstr "풀 리퀘스트를 머지했습니다"
 
 msgid "Pull request not found"
 msgstr "풀 리퀘스트를 찾을 수 없습니다"
+
+msgid "Pull request open"
+msgstr "풀 리퀘스트 열림"
 
 msgid "Pull request title"
 msgstr "풀 리퀘스트 제목"
@@ -18155,6 +18213,9 @@ msgstr "설치된 플러그인을 다시 사용 가능으로 바꾸면 모두의
 
 msgid "Setting saved"
 msgstr "설정이 저장되었습니다"
+
+msgid "Setting up"
+msgstr "설정 중"
 
 msgid "Setting up in the background..."
 msgstr "백그라운드에서 설정하는 중..."
@@ -21596,6 +21657,9 @@ msgstr "순위 없음"
 msgid "Unranked until {0} days carry usage."
 msgstr "{0}일치 사용 기록이 쌓이기 전까지는 순위가 없습니다."
 
+msgid "Unread"
+msgstr "읽지 않음"
+
 msgid "Unresolve"
 msgstr "해결 취소"
 
@@ -21613,6 +21677,9 @@ msgstr "파일 스테이징 해제"
 
 msgid "Unstaged"
 msgstr "스테이징 안 됨"
+
+msgid "Unstarted"
+msgstr "시작 안 됨"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21805,8 @@ msgstr "방금 {0}에서 업데이트되었습니다."
 msgid "Updates"
 msgstr "업데이트"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "이 빌드에는 업데이트가 게시되지 않습니다. 새 빌드는 Paradev Boxes 릴리스 페이지에서 다운로드하세요."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "이 빌드에는 업데이트가 게시되지 않습니다. 새 빌드는 Tsenta Paradev 릴리스 페이지에서 다운로드하세요."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22217,9 @@ msgstr "활동 데이터 대기 중"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "승인을 기다리는 중입니다. 이 대화 상자를 열어 두세요."
+
+msgid "Waiting for background tasks"
+msgstr "백그라운드 작업 대기 중"
 
 msgid "Waiting for Checks"
 msgstr "검사 대기 중"

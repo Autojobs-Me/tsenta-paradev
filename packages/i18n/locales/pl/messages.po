@@ -1117,6 +1117,9 @@ msgstr "Motyw {kindLabel}"
 msgid "{label} access to {pluginName}"
 msgstr "Dostęp roli {label} do {pluginName}"
 
+msgid "{label} actions"
+msgstr "Akcje: {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} wraca do stanu nieskonfigurowanego. W obszarach roboczych nic się nie zmienia: Twój skrypt i utrzymywane przez niego logowanie zostają, dopóki ich nie usuniesz."
 
@@ -2196,6 +2199,9 @@ msgstr "Dodaj projekt z folderu"
 
 msgid "Add Project from Folder..."
 msgstr "Dodaj projekt z folderu..."
+
+msgid "Add project…"
+msgstr "Dodaj projekt…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Dodaj prompt, np. poszukaj awarii w $sentry"
@@ -4082,6 +4088,10 @@ msgstr "Anulowany"
 msgid "Cancelled the invite for {name}"
 msgstr "Anulowano zaproszenie dla: {name}"
 
+msgid "Cancelling"
+msgstr "Anulowanie"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Anulowanie {0} — na koniec okresu rozliczeniowego plan zmieni się na darmowy."
@@ -4396,9 +4406,13 @@ msgstr "Kontrole nie przeszły"
 
 msgid "Checks failing"
 msgstr "Sprawdzenia nie przechodzą"
+msgstr "Kontrole nie przeszły"
 
 msgid "Checks passed"
 msgstr "Kontrole przeszły"
+
+msgid "Checks running"
+msgstr "Kontrole w toku"
 
 msgid "Checks Skipped"
 msgstr "Kontrole pominięte"
@@ -7688,11 +7702,17 @@ msgstr "Otwarto szkic"
 msgid "Draft PR #2841"
 msgstr "Szkic PR #2841"
 
+msgid "Draft pull request"
+msgstr "Pull request w wersji roboczej"
+
 msgid "drafted 3 support replies"
 msgstr "przygotował 3 odpowiedzi wsparcia"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Przeciągnij <0>Paradev</0> do folderu <1>Aplikacje</1>"
+
+msgid "Drag a workspace here"
+msgstr "Przeciągnij tutaj obszar roboczy"
 
 msgid "Drag to reorder"
 msgstr "Przeciągnij, aby zmienić kolejność"
@@ -9662,23 +9682,38 @@ msgstr "Strona główna"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Przejdź ponownie przez kroki pierwszego uruchomienia. Projekty i ustawienia pozostaną bez zmian."
 
+msgid "Go to Automations"
+msgstr "Przejdź do automatyzacji"
+
 msgid "Go to home"
 msgstr "Przejdź na stronę główną"
 
 msgid "Go to next page"
 msgstr "Przejdź do następnej strony"
 
+msgid "Go to Pages"
+msgstr "Przejdź do stron"
+
 msgid "Go to Paradev"
 msgstr "Przejdź do Paradev"
 
+msgid "Go to Plugins"
+msgstr "Przejdź do wtyczek"
+
 msgid "Go to previous page"
 msgstr "Przejdź do poprzedniej strony"
+
+msgid "Go to Pull requests"
+msgstr "Przejdź do pull requestów"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Przejdź do Ustawień, a potem do Dostępu zdalnego"
 
 msgid "Go to Slack integration settings"
 msgstr "Przejdź do ustawień integracji ze Slackiem"
+
+msgid "Go to Tasks"
+msgstr "Przejdź do zadań"
 
 msgid "Go to workspace"
 msgstr "Przejdź do obszaru roboczego"
@@ -10328,6 +10363,9 @@ msgstr "W lokalnych obszarach roboczych twój kod i sesje agentów zostają na t
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "W trybie ręcznym Paradev nie loguje tego agenta. Niech Twój skrypt zaloguje go ponownie, a potem kontynuuj, albo wyłącz tryb ręczny w ustawieniach agentów."
+
+msgid "In merge queue"
+msgstr "W kolejce scalania"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Na miejscu w San Francisco, pięć dni w tygodniu. Pracujesz bezpośrednio z założycielami."
@@ -11988,6 +12026,9 @@ msgstr "Commit scalający"
 msgid "Merge Commit"
 msgstr "Commit scalający"
 
+msgid "Merge conflict"
+msgstr "Konflikt scalania"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Scalanie nie powiodło się: {0}"
@@ -12365,6 +12406,9 @@ msgstr "Moje słowa kluczowe"
 msgid "My Tasks"
 msgstr "Moje zadania"
 
+msgid "My workspaces"
+msgstr "Moje obszary robocze"
+
 msgid "Mystery Machinist"
 msgstr "Tajemniczy Tokarz"
 
@@ -12439,6 +12483,12 @@ msgstr "Wymaga danych"
 
 msgid "Needs me"
 msgstr "Czeka na mnie"
+
+msgid "Needs permission"
+msgstr "Wymaga uprawnień"
+
+msgid "Needs plan response"
+msgstr "Wymaga odpowiedzi na plan"
 
 msgid "Needs tests"
 msgstr "Wymaga testów"
@@ -12556,6 +12606,9 @@ msgstr "Nowy projekt"
 
 msgid "New push to branch"
 msgstr "Nowy push do gałęzi"
+
+msgid "New section…"
+msgstr "Nowa sekcja…"
 
 msgid "New session"
 msgstr "Nowa sesja"
@@ -15102,6 +15155,9 @@ msgstr "Różowy"
 msgid "Pinned"
 msgstr "Przypięte"
 
+msgid "Pinned workspaces"
+msgstr "Przypięte obszary robocze"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15761,9 @@ msgstr "Pull request scalony"
 
 msgid "Pull request not found"
 msgstr "Nie znaleziono pull requesta"
+
+msgid "Pull request open"
+msgstr "Pull request otwarty"
 
 msgid "Pull request title"
 msgstr "Tytuł pull requesta"
@@ -18155,6 +18214,9 @@ msgstr "Przywrócenie zainstalowanej wtyczki do stanu Dostępna zostawia wszystk
 
 msgid "Setting saved"
 msgstr "Ustawienie zapisane"
+
+msgid "Setting up"
+msgstr "Konfigurowanie"
 
 msgid "Setting up in the background..."
 msgstr "Konfigurowanie w tle..."
@@ -21596,6 +21658,9 @@ msgstr "Bez miejsca"
 msgid "Unranked until {0} days carry usage."
 msgstr "Bez rangi, dopóki nie uzbiera się dni z aktywnością: {0}."
 
+msgid "Unread"
+msgstr "Nieprzeczytane"
+
 msgid "Unresolve"
 msgstr "Cofnij rozwiązanie"
 
@@ -21613,6 +21678,9 @@ msgstr "Usuń plik z indeksu"
 
 msgid "Unstaged"
 msgstr "Niezaindeksowane"
+
+msgid "Unstarted"
+msgstr "Nie rozpoczęto"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21806,8 @@ msgstr "Przed chwilą zaktualizowano z {0}."
 msgid "Updates"
 msgstr "Aktualizacje"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Dla tej wersji nie są publikowane aktualizacje. Nowe wersje pobierzesz ze strony wydań Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Dla tej wersji nie są publikowane aktualizacje. Nowe wersje pobierzesz ze strony wydań Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22218,9 @@ msgstr "Oczekiwanie na dane aktywności"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Oczekiwanie na zatwierdzenie. Nie zamykaj tego okna."
+
+msgid "Waiting for background tasks"
+msgstr "Oczekiwanie na zadania w tle"
 
 msgid "Waiting for Checks"
 msgstr "Oczekiwanie na kontrole"

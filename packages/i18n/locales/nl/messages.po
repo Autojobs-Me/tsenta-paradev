@@ -1117,6 +1117,9 @@ msgstr "{kindLabel} thema"
 msgid "{label} access to {pluginName}"
 msgstr "{label}-toegang tot {pluginName}"
 
+msgid "{label} actions"
+msgstr "Acties voor {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} is daarna weer niet ingesteld. In je werkruimtes verandert niets: je script en de login die het bijhoudt blijven staan tot je ze verwijdert."
 
@@ -2196,6 +2199,9 @@ msgstr "Project toevoegen uit map"
 
 msgid "Add Project from Folder..."
 msgstr "Project toevoegen uit map..."
+
+msgid "Add project…"
+msgstr "Project toevoegen…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Voeg een prompt toe, bijv. zoek naar crashes in $sentry"
@@ -4082,6 +4088,10 @@ msgstr "Geannuleerd"
 msgid "Cancelled the invite for {name}"
 msgstr "Uitnodiging voor {name} geannuleerd"
 
+msgid "Cancelling"
+msgstr "Wordt geannuleerd"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Stopt {0} — gaat aan het eind van de factuurperiode terug naar Free."
@@ -4396,9 +4406,13 @@ msgstr "Checks mislukt"
 
 msgid "Checks failing"
 msgstr "Checks mislukken"
+msgstr "Checks mislukt"
 
 msgid "Checks passed"
 msgstr "Checks geslaagd"
+
+msgid "Checks running"
+msgstr "Checks bezig"
 
 msgid "Checks Skipped"
 msgstr "Checks overgeslagen"
@@ -7688,11 +7702,17 @@ msgstr "Draft geopend"
 msgid "Draft PR #2841"
 msgstr "Draft-PR #2841"
 
+msgid "Draft pull request"
+msgstr "Concept-pull request"
+
 msgid "drafted 3 support replies"
 msgstr "3 supportantwoorden opgesteld"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Sleep <0>Paradev</0> naar je map <1>Programma's</1>"
+
+msgid "Drag a workspace here"
+msgstr "Sleep hier een werkruimte naartoe"
 
 msgid "Drag to reorder"
 msgstr "Sleep om te herordenen"
@@ -9662,23 +9682,38 @@ msgstr "Naar home"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Doorloop de stappen van de eerste start opnieuw. Je projecten en instellingen blijven zoals ze zijn."
 
+msgid "Go to Automations"
+msgstr "Naar Automatiseringen"
+
 msgid "Go to home"
 msgstr "Naar home"
 
 msgid "Go to next page"
 msgstr "Naar de volgende pagina"
 
+msgid "Go to Pages"
+msgstr "Naar Pagina's"
+
 msgid "Go to Paradev"
 msgstr "Naar Paradev"
 
+msgid "Go to Plugins"
+msgstr "Naar Plugins"
+
 msgid "Go to previous page"
 msgstr "Naar de vorige pagina"
+
+msgid "Go to Pull requests"
+msgstr "Naar Pull requests"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Ga naar Instellingen en dan Externe toegang"
 
 msgid "Go to Slack integration settings"
 msgstr "Naar de instellingen van de Slack-integratie"
+
+msgid "Go to Tasks"
+msgstr "Naar Taken"
 
 msgid "Go to workspace"
 msgstr "Naar werkruimte"
@@ -10328,6 +10363,9 @@ msgstr "In lokale werkruimtes blijven je code en agentsessies op je machine. Clo
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "In de handmatige modus logt Paradev deze agent niet in. Laat je script hem opnieuw inloggen en ga verder, of zet de handmatige modus uit in de agentinstellingen."
+
+msgid "In merge queue"
+msgstr "In mergewachtrij"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Op kantoor in San Francisco, vijf dagen per week. Je werkt direct samen met de oprichters."
@@ -11988,6 +12026,9 @@ msgstr "Merge-commit"
 msgid "Merge Commit"
 msgstr "Merge-commit"
 
+msgid "Merge conflict"
+msgstr "Mergeconflict"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Mergen mislukt: {0}"
@@ -12365,6 +12406,9 @@ msgstr "Mijn trefwoorden"
 msgid "My Tasks"
 msgstr "Mijn taken"
 
+msgid "My workspaces"
+msgstr "Mijn werkruimtes"
+
 msgid "Mystery Machinist"
 msgstr "Mysterieuze Machinist"
 
@@ -12439,6 +12483,12 @@ msgstr "Invoer nodig"
 
 msgid "Needs me"
 msgstr "Heeft mij nodig"
+
+msgid "Needs permission"
+msgstr "Toestemming nodig"
+
+msgid "Needs plan response"
+msgstr "Antwoord op plan nodig"
 
 msgid "Needs tests"
 msgstr "Heeft tests nodig"
@@ -12556,6 +12606,9 @@ msgstr "Nieuw project"
 
 msgid "New push to branch"
 msgstr "Nieuwe push naar branch"
+
+msgid "New section…"
+msgstr "Nieuwe sectie…"
 
 msgid "New session"
 msgstr "Nieuwe sessie"
@@ -15102,6 +15155,9 @@ msgstr "Roze"
 msgid "Pinned"
 msgstr "Vastgezet"
 
+msgid "Pinned workspaces"
+msgstr "Vastgezette werkruimtes"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15761,9 @@ msgstr "Pull request gemerged"
 
 msgid "Pull request not found"
 msgstr "Pull request niet gevonden"
+
+msgid "Pull request open"
+msgstr "Pull request open"
 
 msgid "Pull request title"
 msgstr "Titel van pull request"
@@ -18155,6 +18214,9 @@ msgstr "Zet je een geïnstalleerde plugin terug op Beschikbaar, dan houdt iedere
 
 msgid "Setting saved"
 msgstr "Instelling opgeslagen"
+
+msgid "Setting up"
+msgstr "Wordt ingesteld"
 
 msgid "Setting up in the background..."
 msgstr "Bezig met instellen op de achtergrond..."
@@ -21596,6 +21658,9 @@ msgstr "Geen positie"
 msgid "Unranked until {0} days carry usage."
 msgstr "Geen positie tot {0} dagen gebruik tonen."
 
+msgid "Unread"
+msgstr "Ongelezen"
+
 msgid "Unresolve"
 msgstr "Heropenen"
 
@@ -21613,6 +21678,9 @@ msgstr "Bestand unstagen"
 
 msgid "Unstaged"
 msgstr "Niet gestaged"
+
+msgid "Unstarted"
+msgstr "Niet gestart"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21806,8 @@ msgstr "Zojuist bijgewerkt vanaf {0}."
 msgid "Updates"
 msgstr "Updates"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Voor deze build worden geen updates gepubliceerd. Download nieuwe builds van de releasepagina van Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Voor deze build worden geen updates gepubliceerd. Download nieuwe builds van de releasepagina van Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22218,9 @@ msgstr "Wachten op activiteitsgegevens"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Wachten op goedkeuring. Houd dit venster open."
+
+msgid "Waiting for background tasks"
+msgstr "Wacht op achtergrondtaken"
 
 msgid "Waiting for Checks"
 msgstr "Wachten op checks"

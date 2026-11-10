@@ -1117,6 +1117,9 @@ msgstr "{kindLabel} motiv"
 msgid "{label} access to {pluginName}"
 msgstr "Přístup role {label} k {pluginName}"
 
+msgid "{label} actions"
+msgstr "Akce: {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} se vrátí do nenastaveného stavu. V pracovních prostorech se nic nezmění: váš skript a přihlášení, které udržuje, zůstanou, dokud je neodstraníte."
 
@@ -2196,6 +2199,9 @@ msgstr "Přidat projekt ze složky"
 
 msgid "Add Project from Folder..."
 msgstr "Přidat projekt ze složky..."
+
+msgid "Add project…"
+msgstr "Přidat projekt…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Přidejte prompt, např. hledej pády v $sentry"
@@ -4082,6 +4088,10 @@ msgstr "Zrušeno"
 msgid "Cancelled the invite for {name}"
 msgstr "Pozvánka pro {name} byla zrušena"
 
+msgid "Cancelling"
+msgstr "Ruší se"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Ruší se {0} — na konci fakturačního období přejde na Free."
@@ -4396,9 +4406,13 @@ msgstr "Kontroly selhaly"
 
 msgid "Checks failing"
 msgstr "Kontroly selhávají"
+msgstr "Kontroly selhaly"
 
 msgid "Checks passed"
 msgstr "Kontroly prošly"
+
+msgid "Checks running"
+msgstr "Kontroly probíhají"
 
 msgid "Checks Skipped"
 msgstr "Kontroly přeskočeny"
@@ -7688,11 +7702,17 @@ msgstr "Otevřen koncept"
 msgid "Draft PR #2841"
 msgstr "Draft PR #2841"
 
+msgid "Draft pull request"
+msgstr "Koncept pull requestu"
+
 msgid "drafted 3 support replies"
 msgstr "připravil 3 odpovědi podpoře"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Přetáhněte <0>Paradev</0> do složky <1>Aplikace</1>"
+
+msgid "Drag a workspace here"
+msgstr "Přetáhněte sem pracovní prostor"
 
 msgid "Drag to reorder"
 msgstr "Přetažením změníte pořadí"
@@ -9662,23 +9682,38 @@ msgstr "Přejít domů"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Projděte znovu kroky prvního spuštění. Vaše projekty a nastavení zůstanou beze změny."
 
+msgid "Go to Automations"
+msgstr "Přejít na automatizace"
+
 msgid "Go to home"
 msgstr "Přejít na úvod"
 
 msgid "Go to next page"
 msgstr "Přejít na další stránku"
 
+msgid "Go to Pages"
+msgstr "Přejít na stránky"
+
 msgid "Go to Paradev"
 msgstr "Přejít do Paradev"
 
+msgid "Go to Plugins"
+msgstr "Přejít na pluginy"
+
 msgid "Go to previous page"
 msgstr "Přejít na předchozí stránku"
+
+msgid "Go to Pull requests"
+msgstr "Přejít na pull requesty"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Přejděte do Nastavení a pak do Vzdálený přístup"
 
 msgid "Go to Slack integration settings"
 msgstr "Přejít do nastavení integrace Slacku"
+
+msgid "Go to Tasks"
+msgstr "Přejít na úkoly"
 
 msgid "Go to workspace"
 msgstr "Přejít do pracovního prostoru"
@@ -10328,6 +10363,9 @@ msgstr "V lokálních pracovních prostorech zůstávají váš kód a relace ag
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "V ručním režimu Paradev tohoto agenta nepřihlašuje. Nechte svůj skript, ať ho znovu přihlásí, a pokračujte, nebo vypněte ruční režim v nastavení agentů."
+
+msgid "In merge queue"
+msgstr "Ve frontě na sloučení"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Osobně v San Franciscu, pět dní v týdnu. Pracujete přímo se zakladateli."
@@ -11988,6 +12026,9 @@ msgstr "Sloučit commitem"
 msgid "Merge Commit"
 msgstr "Merge commit"
 
+msgid "Merge conflict"
+msgstr "Konflikt při slučování"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Sloučení selhalo: {0}"
@@ -12365,6 +12406,9 @@ msgstr "Moje klíčová slova"
 msgid "My Tasks"
 msgstr "Moje úkoly"
 
+msgid "My workspaces"
+msgstr "Moje pracovní prostory"
+
 msgid "Mystery Machinist"
 msgstr "Záhadný strojník"
 
@@ -12439,6 +12483,12 @@ msgstr "Čeká na vstup"
 
 msgid "Needs me"
 msgstr "Čeká na mě"
+
+msgid "Needs permission"
+msgstr "Vyžaduje oprávnění"
+
+msgid "Needs plan response"
+msgstr "Čeká na odpověď k plánu"
 
 msgid "Needs tests"
 msgstr "Chybí testy"
@@ -12556,6 +12606,9 @@ msgstr "Nový projekt"
 
 msgid "New push to branch"
 msgstr "Nový push do větve"
+
+msgid "New section…"
+msgstr "Nová sekce…"
 
 msgid "New session"
 msgstr "Nová relace"
@@ -15102,6 +15155,9 @@ msgstr "Růžová"
 msgid "Pinned"
 msgstr "Připnuté"
 
+msgid "Pinned workspaces"
+msgstr "Připnuté pracovní prostory"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15761,9 @@ msgstr "Pull request sloučen"
 
 msgid "Pull request not found"
 msgstr "Pull request nenalezen"
+
+msgid "Pull request open"
+msgstr "Pull request otevřen"
 
 msgid "Pull request title"
 msgstr "Název pull requestu"
@@ -18155,6 +18214,9 @@ msgstr "Když nainstalovaný plugin vrátíte na Dostupné, všem zůstane jejic
 
 msgid "Setting saved"
 msgstr "Nastavení uloženo"
+
+msgid "Setting up"
+msgstr "Nastavuje se"
 
 msgid "Setting up in the background..."
 msgstr "Nastavuji na pozadí..."
@@ -21596,6 +21658,9 @@ msgstr "Bez pořadí"
 msgid "Unranked until {0} days carry usage."
 msgstr "Bez pořadí, dokud nebude dní s aktivitou: {0}."
 
+msgid "Unread"
+msgstr "Nepřečteno"
+
 msgid "Unresolve"
 msgstr "Zrušit vyřešení"
 
@@ -21613,6 +21678,9 @@ msgstr "Zrušit přípravu souboru"
 
 msgid "Unstaged"
 msgstr "Nepřipravené"
+
+msgid "Unstarted"
+msgstr "Nespuštěno"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21806,8 @@ msgstr "Právě aktualizováno z {0}."
 msgid "Updates"
 msgstr "Aktualizace"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Pro toto sestavení se aktualizace nezveřejňují. Nová sestavení stáhněte ze stránky vydání Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Pro toto sestavení se aktualizace nezveřejňují. Nová sestavení stáhněte ze stránky vydání Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22218,9 @@ msgstr "Čeká se na data o aktivitě"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Čeká se na schválení. Nechte tento dialog otevřený."
+
+msgid "Waiting for background tasks"
+msgstr "Čeká na úlohy na pozadí"
 
 msgid "Waiting for Checks"
 msgstr "Čeká na kontroly"

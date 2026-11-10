@@ -1117,6 +1117,9 @@ msgstr "{kindLabel} tema"
 msgid "{label} access to {pluginName}"
 msgstr "{label} rolünün {pluginName} erişimi"
 
+msgid "{label} actions"
+msgstr "{label} eylemleri"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} yeniden ayarlanmamış duruma döner. Çalışma alanlarınızda hiçbir şey değişmez: betiğiniz ve onun sürdürdüğü oturum, siz kaldırana kadar yerinde kalır."
 
@@ -2196,6 +2199,9 @@ msgstr "Klasörden proje ekle"
 
 msgid "Add Project from Folder..."
 msgstr "Klasörden proje ekle..."
+
+msgid "Add project…"
+msgstr "Proje ekle…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "İstem ekleyin, örn. $sentry içinde çökmeleri ara"
@@ -4082,6 +4088,10 @@ msgstr "İptal edildi"
 msgid "Cancelled the invite for {name}"
 msgstr "{name} için davet iptal edildi"
 
+msgid "Cancelling"
+msgstr "İptal ediliyor"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "{0} tarihinde iptal edilir — faturalandırma döneminin sonunda Ücretsiz plana düşer."
@@ -4399,6 +4409,9 @@ msgstr "Kontroller başarısız"
 
 msgid "Checks passed"
 msgstr "Kontroller geçti"
+
+msgid "Checks running"
+msgstr "Kontroller çalışıyor"
 
 msgid "Checks Skipped"
 msgstr "Kontroller atlandı"
@@ -7688,11 +7701,17 @@ msgstr "Taslak açıldı"
 msgid "Draft PR #2841"
 msgstr "Taslak PR #2841"
 
+msgid "Draft pull request"
+msgstr "Taslak pull request"
+
 msgid "drafted 3 support replies"
 msgstr "3 destek yanıtı taslağı hazırladı"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "<0>Paradev</0>'i <1>Uygulamalar</1> klasörüne sürükle"
+
+msgid "Drag a workspace here"
+msgstr "Bir çalışma alanını buraya sürükleyin"
 
 msgid "Drag to reorder"
 msgstr "Sıralamak için sürükleyin"
@@ -9662,23 +9681,38 @@ msgstr "Ana sayfaya git"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "İlk kullanım adımlarından yeniden geçin. Projeleriniz ve ayarlarınız olduğu gibi kalır."
 
+msgid "Go to Automations"
+msgstr "Otomasyonlara git"
+
 msgid "Go to home"
 msgstr "Ana sayfaya git"
 
 msgid "Go to next page"
 msgstr "Sonraki sayfaya git"
 
+msgid "Go to Pages"
+msgstr "Sayfalara git"
+
 msgid "Go to Paradev"
 msgstr "Paradev'e git"
 
+msgid "Go to Plugins"
+msgstr "Eklentilere git"
+
 msgid "Go to previous page"
 msgstr "Önceki sayfaya git"
+
+msgid "Go to Pull requests"
+msgstr "Pull request'lere git"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Ayarlar'a, ardından Uzaktan erişim'e gidin"
 
 msgid "Go to Slack integration settings"
 msgstr "Slack entegrasyon ayarlarına git"
+
+msgid "Go to Tasks"
+msgstr "Görevlere git"
 
 msgid "Go to workspace"
 msgstr "Çalışma alanına git"
@@ -10328,6 +10362,9 @@ msgstr "Yerel çalışma alanlarında kodunuz ve ajan oturumlarınız makinenizd
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "Manuel modda Paradev bu ajanın oturumunu açmaz. Betiğinizin yeniden oturum açmasını sağlayıp devam edin ya da ajan ayarlarından manuel modu kapatın."
+
+msgid "In merge queue"
+msgstr "Birleştirme kuyruğunda"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Haftada beş gün San Francisco'da ofisten çalışıyoruz. Doğrudan kurucularla çalışırsınız."
@@ -11988,6 +12025,9 @@ msgstr "Birleştirme commit'i"
 msgid "Merge Commit"
 msgstr "Birleştirme commit'i"
 
+msgid "Merge conflict"
+msgstr "Birleştirme çakışması"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Birleştirme başarısız: {0}"
@@ -12365,6 +12405,9 @@ msgstr "Anahtar kelimelerim"
 msgid "My Tasks"
 msgstr "Görevlerim"
 
+msgid "My workspaces"
+msgstr "Çalışma alanlarım"
+
 msgid "Mystery Machinist"
 msgstr "Gizemli Makinist"
 
@@ -12439,6 +12482,12 @@ msgstr "Giriş gerekiyor"
 
 msgid "Needs me"
 msgstr "Bana ihtiyaç duyuyor"
+
+msgid "Needs permission"
+msgstr "İzin gerekiyor"
+
+msgid "Needs plan response"
+msgstr "Plan yanıtı gerekiyor"
 
 msgid "Needs tests"
 msgstr "Test gerekiyor"
@@ -12556,6 +12605,9 @@ msgstr "Yeni proje"
 
 msgid "New push to branch"
 msgstr "Dala yeni push"
+
+msgid "New section…"
+msgstr "Yeni bölüm…"
 
 msgid "New session"
 msgstr "Yeni oturum"
@@ -15102,6 +15154,9 @@ msgstr "Pembe"
 msgid "Pinned"
 msgstr "Sabitlenmiş"
 
+msgid "Pinned workspaces"
+msgstr "Sabitlenmiş çalışma alanları"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15760,9 @@ msgstr "Pull request birleştirildi"
 
 msgid "Pull request not found"
 msgstr "Pull request bulunamadı"
+
+msgid "Pull request open"
+msgstr "Pull request açık"
 
 msgid "Pull request title"
 msgstr "Pull request başlığı"
@@ -18155,6 +18213,9 @@ msgstr "Yüklü bir eklentiyi yeniden Kullanılabilir yapmak herkesin kopyasın�
 
 msgid "Setting saved"
 msgstr "Ayar kaydedildi"
+
+msgid "Setting up"
+msgstr "Kuruluyor"
 
 msgid "Setting up in the background..."
 msgstr "Arka planda kuruluyor..."
@@ -21596,6 +21657,9 @@ msgstr "Sırasız"
 msgid "Unranked until {0} days carry usage."
 msgstr "{0} gün kullanım birikene kadar sıralama dışısın."
 
+msgid "Unread"
+msgstr "Okunmadı"
+
 msgid "Unresolve"
 msgstr "Çözümü geri al"
 
@@ -21613,6 +21677,9 @@ msgstr "Dosyayı hazırlıktan çıkar"
 
 msgid "Unstaged"
 msgstr "Hazırlanmamış"
+
+msgid "Unstarted"
+msgstr "Başlatılmadı"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21805,8 @@ msgstr "Az önce {0} sürümünden güncellendi."
 msgid "Updates"
 msgstr "Güncellemeler"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Bu sürüm için güncelleme yayımlanmıyor. Yeni sürümleri Paradev Boxes yayınlar sayfasından indirin."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Bu sürüm için güncelleme yayımlanmıyor. Yeni sürümleri Tsenta Paradev yayınlar sayfasından indirin."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22217,9 @@ msgstr "Etkinlik verileri bekleniyor"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Onay bekleniyor. Bu pencereyi açık tutun."
+
+msgid "Waiting for background tasks"
+msgstr "Arka plan görevleri bekleniyor"
 
 msgid "Waiting for Checks"
 msgstr "Kontroller bekleniyor"

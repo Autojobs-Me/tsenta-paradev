@@ -1117,6 +1117,9 @@ msgstr "Tema {kindLabel}"
 msgid "{label} access to {pluginName}"
 msgstr "Acesso de {label} a {pluginName}"
 
+msgid "{label} actions"
+msgstr "Ações de {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "O {label} volta a ficar sem configuração. Nada muda nas suas áreas de trabalho: o seu script e o login que ele mantém continuam lá até você removê-los."
 
@@ -2196,6 +2199,9 @@ msgstr "Adicionar projeto de uma pasta"
 
 msgid "Add Project from Folder..."
 msgstr "Adicionar projeto de uma pasta..."
+
+msgid "Add project…"
+msgstr "Adicionar projeto…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Adicione um prompt, ex.: procure travamentos no $sentry"
@@ -4082,6 +4088,10 @@ msgstr "Cancelada"
 msgid "Cancelled the invite for {name}"
 msgstr "Convite de {name} cancelado"
 
+msgid "Cancelling"
+msgstr "Cancelando"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Cancela em {0} — volta para o gratuito no fim do período de cobrança."
@@ -4396,9 +4406,13 @@ msgstr "As verificações falharam"
 
 msgid "Checks failing"
 msgstr "Verificações falhando"
+msgstr "Verificações com falha"
 
 msgid "Checks passed"
 msgstr "As verificações passaram"
+
+msgid "Checks running"
+msgstr "Verificações em andamento"
 
 msgid "Checks Skipped"
 msgstr "Verificações ignoradas"
@@ -7688,11 +7702,17 @@ msgstr "Rascunho aberto"
 msgid "Draft PR #2841"
 msgstr "PR em rascunho #2841"
 
+msgid "Draft pull request"
+msgstr "Pull request em rascunho"
+
 msgid "drafted 3 support replies"
 msgstr "escreveu 3 respostas de suporte"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Arraste o <0>Paradev</0> para a pasta <1>Aplicativos</1>"
+
+msgid "Drag a workspace here"
+msgstr "Arraste uma área de trabalho para cá"
 
 msgid "Drag to reorder"
 msgstr "Arraste para reordenar"
@@ -9662,23 +9682,38 @@ msgstr "Ir para o início"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Refaça as etapas do primeiro uso. Seus projetos e configurações continuam como estão."
 
+msgid "Go to Automations"
+msgstr "Ir para Automações"
+
 msgid "Go to home"
 msgstr "Ir para o início"
 
 msgid "Go to next page"
 msgstr "Ir para a próxima página"
 
+msgid "Go to Pages"
+msgstr "Ir para Páginas"
+
 msgid "Go to Paradev"
 msgstr "Ir para o Paradev"
 
+msgid "Go to Plugins"
+msgstr "Ir para Plugins"
+
 msgid "Go to previous page"
 msgstr "Ir para a página anterior"
+
+msgid "Go to Pull requests"
+msgstr "Ir para Pull requests"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Vá em Configurações e depois em Acesso remoto"
 
 msgid "Go to Slack integration settings"
 msgstr "Ir para as configurações da integração com o Slack"
+
+msgid "Go to Tasks"
+msgstr "Ir para Tarefas"
 
 msgid "Go to workspace"
 msgstr "Ir para a área de trabalho"
@@ -10328,6 +10363,9 @@ msgstr "Nas áreas de trabalho locais, seu código e as sessões de agentes fica
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "No modo manual, o Paradev não faz login neste agente. Faça seu script entrar de novo e continue, ou desative o modo manual nas configurações de agentes."
+
+msgid "In merge queue"
+msgstr "Na fila de merge"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Presencial em San Francisco, cinco dias por semana. Você trabalha diretamente com os fundadores."
@@ -11988,6 +12026,9 @@ msgstr "Commit de merge"
 msgid "Merge Commit"
 msgstr "Commit de merge"
 
+msgid "Merge conflict"
+msgstr "Conflito de merge"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Falha no merge: {0}"
@@ -12365,6 +12406,9 @@ msgstr "Minhas palavras-chave"
 msgid "My Tasks"
 msgstr "Minhas tarefas"
 
+msgid "My workspaces"
+msgstr "Minhas áreas de trabalho"
+
 msgid "Mystery Machinist"
 msgstr "Maquinista Misterioso"
 
@@ -12439,6 +12483,12 @@ msgstr "Precisa de resposta"
 
 msgid "Needs me"
 msgstr "Precisa de mim"
+
+msgid "Needs permission"
+msgstr "Precisa de permissão"
+
+msgid "Needs plan response"
+msgstr "Precisa de resposta ao plano"
 
 msgid "Needs tests"
 msgstr "Precisa de testes"
@@ -12556,6 +12606,9 @@ msgstr "Novo projeto"
 
 msgid "New push to branch"
 msgstr "Novo push na branch"
+
+msgid "New section…"
+msgstr "Nova seção…"
 
 msgid "New session"
 msgstr "Nova sessão"
@@ -15102,6 +15155,9 @@ msgstr "Rosa"
 msgid "Pinned"
 msgstr "Fixadas"
 
+msgid "Pinned workspaces"
+msgstr "Áreas de trabalho fixadas"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15706,6 +15762,9 @@ msgstr "Merge do pull request concluído"
 msgid "Pull request not found"
 msgstr "Pull request não encontrado"
 
+msgid "Pull request open"
+msgstr "Pull request aberto"
+
 msgid "Pull request title"
 msgstr "Título do pull request"
 
@@ -16037,6 +16096,8 @@ msgstr "Pronto em cada máquina em que você entrar e em cada workspace na nuvem
 msgctxt "stack verdict"
 msgid "Ready to merge"
 msgstr "Pronto para merge"
+msgid "Ready to merge"
+msgstr "Pronto para mesclar"
 
 msgid "Ready to Merge"
 msgstr "Pronto para merge"
@@ -18155,6 +18216,9 @@ msgstr "Voltar um plugin instalado para Disponível mantém a cópia de cada um;
 
 msgid "Setting saved"
 msgstr "Configuração salva"
+
+msgid "Setting up"
+msgstr "Configurando"
 
 msgid "Setting up in the background..."
 msgstr "Configurando em segundo plano..."
@@ -21596,6 +21660,9 @@ msgstr "Sem posição"
 msgid "Unranked until {0} days carry usage."
 msgstr "Sem classificação até que {0} dias tenham atividade."
 
+msgid "Unread"
+msgstr "Não lido"
+
 msgid "Unresolve"
 msgstr "Reabrir"
 
@@ -21613,6 +21680,9 @@ msgstr "Remover arquivo do stage"
 
 msgid "Unstaged"
 msgstr "Fora do stage"
+
+msgid "Unstarted"
+msgstr "Não iniciado"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21808,8 @@ msgstr "Atualizado agora mesmo a partir da {0}."
 msgid "Updates"
 msgstr "Atualizações"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Atualizações não são publicadas para esta versão. Baixe novas versões na página de releases do Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Atualizações não são publicadas para esta versão. Baixe novas versões na página de releases do Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22220,9 @@ msgstr "Aguardando dados de atividade"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Aguardando aprovação. Mantenha esta caixa de diálogo aberta."
+
+msgid "Waiting for background tasks"
+msgstr "Aguardando tarefas em segundo plano"
 
 msgid "Waiting for Checks"
 msgstr "Aguardando as verificações"

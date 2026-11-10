@@ -1111,6 +1111,9 @@ msgstr "Тема: {kindLabel}"
 msgid "{label} access to {pluginName}"
 msgstr "Доступ ролі {label} до {pluginName}"
 
+msgid "{label} actions"
+msgstr "Дії: {label}"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} знову стане неналаштованим. У робочих просторах нічого не зміниться: ваш скрипт і вхід, який він підтримує, залишаться, доки ви їх не видалите."
 
@@ -2190,6 +2193,9 @@ msgstr "Додати проєкт із папки"
 
 msgid "Add Project from Folder..."
 msgstr "Додати проєкт із папки..."
+
+msgid "Add project…"
+msgstr "Додати проєкт…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "Додайте промпт, наприклад: знайди збої в $sentry"
@@ -4076,6 +4082,10 @@ msgstr "Скасовано"
 msgid "Cancelled the invite for {name}"
 msgstr "Запрошення для {name} скасовано"
 
+msgid "Cancelling"
+msgstr "Скасування"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "Буде скасовано {0} — наприкінці оплаченого періоду тариф зміниться на Free."
@@ -4390,9 +4400,13 @@ msgstr "Перевірки не пройдено"
 
 msgid "Checks failing"
 msgstr "Перевірки не проходять"
+msgstr "Перевірки не пройдено"
 
 msgid "Checks passed"
 msgstr "Перевірки пройдено"
+
+msgid "Checks running"
+msgstr "Перевірки виконуються"
 
 msgid "Checks Skipped"
 msgstr "Перевірки пропущено"
@@ -7682,11 +7696,17 @@ msgstr "Відкрито чернетку"
 msgid "Draft PR #2841"
 msgstr "Чернетка PR #2841"
 
+msgid "Draft pull request"
+msgstr "Чернетка пул-реквесту"
+
 msgid "drafted 3 support replies"
 msgstr "підготував чернетки 3 відповідей для підтримки"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "Перетягніть <0>Paradev</0> у папку <1>Програми</1>"
+
+msgid "Drag a workspace here"
+msgstr "Перетягніть сюди робочий простір"
 
 msgid "Drag to reorder"
 msgstr "Перетягніть, щоб змінити порядок"
@@ -9656,23 +9676,38 @@ msgstr "На головну"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "Пройдіть кроки першого запуску ще раз. Проєкти й налаштування залишаться без змін."
 
+msgid "Go to Automations"
+msgstr "Перейти до автоматизацій"
+
 msgid "Go to home"
 msgstr "На головну"
 
 msgid "Go to next page"
 msgstr "На наступну сторінку"
 
+msgid "Go to Pages"
+msgstr "Перейти до сторінок"
+
 msgid "Go to Paradev"
 msgstr "Перейти до Paradev"
 
+msgid "Go to Plugins"
+msgstr "Перейти до плагінів"
+
 msgid "Go to previous page"
 msgstr "На попередню сторінку"
+
+msgid "Go to Pull requests"
+msgstr "Перейти до пул-реквестів"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "Відкрийте «Налаштування», потім «Віддалений доступ»"
 
 msgid "Go to Slack integration settings"
 msgstr "Перейти до налаштувань інтеграції Slack"
+
+msgid "Go to Tasks"
+msgstr "Перейти до завдань"
 
 msgid "Go to workspace"
 msgstr "Перейти до робочого простору"
@@ -10322,6 +10357,9 @@ msgstr "У локальних робочих просторах код і сес
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "У ручному режимі Paradev не виконує вхід для цього агента. Нехай ваш скрипт знову виконає вхід, а потім продовжте, або вимкніть ручний режим у налаштуваннях агентів."
+
+msgid "In merge queue"
+msgstr "У черзі на злиття"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "Очно в Сан-Франциско, п'ять днів на тиждень. Ви працюєте безпосередньо із засновниками."
@@ -11982,6 +12020,9 @@ msgstr "Коміт злиття"
 msgid "Merge Commit"
 msgstr "Коміт злиття"
 
+msgid "Merge conflict"
+msgstr "Конфлікт злиття"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Не вдалося злити: {0}"
@@ -12359,6 +12400,9 @@ msgstr "Мої ключові слова"
 msgid "My Tasks"
 msgstr "Мої завдання"
 
+msgid "My workspaces"
+msgstr "Мої робочі простори"
+
 msgid "Mystery Machinist"
 msgstr "Таємничий верстатник"
 
@@ -12433,6 +12477,12 @@ msgstr "Потрібне введення"
 
 msgid "Needs me"
 msgstr "Чекає на мене"
+
+msgid "Needs permission"
+msgstr "Потрібен дозвіл"
+
+msgid "Needs plan response"
+msgstr "Потрібна відповідь на план"
 
 msgid "Needs tests"
 msgstr "Потрібні тести"
@@ -12550,6 +12600,9 @@ msgstr "Новий проєкт"
 
 msgid "New push to branch"
 msgstr "Новий push у гілку"
+
+msgid "New section…"
+msgstr "Новий розділ…"
 
 msgid "New session"
 msgstr "Новий сеанс"
@@ -15096,6 +15149,9 @@ msgstr "Рожевий"
 msgid "Pinned"
 msgstr "Закріплено"
 
+msgid "Pinned workspaces"
+msgstr "Закріплені робочі простори"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15699,6 +15755,9 @@ msgstr "Пул-реквест злито"
 
 msgid "Pull request not found"
 msgstr "Пул-реквест не знайдено"
+
+msgid "Pull request open"
+msgstr "Пул-реквест відкрито"
 
 msgid "Pull request title"
 msgstr "Назва пул-реквесту"
@@ -18149,6 +18208,9 @@ msgstr "Якщо повернути встановлений плагін у с�
 
 msgid "Setting saved"
 msgstr "Налаштування збережено"
+
+msgid "Setting up"
+msgstr "Налаштування"
 
 msgid "Setting up in the background..."
 msgstr "Налаштування у фоні..."
@@ -21590,6 +21652,9 @@ msgstr "Без рейтингу"
 msgid "Unranked until {0} days carry usage."
 msgstr "Без рейтингу, доки кількість днів із використанням не досягне {0}."
 
+msgid "Unread"
+msgstr "Не прочитано"
+
 msgid "Unresolve"
 msgstr "Позначити як невирішене"
 
@@ -21607,6 +21672,9 @@ msgstr "Зняти файл з індексу"
 
 msgid "Unstaged"
 msgstr "Не проіндексовано"
+
+msgid "Unstarted"
+msgstr "Не розпочато"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21732,8 +21800,8 @@ msgstr "Щойно оновлено з версії {0}."
 msgid "Updates"
 msgstr "Оновлення"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "Для цієї збірки оновлення не публікуються. Завантажуйте нові збірки зі сторінки релізів Paradev Boxes."
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "Для цієї збірки оновлення не публікуються. Завантажуйте нові збірки зі сторінки релізів Tsenta Paradev."
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22144,6 +22212,9 @@ msgstr "Очікування даних про активність"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "Очікування схвалення. Не закривайте це вікно."
+
+msgid "Waiting for background tasks"
+msgstr "Очікування фонових завдань"
 
 msgid "Waiting for Checks"
 msgstr "Очікування перевірок"

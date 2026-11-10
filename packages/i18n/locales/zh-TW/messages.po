@@ -1117,6 +1117,9 @@ msgstr "{kindLabel}主題"
 msgid "{label} access to {pluginName}"
 msgstr "{label} 對 {pluginName} 的存取權限"
 
+msgid "{label} actions"
+msgstr "{label} 操作"
+
 msgid "{label} goes back to not set up. Nothing changes inside your workspaces: your script and the login it keeps stay until you remove them."
 msgstr "{label} 將恢復為未設定。工作區內不會有任何變化：你的腳本及其維護的登入會一直保留，直到你將其刪除。"
 
@@ -2196,6 +2199,9 @@ msgstr "從資料夾新增專案"
 
 msgid "Add Project from Folder..."
 msgstr "從資料夾新增專案..."
+
+msgid "Add project…"
+msgstr "新增專案…"
 
 msgid "Add prompt e.g. look for crashes in $sentry"
 msgstr "新增提示詞，例如：在$sentry中查詢崩潰"
@@ -4082,6 +4088,10 @@ msgstr "已取消"
 msgid "Cancelled the invite for {name}"
 msgstr "已取消對 {name} 的邀請"
 
+msgid "Cancelling"
+msgstr "正在取消"
+
+#. placeholder {0}: format(new Date(cancelAt), "MMMM d, yyyy")
 #. placeholder {0}: formatDate(cancelAt)
 msgid "Cancels {0} — downgrades to Free at the end of the billing period."
 msgstr "將於{0}取消，在計費週期結束時降級為免費版。"
@@ -4399,6 +4409,9 @@ msgstr "檢查失敗"
 
 msgid "Checks passed"
 msgstr "檢查通過"
+
+msgid "Checks running"
+msgstr "檢查執行中"
 
 msgid "Checks Skipped"
 msgstr "檢查已跳過"
@@ -7688,11 +7701,17 @@ msgstr "建立了草稿"
 msgid "Draft PR #2841"
 msgstr "草稿 PR #2841"
 
+msgid "Draft pull request"
+msgstr "草稿拉取請求"
+
 msgid "drafted 3 support replies"
 msgstr "起草了3條支援回覆"
 
 msgid "Drag <0>Paradev</0> into your <1>Applications</1> folder"
 msgstr "將 <0>Paradev</0> 拖曳到<1>應用程式</1>資料夾"
+
+msgid "Drag a workspace here"
+msgstr "將工作區拖到這裡"
 
 msgid "Drag to reorder"
 msgstr "拖曳以重新排序"
@@ -9662,23 +9681,38 @@ msgstr "回到首頁"
 msgid "Go through the first-run steps again. Your projects and settings stay as they are."
 msgstr "重新完成首次使用的步驟。你的專案和設定保持不變。"
 
+msgid "Go to Automations"
+msgstr "前往自動化"
+
 msgid "Go to home"
 msgstr "前往主頁"
 
 msgid "Go to next page"
 msgstr "轉到下一頁"
 
+msgid "Go to Pages"
+msgstr "前往頁面"
+
 msgid "Go to Paradev"
 msgstr "前往Paradev"
 
+msgid "Go to Plugins"
+msgstr "前往外掛"
+
 msgid "Go to previous page"
 msgstr "轉到上一頁"
+
+msgid "Go to Pull requests"
+msgstr "前往拉取請求"
 
 msgid "Go to Settings, then Remote Access"
 msgstr "前往「設定」，然後開啟「遠端存取」"
 
 msgid "Go to Slack integration settings"
 msgstr "前往Slack整合設定"
+
+msgid "Go to Tasks"
+msgstr "前往任務"
 
 msgid "Go to workspace"
 msgstr "前往工作區"
@@ -10328,6 +10362,9 @@ msgstr "在本機工作區中，你的程式碼和代理程式工作階段都留
 
 msgid "In manual mode, Paradev doesn't sign this agent in. Have your script sign it in again and continue, or turn off manual mode in agent settings."
 msgstr "在手動模式下，Paradev 不會為此代理程式登入。請讓你的腳本重新登入後繼續，或在代理程式設定中關閉手動模式。"
+
+msgid "In merge queue"
+msgstr "在合併佇列中"
 
 msgid "In person in San Francisco, five days a week. You work directly with the founders."
 msgstr "在舊金山辦公室實體上班，每週五天。你將直接與創辦人共事。"
@@ -11988,6 +12025,9 @@ msgstr "合併提交"
 msgid "Merge Commit"
 msgstr "合併提交"
 
+msgid "Merge conflict"
+msgstr "合併衝突"
+
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "合併失敗：{0}"
@@ -12365,6 +12405,9 @@ msgstr "我的關鍵字"
 msgid "My Tasks"
 msgstr "我的任務"
 
+msgid "My workspaces"
+msgstr "我的工作區"
+
 msgid "Mystery Machinist"
 msgstr "神秘機械師"
 
@@ -12439,6 +12482,12 @@ msgstr "需要輸入"
 
 msgid "Needs me"
 msgstr "需要我處理"
+
+msgid "Needs permission"
+msgstr "需要權限"
+
+msgid "Needs plan response"
+msgstr "需要回覆計畫"
 
 msgid "Needs tests"
 msgstr "需要測試"
@@ -12556,6 +12605,9 @@ msgstr "新建專案"
 
 msgid "New push to branch"
 msgstr "向分支推送了新提交"
+
+msgid "New section…"
+msgstr "新建分區…"
 
 msgid "New session"
 msgstr "新建會話"
@@ -15102,6 +15154,9 @@ msgstr "粉色"
 msgid "Pinned"
 msgstr "已置頂"
 
+msgid "Pinned workspaces"
+msgstr "已置頂的工作區"
+
 msgid "PK"
 msgstr "PK"
 
@@ -15705,6 +15760,9 @@ msgstr "拉取請求已合併"
 
 msgid "Pull request not found"
 msgstr "找不到拉取請求"
+
+msgid "Pull request open"
+msgstr "拉取請求已開啟"
 
 msgid "Pull request title"
 msgstr "拉取請求標題"
@@ -18155,6 +18213,9 @@ msgstr "把已安裝的外掛改回「可用」後，每個人的副本仍會保
 
 msgid "Setting saved"
 msgstr "設定已儲存"
+
+msgid "Setting up"
+msgstr "正在設定"
 
 msgid "Setting up in the background..."
 msgstr "正在背景配置..."
@@ -21596,6 +21657,9 @@ msgstr "未上榜"
 msgid "Unranked until {0} days carry usage."
 msgstr "在累計 {0} 天使用紀錄之前不參與排名。"
 
+msgid "Unread"
+msgstr "未讀"
+
 msgid "Unresolve"
 msgstr "取消解決"
 
@@ -21613,6 +21677,9 @@ msgstr "取消暫存檔案"
 
 msgid "Unstaged"
 msgstr "未暫存"
+
+msgid "Unstarted"
+msgstr "未開始"
 
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
@@ -21738,8 +21805,8 @@ msgstr "剛剛從 {0} 更新。"
 msgid "Updates"
 msgstr "更新"
 
-msgid "Updates aren't published for this build. Download new builds from the Paradev Boxes releases page."
-msgstr "此版本不發布更新。請從 Paradev Boxes 的發行頁面下載新版本。"
+msgid "Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page."
+msgstr "此版本不發布更新。請從 Tsenta Paradev 的發行頁面下載新版本。"
 
 #. placeholder {0}: update.progress.target
 msgid "Updating to {0}"
@@ -22150,6 +22217,9 @@ msgstr "正在等待活動資料"
 
 msgid "Waiting for approval. Keep this dialog open."
 msgstr "正在等待核准。請保持此對話方塊開啟。"
+
+msgid "Waiting for background tasks"
+msgstr "正在等待背景任務"
 
 msgid "Waiting for Checks"
 msgstr "等待檢查"
