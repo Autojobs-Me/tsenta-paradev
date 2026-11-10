@@ -171,3 +171,27 @@ html[data-skin="conductor"]
 	:is(table, th, td) {
 	border-color: var(--border);
 }
+
+/* Tool card body (WC §5.2, §6.1, §6.5) ------------------------------------ */
+
+/*
+ * The body of a tool card is Paradev's own output (TerminalContent,
+ * DiffContent) in its own scroll box. Conductor's body is an accent box with
+ * a 6px corner, so inside data-tsenta="tool-body" the background those boxes
+ * paint (and fade to) is the accent, and their corner and line are
+ * Conductor's.
+ */
+html[data-skin="conductor"] [data-tsenta="tool-body"] {
+	--background: var(--accent);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="tool-body"]
+	[class~="rounded-lg"][class~="border"] {
+	border-radius: calc(var(--radius) - 2px);
+	border-color: var(--border);
+}
+
+html[data-skin="conductor"] [data-tsenta="tool-body"] pre {
+	font-weight: 500;
+}
