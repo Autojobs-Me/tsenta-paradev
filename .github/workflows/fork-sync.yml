@@ -57,8 +57,8 @@ jobs:
           FORCE: ${{ inputs.force_build }}
         run: |
           set -euo pipefail
-          git config user.name "paradev-boxes-sync"
-          git config user.email "paradev-boxes-sync@users.noreply.github.com"
+          git config user.name "tsenta-paradev-sync"
+          git config user.email "tsenta-paradev-sync@users.noreply.github.com"
           git remote add upstream https://github.com/ParadevAI/Paradev.git
           git fetch --no-tags upstream "+refs/tags/desktop-canary:refs/tags/upstream-canary"
           git fetch origin fork-base
@@ -270,9 +270,9 @@ jobs:
           # first, manifests last, then drop assets from older builds.
           if gh release view boxes-canary >/dev/null 2>&1; then
             gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/boxes-canary" -f sha="$SHA" -F force=true >/dev/null
-            gh release edit boxes-canary --prerelease --title "Paradev Boxes $VERSION" --notes "$notes"
+            gh release edit boxes-canary --prerelease --title "Tsenta Paradev $VERSION" --notes "$notes"
           else
-            gh release create boxes-canary --prerelease --target "$SHA" --title "Paradev Boxes $VERSION" --notes "$notes"
+            gh release create boxes-canary --prerelease --target "$SHA" --title "Tsenta Paradev $VERSION" --notes "$notes"
           fi
           mapfile -t binaries < <(find . -maxdepth 1 -type f ! -name '*.yml' -printf '%f\n')
           mapfile -t manifests < <(find . -maxdepth 1 -type f -name '*.yml' -printf '%f\n')

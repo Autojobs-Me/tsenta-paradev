@@ -1,3 +1,15 @@
+# Tsenta Paradev
+
+Tsenta's fork of [Paradev](https://github.com/ParadevAI/Paradev), built on
+Agnay Srivastava's [Paradev Boxes](https://github.com/AgnayS/paradev-boxes)
+changes. It rebases onto Paradev's canary twice a day (fork-sync.yml), so it
+keeps every Paradev update, and carries Tsenta's own changes as a short stack of
+commits on top: UI changes first (a Conductor-style layout), plus Paradev
+Boxes. The app installs beside Paradev as "Paradev Tsenta" and shares its app
+home, projects, workspaces and sign-in.
+
+---
+
 # Paradev Boxes
 
 Run [Paradev](https://github.com/ParadevAI/Paradev) workspaces on sandboxes you
@@ -122,7 +134,7 @@ rather than abandoning it.
 
 ## Download or build
 
-Each canary sync publishes [`boxes-canary`](https://github.com/AgnayS/paradev-boxes/releases/tag/boxes-canary):
+Each canary sync publishes [`boxes-canary`](https://github.com/Autojobs-Me/tsenta-paradev/releases/tag/boxes-canary):
 
 | Platform | Files | Notes |
 | --- | --- | --- |

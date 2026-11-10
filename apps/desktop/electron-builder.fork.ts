@@ -18,9 +18,9 @@ import pkg from "./package.json";
 import { localizeMacDisplayName } from "./scripts/localize-display-name";
 
 // "Superset <X>" displays as "<DESKTOP_DISPLAY_NAME> <X>" (app-display-name.ts).
-const productName = "Superset Boxes";
-const displayName = `${baseDisplayName} Boxes`;
-const scheme = "superset-boxes";
+const productName = "Superset Tsenta";
+const displayName = `${baseDisplayName} Tsenta`;
+const scheme = "superset-tsenta";
 // The deb and rpm package; also the installer file names.
 const linuxName = "paradev-boxes";
 // The GUI's command (/usr/bin/<this>) and window class. Not "paradev-boxes":
@@ -30,10 +30,10 @@ const linuxExecutable = "paradev-boxes-app";
 
 const config: Configuration = {
 	...baseConfig,
-	appId: "io.github.agnays.paradev-boxes",
+	appId: "com.tsenta.paradev",
 	productName,
 	copyright:
-		"Copyright © 2025-2026 Superset Inc. Paradev Boxes changes © 2026 Agnay Srivastava.",
+		"Copyright © 2025-2026 Superset Inc. Paradev Boxes changes © 2026 Agnay Srivastava. Tsenta changes © 2026 Tsenta.",
 	extraMetadata: {
 		...baseConfig.extraMetadata,
 		productName,
@@ -47,8 +47,8 @@ const config: Configuration = {
 
 	publish: {
 		provider: "github",
-		owner: "AgnayS",
-		repo: "paradev-boxes",
+		owner: "Autojobs-Me",
+		repo: "tsenta-paradev",
 		releaseType: "prerelease",
 	},
 

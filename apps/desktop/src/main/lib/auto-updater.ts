@@ -67,8 +67,8 @@ const IS_AUTO_UPDATE_PLATFORM = PLATFORM.IS_MAC || PLATFORM.IS_LINUX;
 // signature cannot install over this app). CI only publishes a feed for
 // signed builds, so an unsigned build finds no update rather than failing one.
 const UPDATE_FEED_URL = IS_PRERELEASE
-	? "https://github.com/AgnayS/paradev-boxes/releases/download/boxes-canary"
-	: "https://github.com/AgnayS/paradev-boxes/releases/latest/download";
+	? "https://github.com/Autojobs-Me/tsenta-paradev/releases/download/boxes-canary"
+	: "https://github.com/Autojobs-Me/tsenta-paradev/releases/latest/download";
 
 export type { AutoUpdateStatusEvent } from "shared/auto-update";
 
@@ -378,10 +378,10 @@ export function checkForUpdatesInteractive(): void {
 					message: i18n._(
 						msg({
 							message:
-								"Updates aren't published for this build. Download new builds from the Paradev Boxes releases page.",
+								"Updates aren't published for this build. Download new builds from the Tsenta Paradev releases page.",
 						}),
 					),
-					detail: "https://github.com/AgnayS/paradev-boxes/releases",
+					detail: "https://github.com/Autojobs-Me/tsenta-paradev/releases",
 				});
 				return;
 			}
