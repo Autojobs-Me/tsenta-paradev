@@ -1,0 +1,625 @@
+/*
+ * Tsenta fork: Conductor's look for the packages/ui primitives (plan step 4;
+ * design-system spec §4, §5, §6.1 to §6.20 and §8). CSS keyed on the
+ * primitives' data-slot attributes, so packages/ui is not edited.
+ *
+ * These rules are unlayered, so they beat every utility class, including the
+ * className a caller passes to one instance. To keep those per-instance
+ * choices, most rules are gated on the primitive's own default class still
+ * being on the element: cn() (tailwind-merge) drops that class when an
+ * instance overrides the same property, and the gate then fails. For example
+ * a popover with `border-0` loses `border`, so it does not get the 1px ring;
+ * a select trigger with `dark:bg-transparent` loses `dark:bg-input/30`, so it
+ * stays transparent. Classes with special characters are matched with
+ * [class~="..."].
+ *
+ * Only properties Conductor changes are set. Where Paradev already matches
+ * (menu padding p-1, popover padding p-4, item padding and text size, leading
+ * icon size and colour, dialog border, background and shadow) nothing is
+ * written.
+ *
+ * Radix in place of Base UI (§9): popup-open is data-state="open", checked is
+ * data-state="checked", active tabs are data-state="active".
+ */
+
+/* Popups (§4, §6.3 to §6.6, §6.16) ---------------------------------------- */
+
+/*
+ * A 1px ring instead of a border. The ring goes through Tailwind's
+ * --tw-ring-shadow, which the primitive's own shadow-* class already composes
+ * into box-shadow, so whichever shadow an instance picked still draws.
+ * Submenus keep their border (Conductor sets ring-0 on them), and so does the
+ * hover card.
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-content"],
+	[data-slot="context-menu-content"],
+	[data-slot="menubar-content"],
+	[data-slot="select-content"],
+	[data-slot="popover-content"],
+	[data-slot="tooltip-content"]
+).border {
+	border-width: 0;
+	--tw-ring-shadow: 0 0 0 1px var(--popover-ring);
+}
+
+/*
+ * Enter and exit: opacity and scale .95 over 100ms, no slide (§5). Radix
+ * popups already animate with tw-animate-css on data-state ("open" or
+ * "closed"; tooltips use "delayed-open" and "instant-open"), and tw-animate's
+ * enter and exit keyframes read these properties, so setting them here
+ * changes the motion while the existing data-state classes keep deciding
+ * when it runs. An instance that sets its own duration keeps its motion.
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-content"],
+	[data-slot="dropdown-menu-sub-content"],
+	[data-slot="context-menu-content"],
+	[data-slot="context-menu-sub-content"],
+	[data-slot="menubar-content"],
+	[data-slot="menubar-sub-content"],
+	[data-slot="select-content"],
+	[data-slot="popover-content"],
+	[data-slot="tooltip-content"],
+	[data-slot="hover-card-content"]
+):not([class*="duration-"]) {
+	--tw-animation-duration: 100ms;
+	--tw-ease: cubic-bezier(0.4, 0, 0.2, 1);
+	--tw-enter-opacity: 0;
+	--tw-enter-scale: 0.95;
+	--tw-enter-translate-x: 0;
+	--tw-enter-translate-y: 0;
+	--tw-exit-opacity: 0;
+	--tw-exit-scale: 0.95;
+	--tw-exit-translate-x: 0;
+	--tw-exit-translate-y: 0;
+}
+
+/* The hover card is a little slower (§5). */
+html[data-skin="conductor"]
+[data-slot="hover-card-content"]:not([class*="duration-"]) {
+	--tw-animation-duration: 150ms;
+}
+
+/* Popovers are rounded-lg like menus (§6.16); Paradev has rounded-md. */
+html[data-skin="conductor"] [data-slot="popover-content"].rounded-md {
+	border-radius: var(--radius);
+}
+
+/* Select popups cap at 24rem (§6.3). */
+html[data-skin="conductor"]
+[data-slot="select-content"][class~="max-h-(--radix-select-content-available-height)"] {
+	max-height: min(24rem, var(--radix-select-content-available-height));
+}
+
+/*
+ * Submenus are rounded-md; a dropdown submenu sits on the page background
+ * (§6.4, §6.5).
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-sub-content"],
+	[data-slot="context-menu-sub-content"],
+	[data-slot="menubar-sub-content"]
+).rounded-lg {
+	border-radius: calc(var(--radius) - 2px);
+}
+
+html[data-skin="conductor"]
+	:is(
+		[data-slot="dropdown-menu-sub-content"],
+		[data-slot="menubar-sub-content"]
+	).bg-popover {
+	background-color: var(--background);
+}
+
+/* Hover card padding p-3 (shell-sidebar spec §4.7). */
+html[data-skin="conductor"] [data-slot="hover-card-content"].p-4 {
+	padding: 0.75rem;
+}
+
+/* Menu and select rows (§6.3 to §6.5, §8) --------------------------------- */
+
+/*
+ * Items are rounded-md. Radio items, sub-triggers and context-menu checkbox
+ * rows stay rounded-sm, as in Conductor.
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-item"],
+	[data-slot="dropdown-menu-checkbox-item"],
+	[data-slot="context-menu-item"],
+	[data-slot="menubar-item"],
+	[data-slot="menubar-checkbox-item"],
+	[data-slot="select-item"]
+).rounded-sm {
+	border-radius: calc(var(--radius) - 2px);
+}
+
+/*
+ * The highlight is a 5% ink or white wash. Paradev's bg-accent is the
+ * popover's own colour in Conductor Dark, so it would not show. Conductor
+ * still uses bg-accent for context-menu checkbox and radio rows; they get the
+ * wash too, so every menu row highlights the same. Destructive rows keep
+ * their red tint.
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-item"],
+	[data-slot="dropdown-menu-checkbox-item"],
+	[data-slot="dropdown-menu-radio-item"],
+	[data-slot="dropdown-menu-sub-trigger"],
+	[data-slot="context-menu-item"],
+	[data-slot="context-menu-checkbox-item"],
+	[data-slot="context-menu-radio-item"],
+	[data-slot="context-menu-sub-trigger"],
+	[data-slot="menubar-item"],
+	[data-slot="menubar-checkbox-item"],
+	[data-slot="menubar-radio-item"],
+	[data-slot="menubar-sub-trigger"]
+)[class~="focus:bg-accent"]:not([data-variant="destructive"]):is(
+	[data-highlighted],
+	:focus
+) {
+	background-color: var(--popover-accent);
+}
+
+/* A sub-trigger whose submenu is open keeps the wash. */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-sub-trigger"],
+	[data-slot="context-menu-sub-trigger"],
+	[data-slot="menubar-sub-trigger"]
+)[class~="data-[state=open]:bg-accent"][data-state="open"] {
+	background-color: var(--popover-accent);
+}
+
+html[data-skin="conductor"]
+	[data-slot="select-item"][class~="focus:bg-accent"]:is(
+		[data-highlighted],
+		:focus
+	) {
+	background-color: color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+/* Dropdown and select separators are bg-muted; context menus keep bg-border. */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-separator"],
+	[data-slot="menubar-separator"],
+	[data-slot="select-separator"]
+).bg-border {
+	background-color: var(--muted);
+}
+
+/* Shortcut text keeps 1rem from the label (tracking-widest is 1.44px). */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-shortcut"],
+	[data-slot="context-menu-shortcut"],
+	[data-slot="menubar-shortcut"]
+):not([class*="pl-"], [class*="px-"]) {
+	padding-left: 1rem;
+}
+
+/* Labels: regular weight in dropdowns, semibold in context menus. */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-label"],
+	[data-slot="menubar-label"]
+).font-medium {
+	font-weight: 400;
+}
+
+html[data-skin="conductor"] [data-slot="context-menu-label"].font-medium {
+	font-weight: 600;
+}
+
+/* Select group labels read as row text, not a muted caption (§6.3). */
+html[data-skin="conductor"]
+[data-slot="select-label"].text-muted-foreground.text-xs.px-2[class~="py-1.5"] {
+	padding: 0.25rem 2rem 0.25rem 0.5rem;
+	color: inherit;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-weight: 500;
+}
+
+/* Tooltip (§6.6) ---------------------------------------------------------- */
+
+/* Frosted glass: half the popover colour over a 12px blur. */
+html[data-skin="conductor"] [data-slot="tooltip-content"].bg-background {
+	background-color: color-mix(in srgb, var(--popover) 50%, transparent);
+	backdrop-filter: blur(12px);
+}
+
+html[data-skin="conductor"] [data-slot="tooltip-content"].shadow-sm {
+	--tw-shadow: 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a;
+}
+
+html[data-skin="conductor"]
+	[data-slot="tooltip-content"].text-muted-foreground {
+	color: var(--popover-foreground);
+}
+
+html[data-skin="conductor"] [data-slot="tooltip-content"].font-medium {
+	font-weight: 400;
+}
+
+html[data-skin="conductor"]
+	[data-slot="tooltip-content"]:not([class*="tracking-"]) {
+	letter-spacing: var(--tracking-wide);
+}
+
+html[data-skin="conductor"] [data-slot="tooltip-content"][class~="px-1.5"] {
+	padding-inline: 0.5rem;
+}
+
+html[data-skin="conductor"] [data-slot="tooltip-content"][class~="py-0.5"] {
+	padding-block: 0.25rem;
+}
+
+/*
+ * A bare <kbd> as the last thing in a tooltip brings its own padding (the
+ * global kbd style in type.css), so the tooltip's right padding shrinks.
+ * HotkeyLabel's flattened keys have no padding and keep the full 0.5rem.
+ */
+html[data-skin="conductor"]
+[data-slot="tooltip-content"][class~="px-1.5"]:has(> kbd) {
+	padding-right: 0.25rem;
+}
+
+/* Conductor's tooltips have no arrow (TooltipContent's showArrow). */
+html[data-skin="conductor"] [data-slot="tooltip-content"]
+	> span:has(> svg[class~="rotate-45"]) {
+	display: none;
+}
+
+/* Dialogs, alert dialogs and sheets (§6.7 to §6.9) ------------------------ */
+
+/* The overlay is the same 50% black plus a 4px blur, fading over 200ms. */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dialog-overlay"],
+	[data-slot="alert-dialog-overlay"],
+	[data-slot="sheet-overlay"]
+)[class~="bg-black/50"] {
+	backdrop-filter: blur(4px);
+}
+
+html[data-skin="conductor"]
+	:is(
+		[data-slot="dialog-overlay"],
+		[data-slot="alert-dialog-overlay"],
+		[data-slot="sheet-overlay"]
+	):not([class*="duration-"]) {
+	--tw-animation-duration: 200ms;
+}
+
+html[data-skin="conductor"] [data-slot="dialog-content"].rounded-lg {
+	border-radius: calc(var(--radius) - 2px);
+}
+
+/* A dialog only fades; the alert dialog keeps Paradev's scale, as Conductor. */
+html[data-skin="conductor"] [data-slot="dialog-content"].duration-200 {
+	--tw-enter-scale: 1;
+	--tw-exit-scale: 1;
+}
+
+/*
+ * Conductor anchors dialogs near the top so they do not jump when their
+ * content grows. That changes Radix's centring, so only dialogs that ask for
+ * it get it: data-tsenta-anchor="top" on DialogContent.
+ */
+html[data-skin="conductor"]
+[data-slot="dialog-content"][data-tsenta-anchor="top"] {
+	top: max(2rem, calc(50% - 250px));
+	--tw-translate-y: 0;
+}
+
+html[data-skin="conductor"] [data-slot="dialog-title"].text-lg {
+	font-size: 1.25rem;
+}
+
+html[data-skin="conductor"]
+	:is(
+		[data-slot="dialog-title"],
+		[data-slot="alert-dialog-title"]
+	).font-semibold {
+	font-weight: 500;
+}
+
+html[data-skin="conductor"]
+	[data-slot="dialog-title"]:not([class*="tracking-"]) {
+	letter-spacing: -0.025em;
+}
+
+/* Alert dialogs are rounded-xl from sm up (§6.8). */
+@media (width >= 40rem) {
+	html[data-skin="conductor"] [data-slot="alert-dialog-content"].rounded-lg {
+		border-radius: 0.75rem;
+	}
+}
+
+/* Inputs, textareas and select triggers (§6.2, §6.3) ---------------------- */
+
+html[data-skin="conductor"] [data-slot="input"].h-9 {
+	height: 2rem;
+}
+
+html[data-skin="conductor"]
+	:is(
+		[data-slot="input"],
+		[data-slot="textarea"],
+		[data-slot="select-trigger"]
+	).bg-transparent[class~="dark:bg-input/30"] {
+	background-color: var(--background);
+}
+
+html[data-skin="conductor"]
+	:is(
+		[data-slot="input"],
+		[data-slot="textarea"],
+		[data-slot="select-trigger"]
+	).shadow-xs {
+	--tw-shadow: 0 0 #0000;
+}
+
+/* Focus turns the border tan; there is no ring. Invalid fields keep red. */
+html[data-skin="conductor"]
+:is(
+	[data-slot="input"],
+	[data-slot="textarea"]
+)[class~="focus-visible:border-ring"]:focus:not([aria-invalid="true"]) {
+	border-color: var(--special);
+	outline: none;
+	--tw-ring-shadow: 0 0 #0000;
+}
+
+/* An instance's own height (h-7, h-8...) wins over the size default. */
+html[data-skin="conductor"]
+[data-slot="select-trigger"][data-size="default"][class~="data-[size=default]:h-9"]:not(
+	[class*=" h-"]
+) {
+	height: 2rem;
+}
+
+html[data-skin="conductor"]
+	[data-slot="select-trigger"].bg-transparent[class~="dark:bg-input/30"][class~="dark:hover:bg-input/50"]:is(
+		:hover,
+		[data-state="open"]
+	) {
+	background-color: var(--accent);
+}
+
+html[data-skin="conductor"] [data-slot="select-trigger"].px-3 {
+	padding-right: 0.625rem;
+}
+
+html[data-skin="conductor"] [data-slot="select-trigger"].gap-2 {
+	gap: 0.25rem;
+}
+
+/* The chevron is size-3 and fully muted. */
+html[data-skin="conductor"] [data-slot="select-trigger"]
+	> svg.opacity-50:last-child {
+	width: 0.75rem;
+	height: 0.75rem;
+	opacity: 1;
+}
+
+/* Switch (§6.11) ---------------------------------------------------------- */
+
+/* 40 by 20 track with a 16px thumb, 1px in from either end. */
+html[data-skin="conductor"] [data-slot="switch"].w-8[class~="h-[1.15rem]"] {
+	width: 2.5rem;
+	height: 1.25rem;
+}
+
+html[data-skin="conductor"]
+	[data-slot="switch"].w-8[class~="h-[1.15rem]"]
+	> [data-slot="switch-thumb"][data-state="checked"] {
+	translate: 21px 0;
+}
+
+html[data-skin="conductor"]
+	[data-slot="switch"].w-8[class~="h-[1.15rem]"]
+	> [data-slot="switch-thumb"][data-state="unchecked"] {
+	translate: 1px 0;
+}
+
+html[data-skin="conductor"]
+	[data-slot="switch"][class~="data-[state=checked]:bg-primary"][data-state="checked"] {
+	background-color: var(--switch-background);
+}
+
+html[data-skin="conductor"]
+	[data-slot="switch"][class~="data-[state=unchecked]:bg-input"][data-state="unchecked"] {
+	background-color: var(--input);
+}
+
+html[data-skin="conductor"] [data-slot="switch"].shadow-xs {
+	--tw-shadow: 0 0 #0000;
+}
+
+html[data-skin="conductor"]
+	[data-slot="switch"][class~="data-[state=checked]:bg-primary"]
+	> [data-slot="switch-thumb"] {
+	background-color: var(--switch-foreground);
+	box-shadow:
+		0 10px 15px -3px #0000001a,
+		0 4px 6px -4px #0000001a;
+}
+
+/* Checkbox (§6.12) -------------------------------------------------------- */
+
+html[data-skin="conductor"]
+[data-slot="checkbox"][class~="border-muted-foreground/50"] {
+	border-color: var(--primary);
+}
+
+html[data-skin="conductor"]
+	[data-slot="checkbox"][class~="dark:bg-input/30"]:not(
+		[data-state="checked"],
+		[data-state="indeterminate"]
+	) {
+	background-color: transparent;
+}
+
+html[data-skin="conductor"]
+	[data-slot="checkbox"][class~="data-[state=checked]:bg-primary"][data-state="indeterminate"] {
+	border-color: var(--primary);
+	background-color: var(--primary);
+	color: var(--primary-foreground);
+}
+
+html[data-skin="conductor"] [data-slot="checkbox"].shadow-xs {
+	--tw-shadow: 0 0 #0000;
+}
+
+/* Tabs, underline variant (§6.15) ----------------------------------------- */
+
+/*
+ * Opt-in per list with data-tsenta-tabs="underline" on TabsList: Paradev's
+ * settings use the segmented look, which stays. The active tab gets a 2px tan
+ * underline.
+ */
+html[data-skin="conductor"]
+[data-slot="tabs-list"][data-tsenta-tabs="underline"] {
+	height: 2.5rem;
+	gap: 0.5rem;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta-tabs="underline"]
+	> [data-slot="tabs-trigger"] {
+	height: 2.5rem;
+	padding-top: 0.125rem;
+	padding-bottom: 0;
+	border-width: 0 0 2px;
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--muted-foreground);
+	font-weight: 500;
+	--tw-shadow: 0 0 #0000;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta-tabs="underline"]
+	> [data-slot="tabs-trigger"][data-state="active"] {
+	border-bottom-color: var(--highlight-muted);
+	color: var(--foreground);
+}
+
+/* Buttons (§6.1) ---------------------------------------------------------- */
+
+/*
+ * Pressed is a 10% black wash; focus shows no ring. Heights are untouched:
+ * Paradev's layout relies on its button sizes. Fork components that want
+ * Conductor's sizes use tsenta/components/ui/button-variants.ts.
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="button"],
+	[data-slot="alert-dialog-action"]
+)[class~="focus-visible:ring-[3px]"]:focus-visible {
+	box-shadow: none;
+}
+
+html[data-skin="conductor"]
+	:is([data-slot="button"], [data-slot="alert-dialog-action"]):active:not(
+		:disabled
+	) {
+	box-shadow: inset 0 0 0 999px rgb(0 0 0 / 0.1);
+}
+
+/* Key caps (§6.17) -------------------------------------------------------- */
+
+/*
+ * The Kbd primitive outside tooltips (settings, empty states, dialogs): a
+ * bordered cap. In tooltips type.css flattens it to plain glyphs. Instances
+ * that resized or recoloured their caps keep them.
+ */
+html[data-skin="conductor"]
+[data-slot="kbd"].bg-muted.h-5.min-w-5:not([data-slot="tooltip-content"] *) {
+	height: auto;
+	min-width: 1.5rem;
+	padding: 0.125rem 0.375rem;
+	border: 1px solid var(--border);
+	box-shadow: 0 1px 2px 0 #0000000d;
+}
+
+/* Toasts (§6.20) ---------------------------------------------------------- */
+
+/*
+ * Paradev's Toaster is sonner with its colours swapped for the theme's
+ * popover. Sonner's own layout (16px padding, 8px radius, 13px text, 356px
+ * wide, bottom right) is already Conductor's, so with a Conductor theme only
+ * the colours go back to Conductor's black or white. Other themes keep their
+ * popover colours. The variables are set on the toast, which beats the
+ * inline values the toaster passes down.
+ */
+html[data-skin="conductor"][data-theme-id="conductor-dark"] [data-sonner-toaster][data-sonner-theme="dark"]
+	[data-sonner-toast]:not([data-invert="true"], [data-rich-colors="true"]) {
+	--normal-bg: #000;
+	--normal-border: hsl(0 0% 20%);
+	--normal-text: hsl(0 0% 99%);
+}
+
+html[data-skin="conductor"][data-theme-id="conductor-light"]
+	[data-sonner-toaster][data-sonner-theme="light"]
+	[data-sonner-toast]:not([data-invert="true"], [data-rich-colors="true"]) {
+	--normal-bg: #fff;
+	--normal-border: hsl(0 0% 93%);
+	--normal-text: hsl(0 0% 9%);
+}
+
+html[data-skin="conductor"]
+	[data-sonner-toast][data-styled="true"]:not([data-rich-colors="true"])
+	[data-description] {
+	color: var(--muted-foreground);
+	white-space: pre-line;
+}
+
+/* Scrollbars (§4) --------------------------------------------------------- */
+
+/*
+ * 8px with a rounded 20% thumb. Chromium ignores ::-webkit-scrollbar on an
+ * element whose scrollbar-width or scrollbar-color is set, and globals.css
+ * sets both on every element, so they go back to auto here. In the base
+ * layer, like globals.css, so [scrollbar-width:none] utilities and
+ * .hide-scrollbar still hide scrollbars.
+ */
+@layer base {
+	html[data-skin="conductor"] *:not(.hide-scrollbar) {
+		scrollbar-width: auto;
+		scrollbar-color: auto;
+	}
+
+	html[data-skin="conductor"] ::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+
+	html[data-skin="conductor"] ::-webkit-scrollbar-thumb {
+		border: 0;
+		border-radius: 5px;
+		background-clip: border-box;
+		background-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+	}
+
+	html[data-skin="conductor"] ::-webkit-scrollbar-thumb:hover {
+		background-color: var(--foreground);
+	}
+
+	html[data-skin="conductor"] ::-webkit-scrollbar-thumb:active {
+		background-color: var(--foreground);
+	}
+}

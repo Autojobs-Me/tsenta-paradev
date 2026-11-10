@@ -13,6 +13,8 @@
 @import "./type.css";
 /* 1px icon stroke. */
 @import "./icons.css";
+/* packages/ui primitives: menus, tooltips, dialogs, fields, toasts, scrollbars. */
+@import "./primitives.css";
 
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(
