@@ -133,6 +133,7 @@ export function TabItem<TData>({
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: tabs are pointer-driven; keyboard nav is out of scope here */}
 				<div
 					ref={setRef}
+					// tsenta:conductor (plan step 10): the tab hooks workspace.css keys on.
 					data-pane-tab=""
 					data-active={isActive || undefined}
 					className={cn(

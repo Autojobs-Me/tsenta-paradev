@@ -84,6 +84,7 @@ function AddTabButton<_TData>({
 		</button>
 	) : (
 		<Button
+			// tsenta:conductor (plan step 10): the "+" hook workspace.css keys on.
 			data-pane-add-tab=""
 			className="ml-1.5 size-7 rounded-md border border-border/60 bg-muted/30 px-1 text-muted-foreground shadow-none hover:bg-accent/60 hover:text-foreground"
 			size="icon"
@@ -271,6 +272,7 @@ export function TabBar<TData>({
 	return (
 		<div
 			ref={setRootRef}
+			// tsenta:conductor (plan step 10): the strip hook workspace.css keys on.
 			data-pane-tabbar=""
 			// Only the empty filler right of the tabs is an
 			// Electron window-drag region — marking the whole bar `drag` and carving
