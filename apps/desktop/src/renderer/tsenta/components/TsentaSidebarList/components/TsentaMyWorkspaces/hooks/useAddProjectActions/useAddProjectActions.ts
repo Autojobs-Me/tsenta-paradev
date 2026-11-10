@@ -9,12 +9,19 @@ import {
 	useOpenTemplateGalleryModal,
 } from "renderer/stores/add-repository-modal";
 
+export interface AddProjectActions {
+	openProject: () => Promise<void>;
+	cloneFromUrl: () => void;
+	createEmptyProject: () => void;
+	startFromTemplate: () => void;
+}
+
 /**
  * The stock Projects header's "Add project" menu actions, with its toasts,
  * for the "My workspaces" menu's "Add project" (DashboardSidebarWorkspacesHeader
  * does the same wiring inline).
  */
-export function useAddProjectActions() {
+export function useAddProjectActions(): AddProjectActions {
 	const { t } = useLingui();
 	const openEmptyProject = useOpenEmptyProjectModal();
 	const openNewWorkspace = useOpenNewWorkspaceForLocalProject();

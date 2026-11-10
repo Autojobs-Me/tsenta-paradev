@@ -25,6 +25,7 @@ import { TsentaSectionHeader } from "../TsentaSectionHeader";
 import { useSidebarListDrop } from "../TsentaSidebarDnd";
 import { TsentaSidebarRow } from "../TsentaSidebarRow";
 import { TsentaMyWorkspacesMenu } from "./components/TsentaMyWorkspacesMenu";
+import { useAddProjectActions } from "./hooks/useAddProjectActions";
 
 const FLAT_TARGET = { kind: "loose" } as const;
 
@@ -70,6 +71,7 @@ export function TsentaMyWorkspaces({
 }: TsentaMyWorkspacesProps) {
 	const { t } = useLingui();
 	const grouping = useTsentaSidebarGrouping((state) => state.grouping);
+	const addProject = useAddProjectActions();
 	const { workspacesById, groupInfo } = useDashboardSidebarDnd();
 	const isCollapsed = useSidebarSectionsCollapseStore(
 		(state) => state.collapsed.workspaces,
@@ -130,6 +132,7 @@ export function TsentaMyWorkspaces({
 							onOpenFilter={openFilter}
 							projects={repos.map((repo) => repo.project)}
 							onNewSection={onNewSection}
+							addProject={addProject}
 						/>
 					</TsentaSectionActionsButton>
 				</div>

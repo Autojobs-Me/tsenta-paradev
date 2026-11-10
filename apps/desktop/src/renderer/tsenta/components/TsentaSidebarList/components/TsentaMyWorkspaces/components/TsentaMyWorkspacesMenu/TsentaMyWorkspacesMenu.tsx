@@ -25,7 +25,7 @@ import {
 	type TsentaSidebarGrouping,
 	useTsentaSidebarGrouping,
 } from "renderer/tsenta/stores/sidebar-grouping";
-import { useAddProjectActions } from "./hooks/useAddProjectActions";
+import type { AddProjectActions } from "../../hooks/useAddProjectActions";
 
 const SORT_MODES: SidebarProjectSortMode[] = ["manual", "active", "created"];
 const HOST_FILTERS: SidebarProjectHostFilter[] = ["all", "local", "cloud"];
@@ -40,6 +40,12 @@ interface TsentaMyWorkspacesMenuProps {
 	/** Projects a new folder can go in. */
 	projects: readonly DashboardSidebarProject[];
 	onNewSection: (projectId: string) => void;
+	/**
+	 * From the always-mounted section: this menu unmounts as an item is
+	 * chosen, and opening a project carries on after that (folder picker,
+	 * import, toasts).
+	 */
+	addProject: AddProjectActions;
 }
 
 /**
@@ -57,11 +63,11 @@ export function TsentaMyWorkspacesMenu({
 	onOpenFilter,
 	projects,
 	onNewSection,
+	addProject,
 }: TsentaMyWorkspacesMenuProps) {
 	const { t } = useLingui();
 	const grouping = useTsentaSidebarGrouping((state) => state.grouping);
 	const setGrouping = useTsentaSidebarGrouping((state) => state.setGrouping);
-	const addProject = useAddProjectActions();
 	const openNewSession = useOpenNewSession();
 	const sortLabels: Record<SidebarProjectSortMode, string> = {
 		manual: t({ message: "Manual order" }),
