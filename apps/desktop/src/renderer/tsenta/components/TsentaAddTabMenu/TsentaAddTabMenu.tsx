@@ -3,9 +3,12 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 } from "@superset/ui/dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
-import { Settings } from "lucide-react";
+import { Eye, EyeOff, Settings } from "lucide-react";
 import {
 	type ComponentProps,
 	isValidElement,
@@ -22,12 +25,17 @@ import {
 	useIsDarkTheme,
 } from "renderer/assets/app-icons/preset-icons";
 import { HotkeyMenuShortcut } from "renderer/components/HotkeyMenuShortcut";
-import { useBuiltinPresets } from "renderer/hooks/useBuiltinPresets";
+import {
+	type BuiltinPresetEntry,
+	useBuiltinPresets,
+} from "renderer/hooks/useBuiltinPresets";
 import { useV2AgentConfigs } from "renderer/hooks/useV2AgentConfigs";
+import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import type { HotkeyId } from "renderer/hotkeys";
 import { posthog } from "renderer/lib/posthog";
 import { resolveV2PresetIcon } from "renderer/lib/preset-icon";
 import { AddTabMenu } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/AddTabMenu";
+import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import type { V2TerminalPresetRow } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 
@@ -181,7 +189,7 @@ function PaneKindItems({
 /**
  * Paradev's launcher row as menu entries: the presets the row shows, in its
  * order and with its shortcuts, then the built-in ones it shows after them,
- * and the way to manage them.
+ * and the row's gear menu as a submenu to show or hide each of them.
  */
 function LauncherItems({
 	launchers: { matchedPresets, executePreset },
@@ -190,7 +198,6 @@ function LauncherItems({
 	launchers: TsentaLaunchers;
 	runAfterClose: (action: () => void) => void;
 }) {
-	const navigate = useNavigate();
 	const isDark = useIsDarkTheme();
 	const { activeHostUrl } = useLocalHostService();
 	const { data: agents } = useV2AgentConfigs(activeHostUrl);
@@ -242,16 +249,124 @@ function LauncherItems({
 					<span className="min-w-0 flex-1 truncate">{preset.name}</span>
 				</DropdownMenuItem>
 			))}
-			<DropdownMenuItem
-				className="gap-2"
-				onClick={() => navigate({ to: "/settings/terminal" })}
-			>
+			<LauncherVisibilityMenu
+				agents={agents}
+				builtinPresets={builtinPresets}
+				isDark={isDark}
+				matchedPresets={matchedPresets}
+				visiblePresets={visiblePresets}
+			/>
+		</>
+	);
+}
+
+/**
+ * The launcher row's gear menu (V2PresetsBar), which the skin no longer
+ * draws: every preset and built-in launcher with its eye, to show or hide
+ * it in this menu and the palette, then the terminal settings. It writes
+ * what the gear wrote (the preset's pinnedToBar, the built-in's hidden
+ * preference), so the two stay in step when the skin is switched off.
+ */
+function LauncherVisibilityMenu({
+	agents,
+	builtinPresets,
+	isDark,
+	matchedPresets,
+	visiblePresets,
+}: {
+	agents: ReturnType<typeof useV2AgentConfigs>["data"];
+	builtinPresets: BuiltinPresetEntry[];
+	isDark: boolean;
+	matchedPresets: V2TerminalPresetRow[];
+	visiblePresets: V2TerminalPresetRow[];
+}) {
+	const navigate = useNavigate();
+	const collections = useCollections();
+	const { setBuiltinPresetHidden } = useV2UserPreferences();
+	const builtinIcon = getPresetIcon("superset", isDark);
+	return (
+		<DropdownMenuSub>
+			<DropdownMenuSubTrigger className="gap-2">
 				<Settings className="size-4" />
 				<span>
 					<Trans>Manage Terminal Scripts</Trans>
 				</span>
-			</DropdownMenuItem>
-		</>
+			</DropdownMenuSubTrigger>
+			<DropdownMenuSubContent className="w-56">
+				{matchedPresets.map((preset) => {
+					const isVisible = preset.pinnedToBar !== false;
+					const hotkeyId = PRESET_HOTKEY_IDS[visiblePresets.indexOf(preset)];
+					return (
+						<DropdownMenuItem
+							key={preset.id}
+							className="gap-2"
+							onSelect={(event) => {
+								event.preventDefault();
+								collections.v2TerminalPresets.update(preset.id, (draft) => {
+									draft.pinnedToBar = !isVisible;
+								});
+							}}
+						>
+							<PresetIcon src={resolveV2PresetIcon(preset, agents, isDark)} />
+							<span className="min-w-0 flex-1 truncate">
+								{preset.name || "default"}
+							</span>
+							<VisibilityMark
+								hotkeyId={isVisible ? hotkeyId : undefined}
+								isVisible={isVisible}
+							/>
+						</DropdownMenuItem>
+					);
+				})}
+				{builtinPresets.map(({ preset, isVisible }) => (
+					<DropdownMenuItem
+						key={preset.id}
+						className="gap-2"
+						onSelect={(event) => {
+							event.preventDefault();
+							setBuiltinPresetHidden(preset.id, isVisible);
+							posthog.capture(
+								isVisible ? "builtin_preset_hidden" : "builtin_preset_unhidden",
+								{ presetId: preset.id },
+							);
+						}}
+					>
+						<PresetIcon src={builtinIcon} />
+						<span className="min-w-0 flex-1 truncate">{preset.name}</span>
+						<VisibilityMark isVisible={isVisible} />
+					</DropdownMenuItem>
+				))}
+				<DropdownMenuSeparator />
+				<DropdownMenuItem
+					className="gap-2"
+					onClick={() => navigate({ to: "/settings/terminal" })}
+				>
+					<Settings className="size-4" />
+					<span>
+						<Trans>Open Settings</Trans>
+					</span>
+				</DropdownMenuItem>
+			</DropdownMenuSubContent>
+		</DropdownMenuSub>
+	);
+}
+
+function VisibilityMark({
+	hotkeyId,
+	isVisible,
+}: {
+	hotkeyId?: HotkeyId | undefined;
+	isVisible: boolean;
+}) {
+	return (
+		<span className="ml-auto flex items-center gap-2">
+			{hotkeyId && <HotkeyMenuShortcut hotkeyId={hotkeyId} />}
+			{isVisible ? (
+				<Eye className="size-3.5 text-foreground" />
+			) : (
+				<EyeOff className="size-3.5 text-muted-foreground/60" />
+			)}
+		</span>
 	);
 }
 
