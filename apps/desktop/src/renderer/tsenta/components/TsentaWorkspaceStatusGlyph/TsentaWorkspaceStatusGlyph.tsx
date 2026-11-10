@@ -1,9 +1,14 @@
+import { useLingui } from "@lingui/react/macro";
 import { WaveSpinner } from "@superset/ui/atoms/WaveSpinner";
 import { cn } from "@superset/ui/utils";
 import type { ReactNode } from "react";
+import { useSidebarWorkspaceStatus } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/DashboardSidebarWorkspaceStatusProvider";
 import type { DashboardSidebarWorkspace } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
+import { TsentaWorkspaceStatusMatrix } from "renderer/tsenta/components/TsentaWorkspaceStatusMatrix";
 import type { ActivePaneStatus } from "shared/tabs-types";
+import { pickConductorMatrixStatus } from "./pickConductorMatrixStatus";
 import {
+	type ConductorStatusInput,
 	type ConductorWorkspaceStatus,
 	pickConductorStatus,
 } from "./pickConductorStatus";
@@ -159,27 +164,55 @@ interface TsentaWorkspaceStatusGlyphProps {
 
 /**
  * The sidebar row's status icon under the Conductor skin, in place of
- * DashboardSidebarWorkspaceLeadIndicator: the same Paradev sources (sandbox,
- * agent and pull request state), drawn with Conductor's glyphs and colours
- * at 14px. Setting up and working keep Paradev's spinner until the loaders
- * of plan step 18; project-less sessions keep Paradev's quiet dot.
+ * DashboardSidebarWorkspaceLeadIndicator, from the same Paradev sources
+ * (sandbox, agent and pull request state, and the row's unread mark):
+ * Conductor's workspace status matrix, which Conductor shows for cloud and
+ * team workspaces (shell-sidebar spec §4.7). An agent waiting on permission
+ * counts as unread, as in Conductor.
  *
- * The glyphs carry data-keep-stroke: Conductor draws them at 2px, outside
- * its 1px icon rule (icons.css).
+ * The one state the matrix cannot show, a closed pull request, keeps the
+ * fork's step-7 glyph (Conductor's glyphs and colours at 14px). Those
+ * carry data-keep-stroke: Conductor draws them at 2px, outside its 1px icon
+ * rule (icons.css).
  */
 export function TsentaWorkspaceStatusGlyph({
 	workspace,
 	workspaceStatus,
 	isCreatePending,
 }: TsentaWorkspaceStatusGlyphProps) {
-	const status = pickConductorStatus({
+	const { t } = useLingui();
+	const { isUnread } = useSidebarWorkspaceStatus(workspace.id);
+	const input: ConductorStatusInput = {
 		workspaceStatus,
 		isCreatePending,
 		sandboxStatus: workspace.sandboxStatus,
 		pullRequest: workspace.pullRequest,
 		hasRemote: workspace.branchExistsOnRemote,
 		isSession: workspace.type === "session",
-	});
+	};
+	const matrix = pickConductorMatrixStatus(input);
+	if (matrix) {
+		const hasUnread = isUnread || workspaceStatus === "permission";
+		return (
+			<span
+				className="contents"
+				data-lead={matrix.status}
+				data-unread={hasUnread || undefined}
+			>
+				<TsentaWorkspaceStatusMatrix
+					status={matrix.status}
+					gitStatus={matrix.gitStatus}
+					hasUnread={hasUnread}
+					label={
+						input.isSession && matrix.status === "local"
+							? t({ message: "Session" })
+							: undefined
+					}
+				/>
+			</span>
+		);
+	}
+	const status = pickConductorStatus(input);
 	return (
 		<span className="contents" data-lead={status}>
 			{renderGlyph(status)}

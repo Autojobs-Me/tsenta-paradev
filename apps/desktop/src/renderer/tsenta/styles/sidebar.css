@@ -162,8 +162,9 @@ html[data-skin="conductor"]
 
 /*
  * The name (or the rename field) is the first cell of the row's grid. Idle
- * names are muted at weight 450; unread ones are semibold and bright, and
- * the open or selected row's name is bright.
+ * names are muted at weight 450; unread ones (Paradev's unread mark, or an
+ * agent waiting on permission, which the status matrix flags) are medium
+ * and bright, and the open or selected row's name is bright.
  */
 html[data-skin="conductor"] [data-tsenta="ws-row-main"] > :first-child {
 	font-size: var(--text-sm);
@@ -185,10 +186,11 @@ html[data-skin="conductor"]
 }
 
 html[data-skin="conductor"]
-	[data-tsenta="ws-row"][data-unread]
+	[data-tsenta="ws-row"]:is([data-unread], :has([data-lead][data-unread]))
 	[data-tsenta="ws-row-main"]
 	> :first-child:not(input) {
-	font-weight: 600;
+	/* Medium, not semibold: Conductor's weight beside the status matrix. */
+	font-weight: 500;
 	color: var(--sidebar-accent-foreground);
 }
 
@@ -259,6 +261,14 @@ html[data-skin="conductor"]
 	margin-left: 13px;
 }
 
+/*
+ * The trailing meta (TsentaRowMeta: diff stats or the time) takes the host
+ * glyph's place; Conductor rows show no host. The hover card still does.
+ */
+html[data-skin="conductor"] [data-tsenta="ws-row-meta"] ~ * {
+	display: none;
+}
+
 /* A workspace still being created is dimmed, as Conductor's placeholder is. */
 html[data-skin="conductor"] [data-tsenta="ws-row"][data-pending] {
 	opacity: 0.5;
@@ -326,4 +336,168 @@ html[data-skin="conductor"]
 	> button
 	> .truncate {
 	max-width: 8rem;
+}
+
+/* Workspace status matrix (SS §4.7) --------------------------------------- */
+
+/*
+ * Conductor's matrix animations, verbatim from its stylesheet: per-cell
+ * timings come in as custom properties from TsentaWorkspaceStatusMatrix.
+ * With reduced motion the cells hold their steady frame.
+ */
+html[data-skin="conductor"] .workspace-matrix-pulse {
+	animation: workspace-matrix-pulse-opacity
+		var(--workspace-matrix-pulse-duration) linear
+		var(--workspace-matrix-pulse-delay) infinite;
+}
+
+html[data-skin="conductor"] .workspace-matrix-attention {
+	animation: 1s ease-in-out infinite alternate
+		workspace-matrix-attention-opacity;
+}
+
+html[data-skin="conductor"] .workspace-matrix-attention[data-paused="true"] {
+	opacity: 1;
+	animation: none;
+}
+
+html[data-skin="conductor"] .workspace-matrix-twinkle {
+	animation: workspace-matrix-twinkle-opacity
+		var(--workspace-matrix-twinkle-duration) ease-in-out
+		var(--workspace-matrix-twinkle-delay) infinite;
+}
+
+html[data-skin="conductor"] .workspace-matrix-sweep {
+	animation: workspace-matrix-sweep-opacity
+		var(--workspace-matrix-sweep-duration) ease-in-out
+		var(--workspace-matrix-sweep-delay) infinite;
+}
+
+html[data-skin="conductor"] .workspace-matrix-waiting {
+	animation: workspace-matrix-wave-opacity 1.9635s linear
+		var(--workspace-matrix-waiting-delay) infinite;
+}
+
+html[data-skin="conductor"] .workspace-matrix-setting-up {
+	animation: workspace-matrix-wave-opacity 1.5708s linear
+		var(--workspace-matrix-setup-delay) infinite;
+}
+
+@keyframes workspace-matrix-sweep-opacity {
+	0%,
+	32%,
+	to {
+		opacity: 0;
+	}
+	14% {
+		opacity: 1;
+	}
+}
+
+@keyframes workspace-matrix-twinkle-opacity {
+	0%,
+	45%,
+	to {
+		opacity: 0;
+	}
+	67% {
+		opacity: 1;
+	}
+	84% {
+		opacity: 0.2;
+	}
+}
+
+@keyframes workspace-matrix-attention-opacity {
+	0% {
+		opacity: 1;
+	}
+	to {
+		opacity: 0.1;
+	}
+}
+
+@keyframes workspace-matrix-pulse-opacity {
+	0%,
+	to {
+		opacity: 0.333;
+	}
+	2.5% {
+		opacity: 0.507;
+	}
+	5% {
+		opacity: 0.677;
+	}
+	7.5%,
+	42.5% {
+		opacity: 0.838;
+	}
+	10.24%,
+	39.76% {
+		opacity: 1;
+	}
+	45% {
+		opacity: 0.677;
+	}
+	47.5% {
+		opacity: 0.507;
+	}
+	50% {
+		opacity: 0.333;
+	}
+	52.5%,
+	97.5% {
+		opacity: 0.16;
+	}
+	54.85%,
+	95.15% {
+		opacity: 0;
+	}
+}
+
+@keyframes workspace-matrix-wave-opacity {
+	0%,
+	to {
+		opacity: 0.5;
+		animation-timing-function: ease-out;
+	}
+	25% {
+		opacity: 1;
+		animation-timing-function: ease-in;
+	}
+	50% {
+		opacity: 0.5;
+		animation-timing-function: ease-out;
+	}
+	75% {
+		opacity: 0;
+		animation-timing-function: ease-in;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html[data-skin="conductor"]
+		:is(
+			.workspace-matrix-attention,
+			.workspace-matrix-pulse,
+			.workspace-matrix-setting-up,
+			.workspace-matrix-sweep,
+			.workspace-matrix-twinkle,
+			.workspace-matrix-waiting
+		) {
+		opacity: 0;
+		animation: none;
+	}
+
+	html[data-skin="conductor"]
+		:is(
+			.workspace-matrix-attention,
+			.workspace-matrix-pulse[data-reduced-highlight="true"],
+			.workspace-matrix-twinkle[data-reduced-highlight="true"],
+			.workspace-matrix-sweep[data-reduced-highlight="true"],
+			.workspace-matrix-waiting[data-waiting-static="true"],
+			.workspace-matrix-setting-up[data-setup-corner="true"]
+		) {
+		opacity: 1;
+	}
 }

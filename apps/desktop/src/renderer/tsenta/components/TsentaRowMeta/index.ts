@@ -1,0 +1,1 @@
+export { TsentaRowMeta } from "./TsentaRowMeta";
