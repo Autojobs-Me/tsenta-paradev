@@ -71,9 +71,11 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/MarkdownView/MarkdownView.tsx'
 	# ...and the transcript's component barrels that export the fork's
 	# Conductor rows (renderer/tsenta/chat), Paradev's own with the skin off:
-	# the tool card, and steps with no rail beside them.
+	# the tool card, steps with no rail beside them, and runs of calls flat
+	# while they run, folded under Conductor's summary line once done.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ToolCallRow/index.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/TurnGroupSection/components/RailStep/index.ts'
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/TurnGroupSection/components/ToolRunRow/index.ts'
 )
 
 base="${1:-}"
