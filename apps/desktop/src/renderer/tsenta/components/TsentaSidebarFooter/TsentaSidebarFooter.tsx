@@ -6,14 +6,15 @@ import { Settings } from "lucide-react";
 import { UpdatesPill } from "renderer/components/UpdatesPill";
 import { HotkeyLabel } from "renderer/hotkeys";
 import { OrganizationDropdown } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/OrganizationDropdown";
+import { HelpMenu } from "./components/HelpMenu";
 import { PlanBadge } from "./components/PlanBadge";
 
 /**
  * Conductor's sidebar footer (shell-sidebar spec §3.5), in place of the
  * expanded sidebar's bottom bar under the Conductor skin: the organization
- * and plan on the left; updates and settings on the right, 20px apart. The
- * organization is still Paradev's menu (switching, members, new window,
- * notifications, help, log out); sidebar.css draws its trigger as
+ * and plan on the left; updates, help and settings on the right, 20px
+ * apart. The organization is still Paradev's menu (switching, members, new
+ * window, notifications, help, log out); sidebar.css draws its trigger as
  * Conductor's muted name.
  */
 export function TsentaSidebarFooter() {
@@ -36,6 +37,7 @@ export function TsentaSidebarFooter() {
 			</span>
 			<div className="ml-auto flex shrink-0 items-center gap-5">
 				<UpdatesPill />
+				<HelpMenu />
 				<Tooltip delayDuration={300}>
 					<TooltipTrigger asChild>
 						<button
