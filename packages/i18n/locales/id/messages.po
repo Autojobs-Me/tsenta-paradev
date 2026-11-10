@@ -408,6 +408,14 @@ msgstr "{0, plural, one {Workspace ini sudah dipindahkan. # chat-nya tetap di si
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, other {Lihat # komentar yang terselesaikan}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {Menunggu # agen} other {Menunggu # agen}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {Menunggu # tugas latar belakang} other {Menunggu # tugas latar belakang}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {Memantau # halaman untuk komentar} other {Memantau # halaman untuk komentar}}"
@@ -1023,6 +1031,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "{distance} lalu"
 
+msgid "{done}/{total} completed"
+msgstr "{done}/{total} selesai"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {Berpikir # detik} other {Berpikir # detik}}"
 
@@ -1410,6 +1421,9 @@ msgstr "{threshold, plural, other {# PR agen digabungkan}}"
 
 msgid "{toolName} interrupted"
 msgstr "{toolName} dihentikan"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {# tugas} other {# tugas}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, one {Semua # check lulus} other {Semua # check lulus}}"
@@ -15682,6 +15696,9 @@ msgstr "Prompt yang Anda kirim akan muncul di sini."
 msgid "Properties"
 msgstr "Properti"
 
+msgid "Propose plan"
+msgstr "Usulkan rencana"
+
 msgid "Provide either id or slug"
 msgstr "Berikan id atau slug"
 
@@ -15739,8 +15756,8 @@ msgid "Pull request"
 msgstr "Pull request"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "Pull request #{0}"
 
@@ -21082,6 +21099,18 @@ msgstr "HARI INI"
 msgid "Todo"
 msgstr "Todo"
 
+msgid "Todo completed"
+msgstr "Tugas selesai"
+
+msgid "Todo list completed"
+msgstr "Daftar tugas selesai"
+
+msgid "Todo list created"
+msgstr "Daftar tugas dibuat"
+
+msgid "Todo started"
+msgstr "Tugas dimulai"
+
 msgid "Toggle"
 msgstr "Toggle"
 
@@ -22211,6 +22240,9 @@ msgstr "Tunggu setup workspace sebelum menjalankan agen"
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "menunggu {0} dan {1}…"
+
+msgid "Waiting for {only}"
+msgstr "Menunggu {only}"
 
 msgid "Waiting for activity data"
 msgstr "Menunggu data aktivitas"

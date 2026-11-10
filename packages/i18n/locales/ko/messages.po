@@ -408,6 +408,14 @@ msgstr "{0, plural, one {이 워크스페이스를 옮겼습니다. 채팅 #개�
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, other {해결된 댓글 #개 보기}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {에이전트 #개 대기 중} other {에이전트 #개 대기 중}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {백그라운드 작업 #개 대기 중} other {백그라운드 작업 #개 대기 중}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {#개 페이지의 댓글을 감시 중} other {#개 페이지의 댓글을 감시 중}}"
@@ -1023,6 +1031,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "{distance} 전"
 
+msgid "{done}/{total} completed"
+msgstr "{done}/{total} 완료"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {#초 동안 생각함} other {#초 동안 생각함}}"
 
@@ -1410,6 +1421,9 @@ msgstr "{threshold, plural, other {에이전트 PR # 건 머지}}"
 
 msgid "{toolName} interrupted"
 msgstr "{toolName} 중단됨"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {할 일 #개} other {할 일 #개}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, one {#개 검사를 모두 통과했습니다} other {#개 검사를 모두 통과했습니다}}"
@@ -15682,6 +15696,9 @@ msgstr "제출한 프롬프트가 여기에 표시됩니다."
 msgid "Properties"
 msgstr "속성"
 
+msgid "Propose plan"
+msgstr "계획 제안"
+
 msgid "Provide either id or slug"
 msgstr "id 또는 슬러그 중 하나를 제공하세요"
 
@@ -15739,8 +15756,8 @@ msgid "Pull request"
 msgstr "풀 리퀘스트"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "풀 리퀘스트 #{0}"
 
@@ -21082,6 +21099,18 @@ msgstr "오늘"
 msgid "Todo"
 msgstr "할 일"
 
+msgid "Todo completed"
+msgstr "할 일 완료"
+
+msgid "Todo list completed"
+msgstr "할 일 목록 완료"
+
+msgid "Todo list created"
+msgstr "할 일 목록 생성됨"
+
+msgid "Todo started"
+msgstr "할 일 시작"
+
 msgid "Toggle"
 msgstr "토글"
 
@@ -22211,6 +22240,9 @@ msgstr "에이전트를 시작하기 전에 워크스페이스 설정 기다리�
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "{0}와 {1}을(를) 기다리는 중…"
+
+msgid "Waiting for {only}"
+msgstr "{only} 대기 중"
 
 msgid "Waiting for activity data"
 msgstr "활동 데이터 대기 중"

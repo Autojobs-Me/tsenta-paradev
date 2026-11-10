@@ -408,6 +408,14 @@ msgstr "{0, plural, one {此工作区已移动。它的 # 个聊天留在了这�
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, other {查看 # 条已解决的评论}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {正在等待 # 个智能体} other {正在等待 # 个智能体}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {正在等待 # 个后台任务} other {正在等待 # 个后台任务}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {正在关注#个页面的评论} other {正在关注#个页面的评论}}"
@@ -1023,6 +1031,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "{distance}前"
 
+msgid "{done}/{total} completed"
+msgstr "已完成 {done}/{total}"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {思考了#秒} other {思考了#秒}}"
 
@@ -1410,6 +1421,9 @@ msgstr "{threshold, plural, other {已合并 # 个智能体 PR}}"
 
 msgid "{toolName} interrupted"
 msgstr "{toolName}已中断"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {# 个待办} other {# 个待办}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, one {#项检查全部通过} other {#项检查全部通过}}"
@@ -15682,6 +15696,9 @@ msgstr "你提交过的提示词会显示在这里。"
 msgid "Properties"
 msgstr "属性"
 
+msgid "Propose plan"
+msgstr "提议计划"
+
 msgid "Provide either id or slug"
 msgstr "请提供id或slug"
 
@@ -15739,8 +15756,8 @@ msgid "Pull request"
 msgstr "拉取请求"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "拉取请求#{0}"
 
@@ -21082,6 +21099,18 @@ msgstr "今天"
 msgid "Todo"
 msgstr "待办"
 
+msgid "Todo completed"
+msgstr "待办已完成"
+
+msgid "Todo list completed"
+msgstr "待办清单已完成"
+
+msgid "Todo list created"
+msgstr "已创建待办清单"
+
+msgid "Todo started"
+msgstr "待办已开始"
+
 msgid "Toggle"
 msgstr "切换控件"
 
@@ -22211,6 +22240,9 @@ msgstr "启动智能体前等待工作区设置完成"
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "正在等待 {0} 和 {1}…"
+
+msgid "Waiting for {only}"
+msgstr "正在等待 {only}"
 
 msgid "Waiting for activity data"
 msgstr "正在等待活动数据"

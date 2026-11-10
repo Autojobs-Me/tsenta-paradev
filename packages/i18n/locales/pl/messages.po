@@ -408,6 +408,14 @@ msgstr "{0, plural, one {Ten obszar roboczy został przeniesiony. Jego # czat po
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, one {Pokaż # rozwiązany komentarz} few {Pokaż # rozwiązane komentarze} many {Pokaż # rozwiązanych komentarzy} other {Pokaż # rozwiązanych komentarzy}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {Oczekiwanie na # agenta} few {Oczekiwanie na # agentów} many {Oczekiwanie na # agentów} other {Oczekiwanie na # agenta}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {Oczekiwanie na # zadanie w tle} few {Oczekiwanie na # zadania w tle} many {Oczekiwanie na # zadań w tle} other {Oczekiwanie na # zadania w tle}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {Obserwuje # stronę pod kątem komentarzy} few {Obserwuje # strony pod kątem komentarzy} many {Obserwuje # stron pod kątem komentarzy} other {Obserwuje # strony pod kątem komentarzy}}"
@@ -1023,6 +1031,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "{distance} temu"
 
+msgid "{done}/{total} completed"
+msgstr "Ukończono {done}/{total}"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {Myślał # sekundę} few {Myślał # sekundy} many {Myślał # sekund} other {Myślał # sekundy}}"
 
@@ -1410,6 +1421,9 @@ msgstr "{threshold, plural, one {scalono # PR agenta} few {scalono # PR agenta} 
 
 msgid "{toolName} interrupted"
 msgstr "{toolName} przerwane"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {# zadanie} few {# zadania} many {# zadań} other {# zadania}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, one {Kontrola przeszła} few {Wszystkie # kontrole przeszły} many {Wszystkie # kontroli przeszło} other {Wszystkie # kontroli przeszło}}"
@@ -15683,6 +15697,9 @@ msgstr "Przesłane prompty pojawią się tutaj."
 msgid "Properties"
 msgstr "Właściwości"
 
+msgid "Propose plan"
+msgstr "Zaproponuj plan"
+
 msgid "Provide either id or slug"
 msgstr "Podaj id albo slug"
 
@@ -15740,8 +15757,8 @@ msgid "Pull request"
 msgstr "Pull request"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "Pull request #{0}"
 
@@ -21083,6 +21100,18 @@ msgstr "DZIŚ"
 msgid "Todo"
 msgstr "Do zrobienia"
 
+msgid "Todo completed"
+msgstr "Zadanie ukończone"
+
+msgid "Todo list completed"
+msgstr "Lista zadań ukończona"
+
+msgid "Todo list created"
+msgstr "Utworzono listę zadań"
+
+msgid "Todo started"
+msgstr "Rozpoczęto zadanie"
+
 msgid "Toggle"
 msgstr "Przełącznik"
 
@@ -22212,6 +22241,9 @@ msgstr "Czekaj na konfigurację obszaru roboczego przed uruchomieniem agentów"
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "czekamy na {0} i {1}…"
+
+msgid "Waiting for {only}"
+msgstr "Oczekiwanie na {only}"
 
 msgid "Waiting for activity data"
 msgstr "Oczekiwanie na dane aktywności"

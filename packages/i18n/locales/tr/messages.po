@@ -408,6 +408,14 @@ msgstr "{0, plural, one {Bu çalışma alanı taşındı. # sohbeti burada kald�
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, one {# çözülen yorumu göster} other {# çözülen yorumu göster}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {# ajan bekleniyor} other {# ajan bekleniyor}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {# arka plan görevi bekleniyor} other {# arka plan görevi bekleniyor}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {Yorumlar için # sayfa izleniyor} other {Yorumlar için # sayfa izleniyor}}"
@@ -1023,6 +1031,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "{distance} önce"
 
+msgid "{done}/{total} completed"
+msgstr "{done}/{total} tamamlandı"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {# saniye düşündü} other {# saniye düşündü}}"
 
@@ -1410,6 +1421,9 @@ msgstr "{threshold, plural, one {# ajan PR'ı birleştirildi} other {# ajan PR'�
 
 msgid "{toolName} interrupted"
 msgstr "{toolName} kesildi"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {# yapılacak} other {# yapılacak}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, one {# kontrolün tümü geçti} other {# kontrolün tümü geçti}}"
@@ -15682,6 +15696,9 @@ msgstr "Gönderdiğiniz istemler burada görünecek."
 msgid "Properties"
 msgstr "Özellikler"
 
+msgid "Propose plan"
+msgstr "Plan öner"
+
 msgid "Provide either id or slug"
 msgstr "id veya slug değerlerinden birini sağlayın"
 
@@ -15739,8 +15756,8 @@ msgid "Pull request"
 msgstr "Pull request"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "Pull request #{0}"
 
@@ -21082,6 +21099,18 @@ msgstr "BUGÜN"
 msgid "Todo"
 msgstr "Yapılacak"
 
+msgid "Todo completed"
+msgstr "Yapılacak tamamlandı"
+
+msgid "Todo list completed"
+msgstr "Yapılacaklar listesi tamamlandı"
+
+msgid "Todo list created"
+msgstr "Yapılacaklar listesi oluşturuldu"
+
+msgid "Todo started"
+msgstr "Yapılacak başlatıldı"
+
 msgid "Toggle"
 msgstr "Anahtar"
 
@@ -22211,6 +22240,9 @@ msgstr "Ajanları başlatmadan önce çalışma alanı kurulumunu bekle"
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "{0} ve {1} bekleniyor…"
+
+msgid "Waiting for {only}"
+msgstr "{only} bekleniyor"
 
 msgid "Waiting for activity data"
 msgstr "Etkinlik verileri bekleniyor"

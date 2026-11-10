@@ -402,6 +402,14 @@ msgstr "{0, plural, one {Цей робочий простір переміщен
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, one {Показати # вирішений коментар} few {Показати # вирішені коментарі} many {Показати # вирішених коментарів} other {Показати # вирішеного коментаря}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {Очікування агентів: #} few {Очікування агентів: #} many {Очікування агентів: #} other {Очікування агентів: #}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {Очікування фонових завдань: #} few {Очікування фонових завдань: #} many {Очікування фонових завдань: #} other {Очікування фонових завдань: #}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {Відстежує коментарі на # сторінці} few {Відстежує коментарі на # сторінках} many {Відстежує коментарі на # сторінках} other {Відстежує коментарі на # сторінки}}"
@@ -1017,6 +1025,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "{distance} тому"
 
+msgid "{done}/{total} completed"
+msgstr "Виконано: {done}/{total}"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {Думав # секунду} few {Думав # секунди} many {Думав # секунд} other {Думав # секунди}}"
 
@@ -1404,6 +1415,9 @@ msgstr "{threshold, plural, one {Злито # агентський PR} few {Зл
 
 msgid "{toolName} interrupted"
 msgstr "{toolName}: перервано"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {# завдання} few {# завдання} many {# завдань} other {# завдання}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, =1 {Перевірку пройдено} one {Пройдено всі перевірки: #} few {Пройдено всі перевірки: #} many {Пройдено всі перевірки: #} other {Пройдено всі перевірки: #}}"
@@ -15677,6 +15691,9 @@ msgstr "Тут з'являться надіслані вами промпти."
 msgid "Properties"
 msgstr "Властивості"
 
+msgid "Propose plan"
+msgstr "Запропонувати план"
+
 msgid "Provide either id or slug"
 msgstr "Укажіть id або slug"
 
@@ -15734,8 +15751,8 @@ msgid "Pull request"
 msgstr "Пул-реквест"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "Пул-реквест #{0}"
 
@@ -21077,6 +21094,18 @@ msgstr "СЬОГОДНІ"
 msgid "Todo"
 msgstr "До виконання"
 
+msgid "Todo completed"
+msgstr "Завдання виконано"
+
+msgid "Todo list completed"
+msgstr "Список завдань виконано"
+
+msgid "Todo list created"
+msgstr "Список завдань створено"
+
+msgid "Todo started"
+msgstr "Завдання розпочато"
+
 msgid "Toggle"
 msgstr "Перемикач"
 
@@ -22206,6 +22235,9 @@ msgstr "Чекати на налаштування робочого просто
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "чекаємо на {0} і {1}…"
+
+msgid "Waiting for {only}"
+msgstr "Очікування: {only}"
 
 msgid "Waiting for activity data"
 msgstr "Очікування даних про активність"

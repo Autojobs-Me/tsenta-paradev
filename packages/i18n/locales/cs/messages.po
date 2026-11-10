@@ -408,6 +408,14 @@ msgstr "{0, plural, one {Tento pracovní prostor byl přesunut. Jeho # chat zůs
 msgid "{0, plural, one {View # resolved comment} other {View # resolved comments}}"
 msgstr "{0, plural, one {Zobrazit # vyřešený komentář} few {Zobrazit # vyřešené komentáře} many {Zobrazit # vyřešeného komentáře} other {Zobrazit # vyřešených komentářů}}"
 
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # agent} other {Waiting for # agents}}"
+msgstr "{0, plural, one {Čeká na # agenta} few {Čeká na # agenty} many {Čeká na # agentů} other {Čeká na # agenta}}"
+
+#. placeholder {0}: tasks.length
+msgid "{0, plural, one {Waiting for # background task} other {Waiting for # background tasks}}"
+msgstr "{0, plural, one {Čeká na # úlohu na pozadí} few {Čeká na # úlohy na pozadí} many {Čeká na # úloh na pozadí} other {Čeká na # úlohy na pozadí}}"
+
 #. placeholder {0}: mine.length
 msgid "{0, plural, one {Watching # page for comments} other {Watching # pages for comments}}"
 msgstr "{0, plural, one {Sleduje # stránku kvůli komentářům} few {Sleduje # stránky kvůli komentářům} many {Sleduje # stránky kvůli komentářům} other {Sleduje # stránek kvůli komentářům}}"
@@ -1023,6 +1031,9 @@ msgstr "{developerCount}+"
 msgid "{distance} ago"
 msgstr "před {distance}"
 
+msgid "{done}/{total} completed"
+msgstr "Dokončeno {done}/{total}"
+
 msgid "{duration, plural, one {Thought for # second} other {Thought for # seconds}}"
 msgstr "{duration, plural, one {Přemýšlel # sekundu} few {Přemýšlel # sekundy} many {Přemýšlel # sekundy} other {Přemýšlel # sekund}}"
 
@@ -1410,6 +1421,9 @@ msgstr "{threshold, plural, one {sloučen # PR agenta} few {sloučeny # PR agent
 
 msgid "{toolName} interrupted"
 msgstr "{toolName} přerušeno"
+
+msgid "{total, plural, one {# todo} other {# todos}}"
+msgstr "{total, plural, one {# úkol} few {# úkoly} many {# úkolů} other {# úkolu}}"
 
 msgid "{total, plural, one {The check passed} other {All # checks passed}}"
 msgstr "{total, plural, one {Kontrola prošla} few {Všechny # kontroly prošly} many {Všech # kontroly prošlo} other {Všech # kontrol prošlo}}"
@@ -15683,6 +15697,9 @@ msgstr "Prompty, které odešlete, se objeví tady."
 msgid "Properties"
 msgstr "Vlastnosti"
 
+msgid "Propose plan"
+msgstr "Navrhnout plán"
+
 msgid "Provide either id or slug"
 msgstr "Zadejte buď id, nebo slug"
 
@@ -15740,8 +15757,8 @@ msgid "Pull request"
 msgstr "Pull request"
 
 #. placeholder {0}: data.number
+#. placeholder {0}: pr.number
 #. placeholder {0}: pullRequest.number
-#. placeholder {0}: pullRequest.prNumber
 msgid "Pull request #{0}"
 msgstr "Pull request #{0}"
 
@@ -21083,6 +21100,18 @@ msgstr "DNES"
 msgid "Todo"
 msgstr "K řešení"
 
+msgid "Todo completed"
+msgstr "Úkol dokončen"
+
+msgid "Todo list completed"
+msgstr "Seznam úkolů dokončen"
+
+msgid "Todo list created"
+msgstr "Seznam úkolů vytvořen"
+
+msgid "Todo started"
+msgstr "Úkol zahájen"
+
 msgid "Toggle"
 msgstr "Přepínač"
 
@@ -22212,6 +22241,9 @@ msgstr "Před spuštěním agentů počkat na setup pracovního prostoru"
 #. placeholder {1}: names.b
 msgid "waiting for {0} and {1}…"
 msgstr "čeká se na {0} a {1}…"
+
+msgid "Waiting for {only}"
+msgstr "Čeká na {only}"
 
 msgid "Waiting for activity data"
 msgstr "Čeká se na data o aktivitě"
