@@ -15,6 +15,7 @@ import {
 import {
 	type ReactNode,
 	useCallback,
+	useEffect,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -131,6 +132,13 @@ export function TsentaSidebarDnd({
 	useLayoutEffect(() => {
 		latest.current = { pinned, sections, laneChildren };
 	});
+	// A drag cut short by an unmount must not leave hover cards shut.
+	useEffect(
+		() => () => {
+			delete document.documentElement.dataset.tsentaSidebarDrag;
+		},
+		[],
+	);
 
 	const sensorOptions = useMemo(
 		() => ({
@@ -188,6 +196,9 @@ export function TsentaSidebarDnd({
 		({ active: start }: DragStartEvent) => {
 			const data = start.data.current as SidebarRowDragData | undefined;
 			setActive(data ?? null);
+			// Conductor keeps the hover card shut while a row is dragged
+			// (sidebar.css keys on this).
+			document.documentElement.dataset.tsentaSidebarDrag = "";
 			store.set({
 				...IDLE_DROP_INDICATOR,
 				draggingWorkspaceId: data?.workspace.id ?? null,
@@ -201,6 +212,7 @@ export function TsentaSidebarDnd({
 	);
 	const reset = useCallback(() => {
 		setActive(null);
+		delete document.documentElement.dataset.tsentaSidebarDrag;
 		store.set(IDLE_DROP_INDICATOR);
 	}, [store]);
 	const handleDragEnd = useCallback(

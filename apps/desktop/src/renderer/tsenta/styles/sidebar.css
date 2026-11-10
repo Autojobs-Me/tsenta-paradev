@@ -324,6 +324,12 @@ html[data-skin="conductor"]
 	margin-left: 6px;
 }
 
+/* No hover card while a row of the Conductor list is dragged, as in Conductor. */
+html[data-skin="conductor"][data-tsenta-sidebar-drag]
+[data-slot="popover-content"][data-dashboard-sidebar-hover-card] {
+	display: none;
+}
+
 /* Footer (SS §3.5) -------------------------------------------------------- */
 
 /*

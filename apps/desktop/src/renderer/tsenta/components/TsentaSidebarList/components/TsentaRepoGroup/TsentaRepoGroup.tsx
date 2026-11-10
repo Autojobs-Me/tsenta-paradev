@@ -1,4 +1,5 @@
 import { cn } from "@superset/ui/utils";
+import { useMemo } from "react";
 import { DashboardSidebarProjectContextMenu } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarProjectSection/components/DashboardSidebarProjectContextMenu";
 import { ImportWorktreesDialog } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarProjectSection/components/ImportWorktreesDialog";
 import { useDashboardSidebarProjectSectionActions } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarProjectSection/hooks/useDashboardSidebarProjectSectionActions";
@@ -35,7 +36,10 @@ export function TsentaRepoGroup({
 }: TsentaRepoGroupProps) {
 	const { project, rows } = group;
 	const listKey = `repo:${project.id}`;
-	const listTarget = { kind: "loose" as const, laneProjectId: project.id };
+	const listTarget = useMemo(
+		() => ({ kind: "loose" as const, laneProjectId: project.id }),
+		[project.id],
+	);
 	const { setNodeRef, isDropTarget } = useSidebarListDrop(listKey, listTarget);
 	const { workspacesById, groupInfo } = useDashboardSidebarDnd();
 	const {

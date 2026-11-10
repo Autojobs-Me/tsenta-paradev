@@ -1,7 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 import { cn } from "@superset/ui/utils";
 import { Inbox } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { DashboardSidebarSectionContextMenu } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarSection/components/DashboardSidebarSectionContextMenu";
 import { SectionActionsMenuItems } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarSection/components/DashboardSidebarSectionContextMenu/components/SectionActionsMenuItems";
 import { useDashboardSidebarSectionRename } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarSectionRenameContext";
@@ -47,10 +47,11 @@ export function TsentaFolderSection({
 	onSelectionClick,
 }: TsentaFolderSectionProps) {
 	const listKey = `section:${section.key}`;
-	const { setNodeRef, isDropTarget } = useSidebarListDrop(listKey, {
-		kind: "section",
-		sectionKey: section.key,
-	});
+	const listTarget = useMemo(
+		() => ({ kind: "section" as const, sectionKey: section.key }),
+		[section.key],
+	);
+	const { setNodeRef, isDropTarget } = useSidebarListDrop(listKey, listTarget);
 	const { workspacesById, groupInfo } = useDashboardSidebarDnd();
 	const [isRenaming, setIsRenaming] = useState(false);
 	const [renameValue, setRenameValue] = useState(section.name);
@@ -100,7 +101,6 @@ export function TsentaFolderSection({
 				? () => actions.onHide(section)
 				: undefined,
 	};
-	const listTarget = { kind: "section" as const, sectionKey: section.key };
 
 	return (
 		<div
