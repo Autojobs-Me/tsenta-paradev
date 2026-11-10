@@ -1,0 +1,137 @@
+/*
+ * Tsenta fork: Conductor's workspace view above the panes (plan steps 9 and
+ * 10; workspace-chat spec §1, composer spec §10, design-system spec §6.15).
+ *
+ * The center tab strip is packages/panes' TabBar, keyed on the hooks it
+ * carries: data-pane-tabbar on the bar, data-pane-tab and data-active on each
+ * tab, data-pane-add-tab on the "+" button. Conductor draws one 40px strip on
+ * the content sheet: tabs are plain text with a 2px tan underline on the
+ * active one, no card and no per-tab borders, and the strip's only line is
+ * its bottom hairline.
+ *
+ * Tab widths stay Paradev's TAB_WIDTH (160px, Conductor's chat tabs are
+ * 176px): TabBar measures drops and scrolls by that constant, so the strip
+ * keeps it and the gap between tabs comes out of each tab instead.
+ */
+
+/* Center tab strip (CO §10, DS §6.15) ------------------------------------ */
+
+html[data-skin="conductor"] [data-pane-area="center"] [data-pane-tabbar] {
+	height: 2.5rem;
+	padding-right: 0.5rem;
+	background-color: var(--background);
+	box-shadow: inset 0 -1px 0 var(--border);
+}
+
+/* Conductor's px-4 before the first tab, unless the window chrome leads. */
+html[data-skin="conductor"] [data-pane-area="center"]
+	[data-pane-tabbar]:not(:has([data-tsenta="window-chrome"])) {
+	padding-left: 1rem;
+}
+
+/* The strip's one hairline is the bar's own; each part drew its own too. */
+html[data-skin="conductor"] [data-pane-area="center"]
+	[data-pane-tabbar]
+	[class~="border-b"] {
+	border-bottom-width: 0;
+}
+
+/* Paradev lowers each tab 4px to sit its card on the line; Conductor's do not. */
+html[data-skin="conductor"] [data-pane-area="center"]
+	[data-pane-tabbar]
+	div:has(> :is([data-pane-tab], [data-pane-add-tab])) {
+	padding-top: 0;
+}
+
+html[data-skin="conductor"] [data-pane-area="center"] [data-pane-tab] {
+	width: calc(100% - 0.5rem);
+	padding-top: 0.125rem;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--muted-foreground);
+	font-size: 0.75rem;
+	line-height: 1rem;
+	font-weight: 500;
+	box-shadow: inset 0 -2px 0 transparent;
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	[data-pane-tab]:not([data-active]):hover {
+	background-color: transparent;
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	[data-pane-tab][data-active] {
+	color: var(--foreground);
+	box-shadow: inset 0 -2px 0 var(--highlight-muted);
+}
+
+/* The label: Conductor's px-2 and gap-2, from Paradev's pl-3 and gap-1.5. */
+html[data-skin="conductor"] [data-pane-area="center"]
+	[data-pane-tab]
+	> div:first-child {
+	gap: 0.5rem;
+	padding-left: 0.5rem;
+}
+
+/* Close: a 20px ghost holding a 12px x, shown on hover (DS §6.15). */
+html[data-skin="conductor"] [data-pane-area="center"]
+	[data-pane-tab]
+	> .relative:last-child {
+	width: 1.5rem;
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	[data-pane-tab]
+	> .relative:last-child
+	> button {
+	border-radius: calc(var(--radius) - 4px);
+	color: var(--muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	[data-pane-tab]
+	> .relative:last-child
+	> button:hover {
+	background-color: var(--accent);
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	[data-pane-tab]
+	> .relative:last-child
+	> button
+	svg {
+	width: 0.75rem;
+	height: 0.75rem;
+}
+
+/* New tab: a ghost 24px square with a 12px plus (CO §10, the yir control). */
+html[data-skin="conductor"] [data-pane-area="center"] [data-pane-add-tab] {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-left: 0;
+	border: 0;
+	border-radius: calc(var(--radius) - 4px);
+	background-color: transparent;
+	color: var(--muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-pane-area="center"]
+	[data-pane-add-tab]:is(:hover, [data-state="open"]) {
+	background-color: var(--sidebar-accent);
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"] [data-pane-area="center"] [data-pane-add-tab] svg {
+	width: 0.75rem;
+	height: 0.75rem;
+}

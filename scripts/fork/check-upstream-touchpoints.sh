@@ -56,6 +56,10 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/WindowChrome/index.ts'
 	# ...and Conductor's codicon right panel toggle, swapped in by its barrel.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/RightSidebarToggle/index.ts'
+	# Conductor center tab strip (plan step 10): data-pane-tabbar,
+	# data-pane-add-tab, data-pane-tab and data-active hooks for workspace.css.
+	'packages/panes/src/react/components/Workspace/components/TabBar/TabBar.tsx'
+	'packages/panes/src/react/components/Workspace/components/TabBar/components/TabItem/TabItem.tsx'
 )
 
 base="${1:-}"

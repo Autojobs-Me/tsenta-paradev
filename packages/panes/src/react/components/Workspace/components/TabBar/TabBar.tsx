@@ -84,6 +84,7 @@ function AddTabButton<_TData>({
 		</button>
 	) : (
 		<Button
+			data-pane-add-tab=""
 			className="ml-1.5 size-7 rounded-md border border-border/60 bg-muted/30 px-1 text-muted-foreground shadow-none hover:bg-accent/60 hover:text-foreground"
 			size="icon"
 			type="button"
@@ -270,6 +271,7 @@ export function TabBar<TData>({
 	return (
 		<div
 			ref={setRootRef}
+			data-pane-tabbar=""
 			// Only the empty filler right of the tabs is an
 			// Electron window-drag region — marking the whole bar `drag` and carving
 			// children out with `no-drag` loses the carve-outs once they sit inside

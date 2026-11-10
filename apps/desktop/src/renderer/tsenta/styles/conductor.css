@@ -19,6 +19,8 @@
 @import "./shell.css";
 /* Left sidebar: header, nav block, workspace list and footer. */
 @import "./sidebar.css";
+/* Workspace view: header bar and the center tab strip. */
+@import "./workspace.css";
 
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(
