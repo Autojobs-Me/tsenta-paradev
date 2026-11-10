@@ -11,6 +11,8 @@
 @import "./tokens.css";
 /* Fonts, type scale, body defaults, labels and keys. */
 @import "./type.css";
+/* 1px icon stroke. */
+@import "./icons.css";
 
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(

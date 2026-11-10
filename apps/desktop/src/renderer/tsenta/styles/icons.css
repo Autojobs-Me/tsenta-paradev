@@ -1,0 +1,62 @@
+/*
+ * Tsenta fork: Conductor's 1px icon stroke (plan step 3; design-system spec
+ * §7, shell-sidebar spec §0.1). Conductor draws every lucide icon with a 1px
+ * stroke that does not scale with the icon's size, which is most of why it
+ * looks finer than Paradev.
+ *
+ * Paradev mixes lucide-react (svg.lucide) with react-icons. react-icons get no
+ * class, but the line sets (Lu, Hi2 outline, Tb) render
+ * fill="none" stroke="currentColor" on the root, so they match the attribute
+ * selector; the filled sets (Vsc, Go, Hi2 solid) do not. A CSS stroke-width
+ * beats both the stroke-width attribute and the strokeWidth props upstream
+ * passes.
+ *
+ * Icons that keep upstream's stroke:
+ * - [data-keep-stroke] on the svg or on any ancestor, for glyphs Conductor
+ *   draws at 2px (sidebar workspace status, plan step 7).
+ * - Spinners, which Conductor draws as heavier sprite loaders: the slow-spin
+ *   CircleDashed of a running tool call, and the loader glyphs from both
+ *   libraries. lucide-react names them by class (LoaderCircleIcon and Loader2
+ *   both render .lucide-loader-circle); react-icons only by path data
+ *   (LuLoaderCircle, LuLoader, TbLoader2). A refresh icon that only spins
+ *   while busy stays 1px, so it does not change weight when it starts.
+ * - Filled Square stop glyphs.
+ */
+html[data-skin="conductor"]
+	:is(svg.lucide, svg[stroke="currentColor"][fill="none"]):not(
+		[data-keep-stroke],
+		[data-keep-stroke] *,
+		.animate-spin-slow,
+		.lucide-loader-circle,
+		.lucide-loader,
+		.lucide-square.fill-current,
+		:has(> path[d="M21 12a9 9 0 1 1-6.219-8.56"]),
+		:has(> path[d="m16.2 7.8 2.9-2.9"]),
+		:has(> path[d="M12 3a9 9 0 1 0 9 9"])
+	) {
+	stroke-width: 1px;
+}
+
+/*
+ * Keeps the 1px at 1px whatever the icon's size or viewBox. Shapes that set
+ * their own stroke-width do not take the 1px, and a dash pattern is set in
+ * the shape's own units, which a non-scaling stroke would read as screen
+ * pixels, so both are left alone. That keeps upstream's hand-drawn SVGs that
+ * match the selector (the update pill's check draw-in, the connecting cloud
+ * glyph's travelling arc) drawing as they do today.
+ */
+html[data-skin="conductor"]
+	:is(svg.lucide, svg[stroke="currentColor"][fill="none"]):not(
+		[data-keep-stroke],
+		[data-keep-stroke] *,
+		.animate-spin-slow,
+		.lucide-loader-circle,
+		.lucide-loader,
+		.lucide-square.fill-current,
+		:has(> path[d="M21 12a9 9 0 1 1-6.219-8.56"]),
+		:has(> path[d="m16.2 7.8 2.9-2.9"]),
+		:has(> path[d="M12 3a9 9 0 1 0 9 9"])
+	)
+	:not([stroke-width], [stroke-dasharray], [pathLength]) {
+	vector-effect: non-scaling-stroke;
+}
