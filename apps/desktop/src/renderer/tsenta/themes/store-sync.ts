@@ -60,6 +60,12 @@ export function adoptConductorThemes(): void {
 	}
 	const unsubscribe = persist.onFinishHydration(() => {
 		unsubscribe();
-		adoptIfUntouched();
+		// Runs inside the store's hydration; a throw here would skip the
+		// listeners after this one.
+		try {
+			adoptIfUntouched();
+		} catch (error) {
+			console.error("[tsenta] Could not move to the Conductor themes", error);
+		}
 	});
 }

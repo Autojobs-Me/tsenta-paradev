@@ -16,7 +16,25 @@ import {
 	syncThemeIdAttribute,
 } from "./themes/store-sync";
 
-applySkin();
-syncThemeIdAttribute();
-adoptConductorThemes();
-void adoptConductorTerminalFontSize();
+/**
+ * This module loads before renderer/index.tsx sets up its boot error screen,
+ * so a throw here would leave a blank window. The look is optional; the app
+ * is not, so each step fails on its own and only logs.
+ */
+function runStep(name: string, step: () => unknown): void {
+	try {
+		const result = step();
+		if (result instanceof Promise) {
+			result.catch((error: unknown) => {
+				console.error(`[tsenta] ${name} failed`, error);
+			});
+		}
+	} catch (error) {
+		console.error(`[tsenta] ${name} failed`, error);
+	}
+}
+
+runStep("applySkin", applySkin);
+runStep("syncThemeIdAttribute", syncThemeIdAttribute);
+runStep("adoptConductorThemes", adoptConductorThemes);
+runStep("adoptConductorTerminalFontSize", adoptConductorTerminalFontSize);

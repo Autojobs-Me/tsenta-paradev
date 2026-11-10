@@ -37,7 +37,13 @@ html[data-skin="conductor"] app {
 	--sidebar-background: var(--sheet-surface);
 }
 
-/* Terminals sit on the content sheet, or on the chrome in the right panel. */
+/*
+ * Conductor's terminal background: the content sheet, or the chrome in the
+ * right panel (RP §1.2). Nothing in Paradev reads it: its terminals paint the
+ * theme's terminal palette background, so a terminal in the right pane area
+ * still shows the sheet colour inside the chrome. It is here for the fork's
+ * terminal panel (plan step 13).
+ */
 html[data-skin="conductor"] {
 	--terminal-background: var(--background);
 }

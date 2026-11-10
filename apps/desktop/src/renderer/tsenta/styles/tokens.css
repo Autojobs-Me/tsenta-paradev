@@ -269,6 +269,34 @@ html[data-theme-id="conductor-light"] {
 }
 
 /*
+ * Highlights on popups and cards. Conductor's accent is its popover and card
+ * colour in dark (#2c2826) and all but white in light (#fafaf9); Conductor
+ * never paints a highlight with it there, its menus and command lists use a
+ * 5% wash (design-system spec §8). Paradev highlights those rows with
+ * bg-accent (cmdk's selected item in the command palette and every picker,
+ * hover rows in popovers and cards), which would not show against the
+ * surface. Inside them, accent is the same 5% wash, made opaque over the
+ * popover colour (which is also the card colour) so a bg-accent that replaces
+ * a background still covers it. Keyed on the theme, not the skin, because
+ * the clash comes with the colours.
+ */
+html:is([data-theme-id="conductor-dark"], [data-theme-id="conductor-light"])
+	:is(
+		[data-slot="popover-content"],
+		[data-slot="dropdown-menu-content"],
+		[data-slot="dropdown-menu-sub-content"],
+		[data-slot="context-menu-content"],
+		[data-slot="context-menu-sub-content"],
+		[data-slot="menubar-content"],
+		[data-slot="select-content"],
+		[data-slot="hover-card-content"],
+		[data-slot="command"],
+		[data-slot="card"]
+	) {
+	--accent: color-mix(in srgb, var(--foreground) 5%, var(--popover));
+}
+
+/*
  * Boot background before the theme store applies its inline colours.
  * globals.css falls back to Paradev's #151110 and #fafaf8; these selectors
  * outrank its :root and :root.light, which come later in the cascade.
