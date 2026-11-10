@@ -1,10 +1,13 @@
 import { Workspace, type WorkspaceProps } from "@superset/panes";
+import { useMemo } from "react";
 import {
 	TsentaAddTabMenu,
 	type TsentaLaunchers,
 } from "renderer/tsenta/components/TsentaAddTabMenu";
 import { TsentaWorkspaceHeader } from "renderer/tsenta/components/TsentaWorkspaceHeader";
 import { isConductorSkin } from "renderer/tsenta/skin";
+import { FoldedPaneControls } from "./components/FoldedPaneControls";
+import { foldPaneHeaders } from "./utils/foldPaneHeaders";
 
 /** What the Conductor layout needs beyond Workspace's own props. */
 export interface TsentaWorkspaceExtras {
@@ -25,7 +28,10 @@ type TsentaWorkspaceProps<TData> = WorkspaceProps<TData> & {
  *   Conductor's header row (TsentaWorkspaceHeader), on the chrome above the
  *   tab strip;
  * - Paradev's launcher row below the tab bar is not drawn; its launchers
- *   join the strip's "+" menu (TsentaAddTabMenu), which lists Chat first.
+ *   join the strip's "+" menu (TsentaAddTabMenu), which lists Chat first;
+ * - a chat or terminal alone in its tab drops its own header row, and the
+ *   strip's trailing end takes that header's controls (FoldedPaneControls),
+ *   so the strip is the one row above the transcript.
  */
 export function TsentaWorkspace<TData>({
 	tsenta,
@@ -46,6 +52,8 @@ function ConductorWorkspace<TData>({
 	renderAddTabMenu,
 	...props
 }: TsentaWorkspaceProps<TData>) {
+	const { registry, store, paneActions } = props;
+	const foldedRegistry = useMemo(() => foldPaneHeaders(registry), [registry]);
 	return (
 		<>
 			<TsentaWorkspaceHeader
@@ -54,6 +62,14 @@ function ConductorWorkspace<TData>({
 			/>
 			<Workspace<TData>
 				{...props}
+				registry={foldedRegistry}
+				renderTabBarTrailing={() => (
+					<FoldedPaneControls<TData>
+						store={store}
+						registry={registry}
+						paneActions={paneActions}
+					/>
+				)}
 				renderAddTabMenu={(actions) => (
 					<TsentaAddTabMenu
 						paradevMenu={renderAddTabMenu?.(actions)}
