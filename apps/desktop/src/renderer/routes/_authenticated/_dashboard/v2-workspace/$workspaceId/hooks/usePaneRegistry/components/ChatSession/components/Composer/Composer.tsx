@@ -611,6 +611,8 @@ export const Composer = memo(function Composer({
 		<div
 			ref={rootRef}
 			className={cn(CHAT_GUTTER_CLASSNAME, "pt-1 pb-5")}
+			// tsenta:conductor (plan step 12): the hook composer.css keys on.
+			data-tsenta="composer"
 			onKeyDownCapture={drawerEntry.onKeyDownCapture}
 			onFocusCapture={() =>
 				useChatComposerStore.getState().markActive(composerId)

@@ -23,6 +23,8 @@
 @import "./workspace.css";
 /* Chat transcript: column, rows, tool cards, markdown, working row. */
 @import "./chat.css";
+/* Chat composer: card, toolbar, pickers, suggestions, queue. */
+@import "./composer.css";
 
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(

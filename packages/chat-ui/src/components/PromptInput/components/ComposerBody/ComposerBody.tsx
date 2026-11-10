@@ -1395,6 +1395,8 @@ export function ComposerBody({
 					"relative flex flex-col bg-card ring-1 ring-border transition-shadow focus-within:ring-ring/40",
 					inline ? "rounded-[22px]" : "rounded-2xl",
 				)}
+				// tsenta:conductor (plan step 12): the card hook for Conductor's composer.
+				data-composer-root
 				onDragOver={(event) => {
 					if (dropZone == null && event.dataTransfer.types.includes("Files")) {
 						event.preventDefault();

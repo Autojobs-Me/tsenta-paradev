@@ -1,0 +1,103 @@
+/*
+ * Tsenta fork: Conductor's composer (plan step 12; composer spec, "CO",
+ * sections 1 to 9).
+ *
+ * Paradev's composer keeps its Lexical editor, its key map, its pickers and
+ * its queue. This file restyles them through hooks: data-tsenta="composer" on
+ * the chat session's composer (Composer.tsx), data-composer-root on the card
+ * (chat-ui's ComposerBody) and Paradev's own data-composer-footer on the
+ * toolbar row. Every rule is scoped to the session composer, so the
+ * new-workspace screen and the terminal's rich input keep Paradev's look.
+ */
+
+/* Column (CO §1) ------------------------------------------------------------ */
+
+/* Conductor's composer sits 16px above the window's bottom edge (pb-4). */
+html[data-skin="conductor"] [data-tsenta="composer"] {
+	padding-bottom: 1rem;
+}
+
+/* Card (CO §1.1) ------------------------------------------------------------ */
+
+/*
+ * A 12px card on --muted with a 1px border and a hairline shadow, and no
+ * focus ring: Conductor shows focus by the caret alone. The shadow replaces
+ * Paradev's ring-1 and its focus-within ring, which are box-shadows too.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"] [data-composer-root] {
+	min-height: 9.5rem;
+	border: 1px solid var(--border);
+	border-radius: 0.75rem;
+	background: var(--muted);
+	box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	transition:
+		background 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
+		border-color 200ms cubic-bezier(0.25, 0.1, 0.25, 1),
+		box-shadow 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Editor (CO §1.1, §2) ------------------------------------------------------ */
+
+/*
+ * The text starts 16px from the top and 18px from the left (pt-4 pl-4.5),
+ * grows from 88px to 188px and then scrolls (min-h-22, max-h-47). The block
+ * takes the card's spare height, so the toolbar stays on the bottom edge.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-composer-root]
+	> div:has(> .prompt-input-editor) {
+	flex-grow: 1;
+	padding: 1rem 1rem 0 1.125rem;
+}
+
+html[data-skin="conductor"] [data-tsenta="composer"] .prompt-input-editor {
+	min-height: 5.5rem;
+	max-height: 11.75rem;
+	font-weight: 350;
+	line-height: 1.25rem;
+}
+
+/* The placeholder is --faint, at the text's own place and weight. */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	.prompt-input-editor
+	+ span {
+	top: 1rem;
+	left: 1.125rem;
+	color: var(--faint);
+	font-weight: 350;
+	line-height: 1.25rem;
+}
+
+/* Attachments line up with the text. */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-composer-root]
+	> div:not([aria-hidden]):has(+ div > .prompt-input-editor) {
+	padding: 1rem 1rem 0 1.125rem;
+}
+
+/*
+ * Dropping files: Conductor's veil is the page background at 80% inside the
+ * card's own corners, with a hairline, instead of Paradev's primary tint.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-composer-root]
+	> div[aria-hidden] {
+	border: 1px solid var(--border);
+	border-radius: inherit;
+	background-color: color-mix(in srgb, var(--background) 80%, transparent);
+}
+
+/* Toolbar (CO §1.1, §4) ----------------------------------------------------- */
+
+/*
+ * One 28px row, 12px from the card's sides and bottom and 12px under the
+ * text (Conductor's toolbar sits absolute at bottom-3 inside the card's
+ * mb-10 reserve; Paradev's stays in flow, with the same measurements).
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-composer-root]
+	> [data-composer-footer] {
+	min-height: 0;
+	gap: 0.375rem;
+	padding: 0.75rem;
+}
