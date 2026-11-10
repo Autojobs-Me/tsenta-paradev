@@ -42,7 +42,10 @@ import { useV2NotificationStore } from "renderer/stores/v2-notifications";
 // tsenta:conductor (plan steps 6 and 7): the Conductor sidebar header, list and footer.
 import { TsentaSidebarFooter } from "renderer/tsenta/components/TsentaSidebarFooter";
 import { TsentaSidebarHeader } from "renderer/tsenta/components/TsentaSidebarHeader";
-import { TsentaSidebarList } from "renderer/tsenta/components/TsentaSidebarList";
+import {
+	buildConductorShortcutOrder,
+	TsentaSidebarList,
+} from "renderer/tsenta/components/TsentaSidebarList";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import {
 	type ActiveWorkspaceSwitcherOption,
@@ -310,10 +313,21 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 	// Sorted but unfiltered, so ⌘1–⌘9 targets stay put while typing a query.
 	// The filtered view expands matches through derived objects, so a jump
 	// must not toggle the persisted collapse state while it is active.
+	// tsenta:conductor (plan step 7): the same hook, counting rows in the Conductor list's order.
+	const conductorShortcutOrder = useMemo(
+		() =>
+			isConductorSkin() && !isCollapsed
+				? buildConductorShortcutOrder({
+						projects: sortedGroups,
+						sessionChildren,
+					})
+				: null,
+		[isCollapsed, sortedGroups, sessionChildren],
+	);
 	const workspaceShortcutLabels = useDashboardSidebarShortcuts(
-		sortedGroups,
-		sessionWorkspaces,
-		sessionChildren,
+		conductorShortcutOrder?.groups ?? sortedGroups,
+		conductorShortcutOrder?.sessionWorkspaces ?? sessionWorkspaces,
+		conductorShortcutOrder?.sessionChildren ?? sessionChildren,
 		{ revealCollapsed: !isFilterActive, pinnedWorkspaces },
 	);
 	// Scoped to what the filter actually shows — select-all and range-select
