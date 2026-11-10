@@ -23,7 +23,6 @@ import { useCommandPaletteToggle } from "renderer/routes/_authenticated/_dashboa
 import { NavigationControls } from "renderer/routes/_authenticated/_dashboard/components/NavigationControls";
 import { OfflineBadge } from "renderer/routes/_authenticated/_dashboard/components/OfflineBadge";
 import { PortsDropdown } from "renderer/routes/_authenticated/_dashboard/components/PortsDropdown";
-import { SidebarToggle } from "renderer/routes/_authenticated/_dashboard/components/SidebarToggle";
 import {
 	WINDOW_CONTROLS_ROW_HEIGHT,
 	WINDOW_CONTROLS_ROW_TOP,
@@ -33,6 +32,7 @@ import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/
 import { useOpenNewWorkspaceInViewedProject } from "renderer/routes/_authenticated/_dashboard/hooks/useOpenNewWorkspaceInViewedProject";
 import { useNewWorkspaceDraftStore } from "renderer/stores/new-workspace-draft";
 import { COLLAPSED_WORKSPACE_SIDEBAR_WIDTH } from "renderer/stores/workspace-sidebar-state";
+import { TsentaSidebarToggle } from "renderer/tsenta/components/TsentaSidebarToggle";
 import { TRAFFIC_LIGHTS_CLEARANCE } from "renderer/tsenta/sidebar/metrics";
 import { SidebarNavRow } from "./components/SidebarNavRow";
 
@@ -108,9 +108,7 @@ export function TsentaSidebarHeader() {
 					</div>
 				)}
 				<ZoomStable enabled={isMac} className="flex items-center">
-					<div data-tsenta="sidebar-toggle" className="flex items-center">
-						<SidebarToggle />
-					</div>
+					<TsentaSidebarToggle />
 				</ZoomStable>
 				<div className="drag h-full min-w-0 flex-1" />
 				<ZoomStable enabled={isMac} className="flex items-center">

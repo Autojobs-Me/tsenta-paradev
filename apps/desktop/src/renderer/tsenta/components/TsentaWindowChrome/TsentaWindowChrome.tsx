@@ -7,7 +7,6 @@ import { AppMenuButton } from "renderer/routes/_authenticated/_dashboard/compone
 import { NavigationControls } from "renderer/routes/_authenticated/_dashboard/components/NavigationControls";
 import { OfflineBadge } from "renderer/routes/_authenticated/_dashboard/components/OfflineBadge";
 import { PortsDropdown } from "renderer/routes/_authenticated/_dashboard/components/PortsDropdown";
-import { SidebarToggle } from "renderer/routes/_authenticated/_dashboard/components/SidebarToggle";
 // The files, not the WindowChrome barrel: the barrel exports this module.
 import {
 	WINDOW_CONTROLS_ROW_HEIGHT,
@@ -16,6 +15,7 @@ import {
 import { useWindowChromeVisible } from "renderer/routes/_authenticated/_dashboard/components/WindowChrome/hooks/useWindowChromeVisible";
 import { WindowChrome as ParadevWindowChrome } from "renderer/routes/_authenticated/_dashboard/components/WindowChrome/WindowChrome";
 import { COLLAPSED_WORKSPACE_SIDEBAR_WIDTH } from "renderer/stores/workspace-sidebar-state";
+import { TsentaSidebarToggle } from "renderer/tsenta/components/TsentaSidebarToggle";
 import { TRAFFIC_LIGHTS_CLEARANCE } from "renderer/tsenta/sidebar/metrics";
 import { isConductorSkin } from "renderer/tsenta/skin";
 
@@ -87,9 +87,7 @@ export function TsentaWindowChrome({ className }: WindowChromeProps) {
 				}}
 			>
 				<ZoomStable enabled={isMac} className="flex items-center gap-2">
-					<div data-tsenta="sidebar-toggle" className="flex items-center">
-						<SidebarToggle />
-					</div>
+					<TsentaSidebarToggle />
 					<div
 						data-tsenta="sidebar-header-controls"
 						className="flex items-center gap-2"

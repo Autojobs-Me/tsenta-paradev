@@ -53,6 +53,8 @@ allowlist=(
 	# of Paradev's while it is hidden.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/layout.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/WindowChrome/index.ts'
+	# ...and Conductor's codicon right panel toggle, swapped in by its barrel.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/RightSidebarToggle/index.ts'
 )
 
 base="${1:-}"
