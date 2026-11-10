@@ -83,6 +83,9 @@ export function ApprovalRow({
 						? "px-1 py-0.5"
 						: "rounded-xl border border-border/60 bg-muted/20 px-3 py-2",
 			)}
+			// tsenta:conductor (plan step 11): Conductor's approval card in chat.css.
+			data-status={item.status}
+			data-tsenta="approval"
 		>
 			<div className="flex min-w-0 items-center gap-2 text-sm">
 				<Icon

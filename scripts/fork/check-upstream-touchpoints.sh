@@ -73,6 +73,8 @@ allowlist=(
 	# ...and the user-row, user-bubble and user-actions hooks for Conductor's
 	# user message.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/UserMessageRow/UserMessageRow.tsx'
+	# ...and data-tsenta="approval" with its status on the approval card.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ApprovalRow/ApprovalRow.tsx'
 	# ...and the transcript's component barrels that export the fork's
 	# Conductor rows (renderer/tsenta/chat), Paradev's own with the skin off:
 	# the tool card, steps with no rail beside them, and runs of calls flat
@@ -89,6 +91,8 @@ allowlist=(
 	# ...sub-agents, and items nested under a tool.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/SubagentEventLine/index.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ChildItemsList/index.ts'
+	# ...and an approval's stacked answers.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ApprovalRow/components/OptionButtons/index.ts'
 )
 
 base="${1:-}"
