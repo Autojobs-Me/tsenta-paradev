@@ -1,0 +1,1 @@
+export { TsentaPinnedSection } from "./TsentaPinnedSection";

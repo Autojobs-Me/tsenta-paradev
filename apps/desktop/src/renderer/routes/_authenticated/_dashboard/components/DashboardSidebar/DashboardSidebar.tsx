@@ -39,9 +39,10 @@ import { useLocalHostService } from "renderer/routes/_authenticated/providers/Lo
 import { useReleaseNotesCardStore } from "renderer/stores/release-notes-card";
 import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
 import { useV2NotificationStore } from "renderer/stores/v2-notifications";
-// tsenta:conductor (plan step 6): the Conductor sidebar header and footer.
+// tsenta:conductor (plan steps 6 and 7): the Conductor sidebar header, list and footer.
 import { TsentaSidebarFooter } from "renderer/tsenta/components/TsentaSidebarFooter";
 import { TsentaSidebarHeader } from "renderer/tsenta/components/TsentaSidebarHeader";
+import { TsentaSidebarList } from "renderer/tsenta/components/TsentaSidebarList";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import {
 	type ActiveWorkspaceSwitcherOption,
@@ -649,7 +650,27 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 													<DashboardSidebarDevsSection />
 												</>
 											)}
-											{workspaceList}
+											{/* tsenta:conductor (plan step 7): Conductor's flat sections in place of the project tree. */}
+											{isConductorSkin() && !isCollapsed ? (
+												<TsentaSidebarList
+													projects={displayedGroups}
+													allProjects={orderedGroups}
+													pinnedWorkspaces={pinnedWorkspaces}
+													sessionChildren={sessionChildren}
+													hiddenProjects={hiddenProjects}
+													onShowHiddenProject={showHiddenProject}
+													workspaceShortcutLabels={workspaceShortcutLabels}
+													onWorkspaceHover={refreshWorkspacePullRequest}
+													sortMode={sortMode}
+													onSortModeChange={setSidebarProjectSortMode}
+													hostFilter={isCloudEnabled ? hostFilter : null}
+													onHostFilterChange={setSidebarProjectHostFilter}
+													filterQuery={projectFilterQuery}
+													onFilterQueryChange={setProjectFilterQuery}
+												/>
+											) : (
+												workspaceList
+											)}
 										</OverflowFadeContainer>
 										{cardSlot}
 										{

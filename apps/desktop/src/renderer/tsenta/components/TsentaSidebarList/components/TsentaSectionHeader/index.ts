@@ -1,0 +1,1 @@
+export { TsentaSectionHeader } from "./TsentaSectionHeader";

@@ -30,7 +30,8 @@ allowlist=(
 	'apps/desktop/src/renderer/globals.css'
 	'apps/desktop/src/renderer/index.html'
 	'apps/desktop/src/renderer/index.tsx'
-	# Conductor sidebar header and footer swaps (plan step 6).
+	# Conductor sidebar header and footer swaps (plan step 6), and the flat
+	# Conductor list (TsentaSidebarList) in place of the project tree.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/DashboardSidebar.tsx'
 	# Conductor workspace list (plan step 7): data-tsenta hooks on the rows
 	# and the list headers.
