@@ -7,6 +7,9 @@
  * Later skin files are @imported here, above the variant.
  */
 
+/* Colour tokens: Tailwind mappings, Conductor values, structural overrides. */
+@import "./tokens.css";
+
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(
 		[data-skin="conductor"],

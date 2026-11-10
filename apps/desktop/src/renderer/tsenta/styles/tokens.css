@@ -1,0 +1,381 @@
+/*
+ * Tsenta fork: colour tokens Paradev's themes have no slot for (plan step 1).
+ *
+ * The UIColors palette (background, border, sidebar...) comes from the theme
+ * store as inline custom properties on <html>, and those beat any stylesheet,
+ * so that part is the conductor-dark and conductor-light themes in
+ * ../themes. Everything here is extra.
+ *
+ * Tier 1 derives each token from whichever theme is active, so Monokai or
+ * Solarized never get Conductor's warm browns. Tier 2 holds Conductor's exact
+ * values, only for its two themes. Add any new token to both tiers.
+ *
+ * Renamed from Conductor, where its name already means something in Paradev:
+ *   Conductor --highlight (tan tint)  -> --highlight-tint (Paradev's
+ *     --highlight is an accent that must stay readable as text)
+ *   Conductor --link (chip background) -> --link-chip (Paradev's --link is
+ *     blue link text)
+ *   Conductor --warning* (tan callout) -> --notice* (Paradev's --warning is
+ *     an attention colour)
+ */
+
+/* Tier 1: generic, derived from the active theme. */
+:root {
+	--sheet-surface: color-mix(in oklab, var(--foreground) 3%, var(--background));
+	--separator: var(--border);
+	--input-border: var(--input);
+	--overlay: #000;
+	--popover-accent: color-mix(in oklab, var(--foreground) 5%, transparent);
+	--popover-ring: color-mix(in oklab, var(--foreground) 10%, transparent);
+	--faint: color-mix(in oklab, var(--muted-foreground) 65%, var(--background));
+	--helper: var(--muted-foreground);
+	--special: var(--ring);
+	--sidebar-background: var(--sidebar);
+	--sidebar-muted-foreground: color-mix(
+		in oklab,
+		var(--sidebar-foreground) 60%,
+		transparent
+	);
+	--sidebar-blue: var(--link);
+	--highlight-tint: color-mix(
+		in oklab,
+		var(--highlight) 12%,
+		var(--background)
+	);
+	--highlight-tint-foreground: var(--foreground);
+	--highlight-muted: var(--highlight);
+	--border-highlight: var(--highlight);
+	--unread: var(--highlight);
+	--internal: var(--highlight);
+	--link-chip: var(--highlight-tint);
+	--link-foreground: var(--link);
+	--link-elevated: color-mix(in oklab, var(--highlight) 22%, var(--background));
+	--plan-border: var(--border-highlight);
+	--composer-background: var(--muted);
+	--switch-background: var(--primary);
+	--switch-foreground: var(--primary-foreground);
+	--positive: var(--success);
+	--positive-muted: color-mix(in oklab, var(--success) 15%, var(--background));
+	--positive-foreground: #f2fdf5;
+	--notice: var(--highlight-tint);
+	--notice-foreground: var(--foreground);
+	--notice-foreground-secondary: var(--muted-foreground);
+	--notice-border: color-mix(in oklab, var(--highlight) 30%, var(--background));
+	--info: var(--link);
+	--info-foreground: #fff;
+	--checks-pending: var(--warning);
+	--prose-border: var(--border);
+
+	--status-backlog: var(--muted-foreground);
+	--status-backlog-hover: color-mix(
+		in oklab,
+		var(--status-backlog) 75%,
+		var(--foreground)
+	);
+	--status-in-progress: var(--warning);
+	--status-in-progress-hover: color-mix(
+		in oklab,
+		var(--status-in-progress) 75%,
+		var(--foreground)
+	);
+	--status-in-review: var(--success);
+	--status-in-review-hover: color-mix(
+		in oklab,
+		var(--status-in-review) 75%,
+		var(--foreground)
+	);
+	--status-done: var(--highlight);
+	--status-done-hover: color-mix(
+		in oklab,
+		var(--status-done) 75%,
+		var(--foreground)
+	);
+	--status-canceled: var(--muted-foreground);
+	--status-canceled-hover: color-mix(
+		in oklab,
+		var(--status-canceled) 75%,
+		var(--foreground)
+	);
+	--todo-in-progress: var(--link);
+	--todo-completed: var(--success);
+	--todo-pending: var(--muted-foreground);
+
+	--git-green: var(--success);
+	--git-red: var(--destructive);
+	--git-yellow: var(--warning);
+	--git-gray: var(--muted-foreground);
+	--git-selection: color-mix(in oklab, var(--link) 30%, transparent);
+	--git-new-line: var(--success);
+	--git-new-line-bg: color-mix(in oklab, var(--git-new-line) 10%, transparent);
+	--git-new-line-border: color-mix(
+		in oklab,
+		var(--git-new-line) 60%,
+		transparent
+	);
+	--git-new-line-highlight: color-mix(
+		in oklab,
+		var(--git-new-line) 20%,
+		transparent
+	);
+	--git-removed-line: var(--destructive);
+	--git-removed-line-bg: color-mix(
+		in oklab,
+		var(--git-removed-line) 10%,
+		transparent
+	);
+	--git-removed-line-border: color-mix(
+		in oklab,
+		var(--git-removed-line) 60%,
+		transparent
+	);
+	--git-removed-line-highlight: color-mix(
+		in oklab,
+		var(--git-removed-line) 20%,
+		transparent
+	);
+
+	--tip: var(--card);
+	--tip-border: var(--border);
+	--tip-secondary: var(--secondary);
+	--tip-secondary-border: var(--border);
+	--tip-muted: var(--muted-foreground);
+	--tip-foreground: var(--card-foreground);
+}
+
+/* Tier 2: Conductor's exact values (design-system spec §2.1 to §2.4). */
+html[data-theme-id="conductor-dark"],
+html[data-theme-id="conductor-light"] {
+	--git-new-line: #1bc559;
+	--git-new-line-bg: oklab(72.1202% -0.169154 0.101871 / 0.1);
+	--git-new-line-border: oklab(72.1202% -0.169154 0.101871 / 0.6);
+	--git-new-line-highlight: oklab(72.1202% -0.169154 0.101871 / 0.2);
+	--git-removed-line: #e60000;
+	--git-removed-line-bg: oklab(58.0821% 0.207985 0.1164 / 0.1);
+	--git-removed-line-border: oklab(58.0821% 0.207985 0.1164 / 0.6);
+	--git-removed-line-highlight: oklab(58.0821% 0.207985 0.1164 / 0.2);
+	--helper: #a5a09c;
+	--special: #cca694;
+	--git-gray: #a5a09c;
+	--status-backlog: #8e8885;
+	--status-done: #cca694;
+	--status-canceled: #a5a09c;
+	--positive: #16a249;
+	--positive-foreground: #f2fdf5;
+}
+
+html[data-theme-id="conductor-dark"] {
+	--sheet-surface: #1c1917;
+	--separator: #2c2826;
+	--input-border: #fff3;
+	--popover-accent: #ffffff0d;
+	--popover-ring: #ffffff1a;
+	--faint: #766f6b;
+	--sidebar-muted-foreground: #fff9;
+	--sidebar-blue: #61a6fa;
+	--highlight-tint: #2a1e1d;
+	--highlight-tint-foreground: #f3ece7;
+	--highlight-muted: #ddc1b1;
+	--border-highlight: #cca694;
+	--unread: #cca694;
+	--internal: #e29878;
+	--link-chip: #2a1e1d;
+	--link-foreground: #cca694;
+	--link-elevated: #413030;
+	--plan-border: #836967;
+	--composer-background: #211e1c;
+	--switch-background: #eae8e6;
+	--switch-foreground: #2c2826;
+	--positive-muted: #143923;
+	--notice: #413030;
+	--notice-foreground: #f3ece7;
+	--notice-foreground-secondary: #ddc1b1;
+	--notice-border: #594545;
+	--info: #3c83f6;
+	--info-foreground: #e7f0fe;
+	--checks-pending: #d29922;
+	--prose-border: #47423e;
+	--status-backlog-hover: #bcb6b3;
+	--status-in-progress: #ffdc2e;
+	--status-in-progress-hover: #ffe561;
+	--status-in-review: #4ade80;
+	--status-in-review-hover: #85efac;
+	--status-done-hover: #ddc1b1;
+	--status-canceled-hover: #bcb6b3;
+	--todo-in-progress: #61a6fa;
+	--todo-completed: #4ade80;
+	--todo-pending: #a5a09c;
+	--git-green: #4ade80;
+	--git-red: #f87272;
+	--git-yellow: #ffea80;
+	--tip: #413030;
+	--tip-border: #594545;
+	--tip-secondary: #795f5d;
+	--tip-secondary-border: #a4847f;
+	--tip-muted: #f0edea;
+	--tip-foreground: #fff;
+}
+
+html[data-theme-id="conductor-light"] {
+	--sheet-surface: #fdfcfc;
+	--separator: #eae8e6;
+	--input-border: #14100f1a;
+	--popover-accent: #14100f0d;
+	--popover-ring: #211e1c0d;
+	--faint: #a5a09c;
+	--sidebar-muted-foreground: #14100f99;
+	--sidebar-blue: #2463eb;
+	--highlight-tint: #faf7f5;
+	--highlight-tint-foreground: #594545;
+	--highlight-muted: #cca694;
+	--border-highlight: #a4847f;
+	--unread: #a4847f;
+	--internal: #993f29;
+	--link-chip: #faf7f5;
+	--link-foreground: #a4847f;
+	--link-elevated: #f3ece7;
+	--plan-border: #cca694;
+	--composer-background: #fafaf980;
+	--switch-background: #2c2826;
+	--switch-foreground: #fff;
+	--positive-muted: #f2fdf5;
+	--notice: #faf7f5;
+	--notice-foreground: #594545;
+	--notice-foreground-secondary: #a4847f;
+	--notice-border: #e9d9ce;
+	--info: #0da2e7;
+	--info-foreground: #e7f6fe;
+	--checks-pending: #9a6700;
+	--prose-border: #d2cecb;
+	--status-backlog-hover: #5f5854;
+	--status-in-progress: #e0bb00;
+	--status-in-progress-hover: #b89900;
+	--status-in-review: #16a249;
+	--status-in-review-hover: #157f3c;
+	--status-done-hover: #a4847f;
+	--status-canceled-hover: #8e8885;
+	--todo-in-progress: #2463eb;
+	--todo-completed: #16a249;
+	--todo-pending: #766f6b;
+	--git-green: #16a249;
+	--git-red: #dc2828;
+	--git-yellow: #ffdc2e;
+	--git-selection: #99daff;
+	--tip: #fff;
+	--tip-border: #faf7f5;
+	--tip-secondary: #f8f7f6;
+	--tip-secondary-border: #f3ece7;
+	--tip-muted: #7d5e59;
+	--tip-foreground: #413030;
+}
+
+/*
+ * Boot background before the theme store applies its inline colours.
+ * globals.css falls back to Paradev's #151110 and #fafaf8; these selectors
+ * outrank its :root and :root.light, which come later in the cascade.
+ */
+html.dark[data-theme-id="conductor-dark"] {
+	--background: #141110;
+}
+
+html.light[data-theme-id="conductor-light"] {
+	--background: #fff;
+}
+
+/*
+ * Structural tokens, only under the Conductor look.
+ * --radius 0.5rem gives rounded-sm 4px, md 6px, lg 8px and xl 12px, as in
+ * Conductor (design-system spec §4). Conductor's gray is a warm stone
+ * (§2.9); only gray-* utilities read these.
+ */
+html[data-skin="conductor"] {
+	--radius: 0.5rem;
+	--color-gray-100: #eae8e6;
+	--color-gray-200: #d2cecb;
+	--color-gray-300: #bcb6b3;
+	--color-gray-400: #a5a09c;
+	--color-gray-500: #8e8885;
+	--color-gray-600: #766f6b;
+	--color-gray-700: #5f5854;
+	--color-gray-800: #47423e;
+	--color-gray-900: #2c2826;
+}
+
+/*
+ * Hover and selected are the same 5% wash in Conductor (§8). The class makes
+ * this outrank globals.css's :root.light, which sets both too.
+ */
+html[data-skin="conductor"]:is(.dark, .light) {
+	--fill-hover: color-mix(in oklab, var(--foreground) 5%, transparent);
+	--fill-selected: color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+@theme {
+	--color-gray-0: #fff;
+}
+
+@theme inline {
+	--color-sheet-surface: var(--sheet-surface);
+	--color-separator: var(--separator);
+	--color-input-border: var(--input-border);
+	--color-overlay: var(--overlay);
+	--color-popover-accent: var(--popover-accent);
+	--color-popover-ring: var(--popover-ring);
+	--color-faint: var(--faint);
+	--color-helper: var(--helper);
+	--color-special: var(--special);
+	--color-sidebar-background: var(--sidebar-background);
+	--color-sidebar-muted-foreground: var(--sidebar-muted-foreground);
+	--color-sidebar-blue: var(--sidebar-blue);
+	--color-highlight-tint: var(--highlight-tint);
+	--color-highlight-tint-foreground: var(--highlight-tint-foreground);
+	--color-highlight-muted: var(--highlight-muted);
+	--color-border-highlight: var(--border-highlight);
+	--color-unread: var(--unread);
+	--color-internal: var(--internal);
+	--color-link-chip: var(--link-chip);
+	--color-link-foreground: var(--link-foreground);
+	--color-link-elevated: var(--link-elevated);
+	--color-plan-border: var(--plan-border);
+	--color-composer-background: var(--composer-background);
+	--color-switch-background: var(--switch-background);
+	--color-switch-foreground: var(--switch-foreground);
+	--color-positive: var(--positive);
+	--color-positive-muted: var(--positive-muted);
+	--color-positive-foreground: var(--positive-foreground);
+	--color-notice: var(--notice);
+	--color-notice-foreground: var(--notice-foreground);
+	--color-notice-foreground-secondary: var(--notice-foreground-secondary);
+	--color-notice-border: var(--notice-border);
+	--color-info: var(--info);
+	--color-info-foreground: var(--info-foreground);
+	--color-checks-pending: var(--checks-pending);
+	--color-prose-border: var(--prose-border);
+	--color-status-backlog: var(--status-backlog);
+	--color-status-backlog-hover: var(--status-backlog-hover);
+	--color-status-in-progress: var(--status-in-progress);
+	--color-status-in-progress-hover: var(--status-in-progress-hover);
+	--color-status-in-review: var(--status-in-review);
+	--color-status-in-review-hover: var(--status-in-review-hover);
+	--color-status-done: var(--status-done);
+	--color-status-done-hover: var(--status-done-hover);
+	--color-status-canceled: var(--status-canceled);
+	--color-status-canceled-hover: var(--status-canceled-hover);
+	--color-todo-in-progress: var(--todo-in-progress);
+	--color-todo-completed: var(--todo-completed);
+	--color-todo-pending: var(--todo-pending);
+	--color-git-green: var(--git-green);
+	--color-git-red: var(--git-red);
+	--color-git-yellow: var(--git-yellow);
+	--color-git-gray: var(--git-gray);
+	--color-git-selection: var(--git-selection);
+	--color-git-new-line: var(--git-new-line);
+	--color-git-new-line-bg: var(--git-new-line-bg);
+	--color-git-removed-line: var(--git-removed-line);
+	--color-git-removed-line-bg: var(--git-removed-line-bg);
+	--color-tip: var(--tip);
+	--color-tip-border: var(--tip-border);
+	--color-tip-secondary: var(--tip-secondary);
+	--color-tip-secondary-border: var(--tip-secondary-border);
+	--color-tip-muted: var(--tip-muted);
+	--color-tip-foreground: var(--tip-foreground);
+}

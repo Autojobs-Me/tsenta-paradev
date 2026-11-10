@@ -6,6 +6,15 @@
  * last `@import` in globals.css pulls in styles/conductor.css. Components read
  * the switch with `isConductorSkin()` from ./skin.
  */
+// First, before anything loads the theme store: adds the Conductor themes to
+// Paradev's built-in list.
+import "./themes/register";
 import { applySkin } from "./skin";
+import {
+	adoptConductorThemes,
+	syncThemeIdAttribute,
+} from "./themes/store-sync";
 
 applySkin();
+syncThemeIdAttribute();
+adoptConductorThemes();
