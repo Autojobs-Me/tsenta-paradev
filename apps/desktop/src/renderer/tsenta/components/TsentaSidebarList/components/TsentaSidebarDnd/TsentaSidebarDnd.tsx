@@ -23,6 +23,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { DRAG_ACTIVATION_DISTANCE_PX } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/hooks/useSidebarDnd/constants";
+import { useDashboardSidebarHoverActions } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/DashboardSidebarHoverProvider";
 import type { useDashboardSidebarState } from "renderer/routes/_authenticated/hooks/useDashboardSidebarState";
 import {
 	type ConductorDropContext,
@@ -132,13 +133,20 @@ export function TsentaSidebarDnd({
 	useLayoutEffect(() => {
 		latest.current = { pinned, sections, laneChildren };
 	});
+	// Paradev's hover machine, held for the drag as its own sidebar drag
+	// does (DashboardSidebarDndProvider): no card opens over the rows the
+	// pointer crosses, none pops up under the drop, and no row it crosses
+	// refreshes its pull request. One hold per drag, released on any end.
+	const { beginHoverCardSuppression, endHoverCardSuppression, forceClose } =
+		useDashboardSidebarHoverActions();
+	const isHoldingHoverRef = useRef(false);
+	const releaseHoverHold = useCallback(() => {
+		if (!isHoldingHoverRef.current) return;
+		isHoldingHoverRef.current = false;
+		endHoverCardSuppression();
+	}, [endHoverCardSuppression]);
 	// A drag cut short by an unmount must not leave hover cards shut.
-	useEffect(
-		() => () => {
-			delete document.documentElement.dataset.tsentaSidebarDrag;
-		},
-		[],
-	);
+	useEffect(() => releaseHoverHold, [releaseHoverHold]);
 
 	const sensorOptions = useMemo(
 		() => ({
@@ -196,15 +204,18 @@ export function TsentaSidebarDnd({
 		({ active: start }: DragStartEvent) => {
 			const data = start.data.current as SidebarRowDragData | undefined;
 			setActive(data ?? null);
-			// Conductor keeps the hover card shut while a row is dragged
-			// (sidebar.css keys on this).
-			document.documentElement.dataset.tsentaSidebarDrag = "";
+			// Conductor keeps the hover card shut while a row is dragged.
+			forceClose();
+			if (!isHoldingHoverRef.current) {
+				isHoldingHoverRef.current = true;
+				beginHoverCardSuppression();
+			}
 			store.set({
 				...IDLE_DROP_INDICATOR,
 				draggingWorkspaceId: data?.workspace.id ?? null,
 			});
 		},
-		[store],
+		[store, forceClose, beginHoverCardSuppression],
 	);
 	const handleDragMove = useCallback(
 		(event: DragMoveEvent) => store.set(resolve(event).indicator),
@@ -212,9 +223,9 @@ export function TsentaSidebarDnd({
 	);
 	const reset = useCallback(() => {
 		setActive(null);
-		delete document.documentElement.dataset.tsentaSidebarDrag;
+		releaseHoverHold();
 		store.set(IDLE_DROP_INDICATOR);
-	}, [store]);
+	}, [store, releaseHoverHold]);
 	const handleDragEnd = useCallback(
 		(event: DragEndEvent) => {
 			const { plan } = resolve(event);
