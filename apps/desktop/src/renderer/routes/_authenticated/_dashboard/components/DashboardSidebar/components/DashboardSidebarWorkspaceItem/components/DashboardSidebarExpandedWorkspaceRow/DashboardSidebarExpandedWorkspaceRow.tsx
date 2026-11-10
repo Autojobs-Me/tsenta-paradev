@@ -429,7 +429,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 									)}
 								>
 									{/* tsenta:conductor (plan step 7): diff stats or the time, in place of the host glyph (sidebar.css), hidden on hover. */}
-									{isConductorSkin() && <TsentaRowMeta workspace={workspace} />}
+									{isConductorSkin() && (
+										<TsentaRowMeta workspace={workspace} isActive={isActive} />
+									)}
 									{isCloudWorkspace && isActive ? (
 										<DashboardSidebarOpenCloudHostGlyph
 											workspaceId={workspace.id}
