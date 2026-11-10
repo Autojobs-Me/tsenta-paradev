@@ -28,6 +28,9 @@ import { getStatusTooltip } from "renderer/screens/main/components/StatusIndicat
 import { RenameInput } from "renderer/screens/main/components/WorkspaceSidebar/RenameInput";
 import { useInlineWorkspacePortsEnabled } from "renderer/stores/inline-workspace-ports";
 import { usePullRequestPaneIntent } from "renderer/stores/pull-request-pane-intent";
+// tsenta:conductor (plan step 7): Conductor's status glyphs.
+import { TsentaWorkspaceStatusGlyph } from "renderer/tsenta/components/TsentaWorkspaceStatusGlyph";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import type { ActivePaneStatus } from "shared/tabs-types";
 import type {
 	DashboardSidebarWorkspace,
@@ -174,7 +177,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 				: sandboxStatus === "provisioning"
 					? t({ message: "Creating the sandbox" })
 					: null;
-		const leadIndicator = (
+		// tsenta:conductor (plan step 7): Conductor's status glyphs, same sources.
+		// biome-ignore format: tsenta:conductor leaves upstream's lines as they are, so rebases over edits to them still apply
+		const leadIndicator = isConductorSkin() ? <TsentaWorkspaceStatusGlyph workspace={workspace} workspaceStatus={workspaceStatus} isCreatePending={isPending} /> : (
 			<DashboardSidebarWorkspaceLeadIndicator
 				workspaceStatus={workspaceStatus}
 				isCreatePending={isPending}
