@@ -1,0 +1,23 @@
+/*
+ * Tsenta fork: Conductor's transcript (plan step 11; workspace-chat spec,
+ * "WC", sections 2 to 11).
+ *
+ * Paradev's chat keeps its rows, scroller and data. This file restyles them
+ * through hooks: data-tsenta="transcript" on the scroller root
+ * (Transcript.tsx), the scroller's own data-message-id on every row, and the
+ * fork components in renderer/tsenta/chat, which the transcript's component
+ * barrels render in place of Paradev's under the skin.
+ */
+
+/* Column (WC §2.2, §2.3) -------------------------------------------------- */
+
+/*
+ * The column is Conductor's 56rem (CHAT_COLUMN_CLASSNAME carries
+ * conductor:max-w-4xl, shared with the composer so their edges line up), and
+ * every row sits in a turn body's 28px gutter, Paradev's 16px otherwise.
+ */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[role="log"]
+	> [data-message-id] {
+	padding-inline: 1.75rem;
+}

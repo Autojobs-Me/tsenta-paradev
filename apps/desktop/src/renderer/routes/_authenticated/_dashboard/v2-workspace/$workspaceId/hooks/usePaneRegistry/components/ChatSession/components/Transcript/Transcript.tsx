@@ -387,7 +387,11 @@ export function Transcript({
 		});
 
 	return (
-		<MessageScroller.Root className="relative flex min-h-0 min-w-0 flex-1 flex-col">
+		<MessageScroller.Root
+			className="relative flex min-h-0 min-w-0 flex-1 flex-col"
+			// tsenta:conductor (plan step 11): the hook chat.css keys on.
+			data-tsenta="transcript"
+		>
 			<ChatImageGalleryProvider images={gallery}>
 				<TranscriptFindBar
 					currentIndex={find.currentIndex}
