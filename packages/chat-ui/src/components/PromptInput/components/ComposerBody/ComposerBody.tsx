@@ -1243,6 +1243,8 @@ export function ComposerBody({
 					})}
 					disabled
 					className={buttons.inactiveSend}
+					// tsenta:conductor (plan step 12): Conductor's send in composer.css.
+					data-composer-send="send"
 				>
 					<ArrowUpIcon className="size-4" />
 				</button>
@@ -1269,6 +1271,8 @@ export function ComposerBody({
 						buttons.filled,
 						"disabled:cursor-default disabled:opacity-50",
 					)}
+					// tsenta:conductor (plan step 12): Conductor's recording mic in composer.css.
+					data-composer-dictate="recording"
 				>
 					<SquareIcon className="size-3 fill-current" />
 				</button>
@@ -1279,6 +1283,8 @@ export function ComposerBody({
 					})}
 					disabled
 					className={buttons.inactiveSend}
+					// tsenta:conductor (plan step 12): Conductor's send in composer.css.
+					data-composer-send="send"
 				>
 					<ArrowUpIcon className="size-4" />
 				</button>
