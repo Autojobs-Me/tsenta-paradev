@@ -30,6 +30,8 @@ allowlist=(
 	'apps/desktop/src/renderer/globals.css'
 	'apps/desktop/src/renderer/index.html'
 	'apps/desktop/src/renderer/index.tsx'
+	# Conductor sidebar header and footer swaps (plan step 6).
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/DashboardSidebar.tsx'
 )
 
 base="${1:-}"

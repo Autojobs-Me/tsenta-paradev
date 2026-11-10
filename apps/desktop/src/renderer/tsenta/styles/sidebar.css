@@ -1,0 +1,56 @@
+/*
+ * Tsenta fork: Conductor's left sidebar (plan step 6 on; shell-sidebar spec
+ * §3, §4). The fork's own sidebar parts (tsenta/components) carry their
+ * Conductor classes; this file only restyles the Paradev controls they reuse,
+ * keyed on the data-tsenta wrappers the fork puts around them.
+ */
+
+/* Header row 1 (SS §3.2) -------------------------------------------------- */
+
+/*
+ * The sidebar toggle is a bare icon that brightens on hover, with no wash.
+ * Paradev's 32px box shrinks to 24px, which is all the row shows of it.
+ */
+html[data-skin="conductor"] [data-tsenta="sidebar-toggle"] > button {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--muted-foreground);
+	background-color: transparent;
+}
+
+html[data-skin="conductor"] [data-tsenta="sidebar-toggle"] > button:hover {
+	color: var(--foreground);
+}
+
+/*
+ * The right-hand cluster: offline, ports, back and forward, as Conductor's
+ * ghost iconXs buttons (24px, rounded-sm, muted, a sidebar-accent wash on
+ * hover), 8px apart. Back and forward draw 12px arrows.
+ */
+html[data-skin="conductor"] [data-tsenta="sidebar-header-controls"]
+	:is(button, output) {
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: calc(var(--radius) - 4px);
+	color: var(--sidebar-muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="sidebar-header-controls"]
+	button:is(:hover, [data-state="open"]) {
+	background-color: var(--sidebar-accent);
+	color: var(--sidebar-foreground);
+}
+
+html[data-skin="conductor"] [data-tsenta="sidebar-header-controls"] > div {
+	gap: 0.5rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="sidebar-header-controls"]
+	> div
+	> button
+	> svg {
+	width: 0.75rem;
+	height: 0.75rem;
+}

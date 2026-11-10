@@ -39,6 +39,9 @@ import { useLocalHostService } from "renderer/routes/_authenticated/providers/Lo
 import { useReleaseNotesCardStore } from "renderer/stores/release-notes-card";
 import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
 import { useV2NotificationStore } from "renderer/stores/v2-notifications";
+// tsenta:conductor (plan step 6): the Conductor sidebar header.
+import { TsentaSidebarHeader } from "renderer/tsenta/components/TsentaSidebarHeader";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import {
 	type ActiveWorkspaceSwitcherOption,
 	DashboardSidebarActiveWorkspaceSwitcher,
@@ -624,7 +627,12 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 									)
 								) : (
 									<div className="flex h-full flex-col border-r border-border bg-sidebar dark:bg-muted/35">
-										<DashboardSidebarHeader isCollapsed={isCollapsed} />
+										{/* tsenta:conductor (plan step 6): Conductor's header and nav block; the icon rail stays Paradev's. */}
+										{isConductorSkin() && !isCollapsed ? (
+											<TsentaSidebarHeader />
+										) : (
+											<DashboardSidebarHeader isCollapsed={isCollapsed} />
+										)}
 
 										<OverflowFadeContainer
 											fadeEdges={["top", "bottom"]}
