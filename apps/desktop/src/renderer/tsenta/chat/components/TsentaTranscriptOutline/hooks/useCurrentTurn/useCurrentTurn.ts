@@ -27,10 +27,10 @@ export function useCurrentTurn(
 			for (const child of log.children) {
 				const id = (child as HTMLElement).dataset.messageId;
 				if (!id) continue;
-				rows.push({
-					id,
-					aboveBottom: child.getBoundingClientRect().top < bottom,
-				});
+				const rect = child.getBoundingClientRect();
+				// Rows the skin hides (Paradev's working lines) have no box.
+				if (rect.height === 0) continue;
+				rows.push({ id, aboveBottom: rect.top < bottom });
 			}
 			setCurrent(currentTurn(ids, rows));
 		};

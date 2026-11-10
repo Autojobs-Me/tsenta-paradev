@@ -18,6 +18,7 @@ import { ToolCallRow } from "renderer/routes/_authenticated/_dashboard/v2-worksp
 import { RailStep } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/TurnGroupSection/components/RailStep";
 // The file, not the ToolRunRow barrel: the barrel exports this module.
 import { ToolRunRow as ParadevToolRunRow } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/TurnGroupSection/components/ToolRunRow/ToolRunRow";
+import { useNestedItems } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/providers/NestedItemsProvider";
 import { stepSummary } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/utils/stepSummary";
 import { isNestedTool } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/utils/subagentLines";
 import { isConductorSkin } from "renderer/tsenta/skin";
@@ -65,91 +66,112 @@ export const ToolRunRow = memo(function ToolRunRow(props: ToolRunRowProps) {
 }, sameRun);
 
 /**
+ * Whether the run's turn is still going. Only this reads the transcript's
+ * snapshot, which changes with every streamed word; the run below it
+ * re-renders only when the answer or its own props change.
+ */
+function TsentaToolRunRow(props: ToolRunRowProps) {
+	const { snapshot } = useNestedItems();
+	const firstId = props.items[0]?.id;
+	const turnId = firstId ? snapshot.items.get(firstId)?.turnId : undefined;
+	const turnRunning =
+		turnId !== undefined && snapshot.turns.get(turnId)?.status === "running";
+	return <ConductorRun {...props} turnRunning={turnRunning} />;
+}
+
+type ConductorRunProps = ToolRunRowProps & { turnRunning: boolean };
+
+/**
  * A run of tool calls the way Conductor shows a turn's work (workspace-chat
- * spec §9): while the agent is still in the run, and for a run of fewer
- * than three steps, every call is its own card, flat in the column. A
- * finished longer run folds under one quiet line, the chevron, what the run
- * did (Paradev's own summary, "ran 6 commands, read 2 files") and each of
- * its tools' glyphs once. It opens and closes through the transcript's own
+ * spec §9): while its turn is still going, and for a run of fewer than
+ * three steps, every call is its own card, flat in the column. Once the
+ * turn is done, a longer run folds under one quiet line: the chevron, what
+ * the run did (Paradev's own summary, "ran 6 commands, read 2 files") and
+ * each of its tools' glyphs once. It opens and closes through the transcript's own
  * state, as Paradev's run does, so find can still open it.
  */
-function TsentaToolRunRow({
-	active = false,
-	childLists,
-	collapsed,
-	items,
-	onToggle,
-	rowKey,
-	steps,
-	stepTexts,
-}: ToolRunRowProps) {
-	const { t } = useLingui();
-	const renderStep = (step: Item) => (
-		<RailStep key={step.id}>
-			{step.kind === "reasoning" ? (
-				<ReasoningRow
-					item={step as ReasoningItem}
-					text={stepTexts[steps.indexOf(step)] ?? ""}
-				/>
-			) : isNestedTool(
-					step as ToolCall,
-					childLists?.[items.indexOf(step as ToolCall)],
-				) ? (
-				<NestedToolCallRow item={step as ToolCall} />
-			) : (
-				<ToolCallRow item={step as ToolCall} />
-			)}
-		</RailStep>
-	);
-	if (active || steps.length < MIN_FOLDED_STEPS) {
-		return <div className="flex flex-col">{steps.map(renderStep)}</div>;
-	}
+const ConductorRun = memo(
+	function ConductorRun({
+		active = false,
+		childLists,
+		collapsed,
+		items,
+		onToggle,
+		rowKey,
+		steps,
+		stepTexts,
+		turnRunning,
+	}: ConductorRunProps) {
+		const { t } = useLingui();
+		const renderStep = (step: Item) => (
+			<RailStep key={step.id}>
+				{step.kind === "reasoning" ? (
+					<ReasoningRow
+						item={step as ReasoningItem}
+						text={stepTexts[steps.indexOf(step)] ?? ""}
+					/>
+				) : isNestedTool(
+						step as ToolCall,
+						childLists?.[items.indexOf(step as ToolCall)],
+					) ? (
+					<NestedToolCallRow item={step as ToolCall} />
+				) : (
+					<ToolCallRow item={step as ToolCall} />
+				)}
+			</RailStep>
+		);
+		if (active || turnRunning || steps.length < MIN_FOLDED_STEPS) {
+			return <div className="flex flex-col">{steps.map(renderStep)}</div>;
+		}
 
-	const done = items.filter((tool) => tool.status !== "running");
-	const live = done.length === 0;
-	const summary = stepSummary(live ? items : done);
-	const icons = runIcons(items);
-	const expanded = !collapsed;
-	const Chevron = expanded ? ChevronDown : ChevronRight;
-	return (
-		<Collapsible
-			onOpenChange={(open) => onToggle(rowKey, !open)}
-			open={expanded}
-		>
-			<CollapsibleTrigger
-				aria-label={
-					expanded ? t({ message: "Collapse" }) : t({ message: "Expand" })
-				}
-				className="group flex w-full min-w-0 items-center py-1 text-left text-muted-foreground transition-colors hover:text-foreground"
+		const done = items.filter((tool) => tool.status !== "running");
+		const live = done.length === 0;
+		const summary = stepSummary(live ? items : done);
+		const icons = runIcons(items);
+		const expanded = !collapsed;
+		const Chevron = expanded ? ChevronDown : ChevronRight;
+		return (
+			<Collapsible
+				onOpenChange={(open) => onToggle(rowKey, !open)}
+				open={expanded}
 			>
-				<Chevron aria-hidden className="mr-1 size-3 shrink-0" />
-				<span className="flex min-w-0 items-center gap-2">
-					{live ? (
-						<Shimmer
-							className="ml-0.5 min-w-0 truncate text-sm first-letter:uppercase"
-							duration={SUMMARY_SWEEP_SECONDS}
-							variant="text"
-						>
-							{summary}
-						</Shimmer>
-					) : (
-						<span className="ml-0.5 min-w-0 truncate text-sm first-letter:uppercase">
-							{summary}
+				<CollapsibleTrigger
+					aria-label={
+						expanded ? t({ message: "Collapse" }) : t({ message: "Expand" })
+					}
+					className="group flex w-full min-w-0 items-center py-1 text-left text-muted-foreground transition-colors hover:text-foreground"
+				>
+					<Chevron aria-hidden className="mr-1 size-3 shrink-0" />
+					<span className="flex min-w-0 items-center gap-2">
+						{live ? (
+							<Shimmer
+								className="ml-0.5 min-w-0 truncate text-sm first-letter:uppercase"
+								duration={SUMMARY_SWEEP_SECONDS}
+								variant="text"
+							>
+								{summary}
+							</Shimmer>
+						) : (
+							<span className="ml-0.5 min-w-0 truncate text-sm first-letter:uppercase">
+								{summary}
+							</span>
+						)}
+						<span aria-hidden className="flex shrink-0 items-center gap-1">
+							{icons.map((Icon) => (
+								<Icon
+									className="size-3 text-muted-foreground group-hover:text-foreground"
+									key={Icon.displayName ?? String(icons.indexOf(Icon))}
+								/>
+							))}
 						</span>
-					)}
-					<span aria-hidden className="flex shrink-0 items-center gap-1">
-						{icons.map((Icon) => (
-							<Icon
-								className="size-3 text-muted-foreground group-hover:text-foreground"
-								key={Icon.displayName ?? String(icons.indexOf(Icon))}
-							/>
-						))}
 					</span>
-				</span>
-			</CollapsibleTrigger>
-			<CollapsibleContent>
-				<div className="mt-1 flex flex-col">{steps.map(renderStep)}</div>
-			</CollapsibleContent>
-		</Collapsible>
-	);
-}
+				</CollapsibleTrigger>
+				<CollapsibleContent>
+					<div className="mt-1 flex flex-col">{steps.map(renderStep)}</div>
+				</CollapsibleContent>
+			</Collapsible>
+		);
+	},
+	(previous, next) =>
+		previous.turnRunning === next.turnRunning && sameRun(previous, next),
+);

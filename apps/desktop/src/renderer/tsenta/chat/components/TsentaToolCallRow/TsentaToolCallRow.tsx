@@ -142,7 +142,7 @@ export function TsentaToolCallRow({ item }: { item: ToolCall }) {
 				bodyClassName="flex flex-col gap-2"
 				findItemId={item.id}
 				icon={icon}
-				label={item.title}
+				label={item.title || (face.kind === "plain" ? face.label : face.verb)}
 				left={left}
 				onOpenChange={setOpen}
 				open={open}

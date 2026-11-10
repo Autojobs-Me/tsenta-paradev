@@ -13,7 +13,7 @@ const AT_END_PX = 8;
  * frame. Once the height has held for 500ms it pins once more and stops,
  * and it stops at the reader's first wheel, touch, click or key. Paradev's
  * scroller keeps everything else: it is only asked to scroll to its end,
- * and only when it opened there, so a restored reading position stands.
+ * and only while it is there, so a restored reading position stands.
  */
 export function useSettleToBottom(
 	anchorRef: RefObject<HTMLElement | null>,
@@ -47,6 +47,14 @@ export function useSettleToBottom(
 		const step = (now: number) => {
 			const height = viewport.scrollHeight;
 			if (height !== lastHeight) {
+				// Only while the end was still in view: a position Paradev
+				// restored, or any other move away from the end, stands.
+				const wasAtEnd =
+					lastHeight - viewport.scrollTop - viewport.clientHeight <= AT_END_PX;
+				if (!wasAtEnd) {
+					stop();
+					return;
+				}
 				lastHeight = height;
 				lastChange = now;
 				pin();
