@@ -60,4 +60,6 @@ if [ ! -d node_modules ] || [ ! -d apps/desktop/node_modules ]; then
 	bun run --cwd apps/desktop install:deps
 fi
 cd apps/desktop
+# A scripts-off install skips Electron's own download of its binary, which `electron-vite dev` needs.
+node -e "require('electron')" >/dev/null 2>&1 || node "$(node -p "require.resolve('electron/install.js')")"
 bun run dev
