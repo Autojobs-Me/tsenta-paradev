@@ -71,6 +71,9 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/Transcript.tsx'
 	# ...and data-tsenta="markdown" on the agent text root, for Conductor's prose.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/MarkdownView/MarkdownView.tsx'
+	# ...and Conductor's turn outline (the transcript's stacked marks) in
+	# place of Paradev's rail of prompts, one import line.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/SessionView/SessionView.tsx'
 	# ...and the user-row, user-bubble and user-actions hooks for Conductor's
 	# user message.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/UserMessageRow/UserMessageRow.tsx'

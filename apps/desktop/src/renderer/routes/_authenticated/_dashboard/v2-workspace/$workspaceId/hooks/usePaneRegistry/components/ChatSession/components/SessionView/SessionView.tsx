@@ -25,7 +25,6 @@ import {
 import { ComposerDropZone } from "@superset/chat-ui/ComposerDropZone";
 import { MessageScroller } from "@superset/chat-ui/MessageScroller";
 import type { ComposerDraft } from "@superset/chat-ui/PromptInput";
-import { ChatHistorySidebarScroller } from "@superset/ui/chat-history-sidebar";
 import { toast } from "@superset/ui/sonner";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -35,6 +34,9 @@ import { useWorkspaceHostUrl } from "renderer/hooks/host-service/useWorkspaceHos
 import { usePluginMentionOptions } from "renderer/hooks/usePluginMentionOptions";
 import { useStableList } from "renderer/hooks/useStableList";
 import { useChatTurnSnapshotsEnabled } from "renderer/stores/chat-turn-snapshots";
+// tsenta:conductor (plan step 11): Conductor's turn outline under the skin,
+// Paradev's rail of prompts (@superset/ui/chat-history-sidebar) otherwise.
+import { ChatHistorySidebarScroller } from "renderer/tsenta/chat/components/TsentaTranscriptOutline";
 import type { OpenFile } from "../../../../../../types";
 import {
 	ChatPaneActionsProvider,
