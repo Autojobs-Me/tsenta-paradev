@@ -46,6 +46,8 @@ export const DashboardSidebarGroupHeader = forwardRef<
 			ref={ref}
 			role={isEditing ? undefined : "button"}
 			tabIndex={isEditing ? undefined : 0}
+			data-tsenta="folder-header"
+			data-indent={indentation}
 			onClick={isEditing ? undefined : onToggleCollapse}
 			onKeyDown={
 				isEditing

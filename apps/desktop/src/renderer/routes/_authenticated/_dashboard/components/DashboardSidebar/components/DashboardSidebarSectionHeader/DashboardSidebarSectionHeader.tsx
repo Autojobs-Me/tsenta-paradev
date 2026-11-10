@@ -42,6 +42,7 @@ export function DashboardSidebarSectionHeader({
 			// The visible label is the accessible name; keep it when the label is
 			// hidden so the toggle is never an unnamed button.
 			aria-label={label}
+			data-tsenta="section-header"
 			onClick={() => toggle(section)}
 			onKeyDown={(event) => {
 				if (event.key === "Enter" || event.key === " ") {
