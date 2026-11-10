@@ -8,13 +8,14 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 } from "@superset/ui/dropdown-menu";
-import { FolderPlus, Search } from "lucide-react";
+import { FolderPlus, MessageSquarePlus, Search } from "lucide-react";
 import {
 	VscFolderOpened,
 	VscGithubAlt,
 	VscLayout,
 	VscNewFolder,
 } from "react-icons/vsc";
+import { useOpenNewSession } from "renderer/hooks/useOpenNewWorkspace";
 import type { DashboardSidebarProject } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
 import type {
 	SidebarProjectHostFilter,
@@ -45,8 +46,8 @@ interface TsentaMyWorkspacesMenuProps {
  * The "My workspaces" "…" menu (shell-sidebar spec §4.2) holding what the
  * stock Sessions and Projects headers had as buttons: Group by, Sort by
  * (Paradev's sort modes), Show (its local and cloud filter), Filter
- * projects, then New section (Paradev's new folder, per project when there
- * are several) and Add project (its four ways in).
+ * projects, then New session, New section (Paradev's new folder, per
+ * project when there are several) and Add project (its four ways in).
  */
 export function TsentaMyWorkspacesMenu({
 	sortMode,
@@ -61,6 +62,7 @@ export function TsentaMyWorkspacesMenu({
 	const grouping = useTsentaSidebarGrouping((state) => state.grouping);
 	const setGrouping = useTsentaSidebarGrouping((state) => state.setGrouping);
 	const addProject = useAddProjectActions();
+	const openNewSession = useOpenNewSession();
 	const sortLabels: Record<SidebarProjectSortMode, string> = {
 		manual: t({ message: "Manual order" }),
 		active: t({ message: "Last active" }),
@@ -147,6 +149,12 @@ export function TsentaMyWorkspacesMenu({
 				<Trans>Filter projects…</Trans>
 			</DropdownMenuItem>
 			<DropdownMenuSeparator />
+			{/* The Sessions section only shows while it has rows; this keeps a
+			    first session one click away, as the stock header's "+" did. */}
+			<DropdownMenuItem onSelect={() => openNewSession()}>
+				<MessageSquarePlus aria-hidden="true" className="size-4" />
+				<Trans>New session</Trans>
+			</DropdownMenuItem>
 			{folderProjects.length === 1 ? (
 				<DropdownMenuItem
 					onSelect={() => {
