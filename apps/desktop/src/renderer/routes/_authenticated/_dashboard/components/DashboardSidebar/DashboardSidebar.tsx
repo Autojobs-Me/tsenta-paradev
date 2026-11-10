@@ -313,22 +313,27 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 	// Sorted but unfiltered, so ⌘1–⌘9 targets stay put while typing a query.
 	// The filtered view expands matches through derived objects, so a jump
 	// must not toggle the persisted collapse state while it is active.
-	// tsenta:conductor (plan step 7): the same hook, counting rows in the Conductor list's order.
+	// tsenta:conductor (plan step 7): the same hook, counting rows in the Conductor list's order (Pinned first).
 	const conductorShortcutOrder = useMemo(
 		() =>
 			isConductorSkin() && !isCollapsed
 				? buildConductorShortcutOrder({
 						projects: sortedGroups,
 						sessionChildren,
+						pinnedWorkspaces,
 					})
 				: null,
-		[isCollapsed, sortedGroups, sessionChildren],
+		[isCollapsed, sortedGroups, sessionChildren, pinnedWorkspaces],
 	);
 	const workspaceShortcutLabels = useDashboardSidebarShortcuts(
 		conductorShortcutOrder?.groups ?? sortedGroups,
 		conductorShortcutOrder?.sessionWorkspaces ?? sessionWorkspaces,
 		conductorShortcutOrder?.sessionChildren ?? sessionChildren,
-		{ revealCollapsed: !isFilterActive, pinnedWorkspaces },
+		{
+			revealCollapsed: !isFilterActive,
+			pinnedWorkspaces:
+				conductorShortcutOrder?.pinnedWorkspaces ?? pinnedWorkspaces,
+		},
 	);
 	// Scoped to what the filter actually shows — select-all and range-select
 	// must not reach rows the filter is hiding.

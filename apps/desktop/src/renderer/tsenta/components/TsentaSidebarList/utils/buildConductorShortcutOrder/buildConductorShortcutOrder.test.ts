@@ -34,6 +34,25 @@ const project = (
 ) => ({ id, name: id, isCollapsed, children }) as DashboardSidebarProject;
 
 describe("buildConductorShortcutOrder", () => {
+	test("counts Pinned first, and hands no pinned rows to previous and next twice", () => {
+		const order = buildConductorShortcutOrder({
+			projects: [
+				project("p1", [{ type: "workspace", workspace: workspace("a", "p1") }]),
+			],
+			sessionChildren: [],
+			pinnedWorkspaces: [workspace("x", "p1"), workspace("y", null)],
+		});
+		expect(
+			order.groups.flatMap((group) =>
+				getProjectChildrenWorkspaces(group.children).map((row) => row.id),
+			),
+		).toEqual(["x", "y", "a"]);
+		expect(order.pinnedWorkspaces).toEqual([]);
+		// The pinned group is no project, so a jump there toggles none.
+		expect(order.groups[0]?.id).toBe("tsenta:pinned");
+		expect(order.groups[0]?.isCollapsed).toBe(false);
+	});
+
 	test("counts sections, then Sessions rows, then each repository, as the list shows them", () => {
 		const order = buildConductorShortcutOrder({
 			projects: [
