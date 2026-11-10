@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds Paradev Boxes from this checkout, against Paradev's hosted backend,
+# Builds Paradev Tsenta from this checkout, against Paradev's hosted backend,
 # with telemetry off. Installers land in apps/desktop/release.
 #   scripts/fork/build.sh [mac|linux|win] [arm64|x64]   defaults: this machine
 #   FORK_DIR_ONLY=1 scripts/fork/build.sh               just the unpacked app
@@ -31,10 +31,11 @@ if [ -f .env ]; then
 fi
 
 export TARGET_ARCH="$arch"
-# Only picks the URL scheme (superset-boxes), so sign-in callbacks reach this
+# Only picks the URL scheme (superset-tsenta, as in electron-builder.fork.ts),
+# so sign-in callbacks reach this
 # app rather than Paradev. The home is Paradev's ~/.paradev, set at launch by
 # apps/desktop/fork/main.cjs before the main bundle reads this name.
-export SUPERSET_WORKSPACE_NAME=boxes
+export SUPERSET_WORKSPACE_NAME=tsenta
 export DESKTOP_DISPLAY_NAME=Paradev
 export DESKTOP_NOTIFICATIONS_PORT=51761
 export NEXT_PUBLIC_API_URL=https://api.superset.sh

@@ -1,0 +1,111 @@
+# Preview build of a Tsenta UI branch, for looking at it before it ships.
+#
+# Every push to a tsenta/* branch (or a manual run) builds the macOS arm64 app
+# with scripts/fork/build.sh and uploads it as the tsenta-preview-mac-arm64
+# artifact. Without CSC_NAME the app is ad-hoc signed and not notarized: after
+# downloading, open it with right-click > Open once, or run
+#   xattr -dr com.apple.quarantine "/Applications/Paradev Tsenta.app"
+# It installs as Paradev Tsenta (com.tsenta.paradev) beside Paradev and shares
+# Paradev's ~/.paradev, so it is already signed in. Nothing is published.
+
+name: Tsenta preview
+
+on:
+  push:
+    branches: ["tsenta/**"]
+    paths:
+      - "apps/desktop/**"
+      - "packages/**"
+      - "scripts/fork/**"
+      - "bun.lock"
+      - ".github/workflows/tsenta-preview.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: tsenta-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  mac:
+    name: build (mac arm64)
+    runs-on: macos-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: .bun-version
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.bun/install/cache
+            ~/Library/Caches/electron
+            ~/Library/Caches/electron-builder
+          key: macOS-arm64-tsenta-preview-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            macOS-arm64-tsenta-preview-
+            macOS-arm64-boxes-
+
+      # Same as fork-sync.yml: Electron's download answers 504 for minutes at a
+      # stretch, so fetch it with patient retries and check its SHA256 first.
+      - name: Prefetch Electron
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./apps/desktop/package.json').devDependencies.electron")
+          dir="$HOME/Library/Caches/electron"
+          name="electron-v$version-darwin-arm64.zip"
+          base="https://github.com/electron/electron/releases/download/v$version"
+          mkdir -p "$dir"
+          fetch() { curl -fsSL --retry 30 --retry-all-errors --retry-delay 20 --retry-max-time 1500 -o "$2" "$1"; }
+          fetch "$base/SHASUMS256.txt" "$RUNNER_TEMP/SHASUMS256.txt"
+          want=$(grep " \*\?$name\$" "$RUNNER_TEMP/SHASUMS256.txt" | cut -d' ' -f1)
+          [ -n "$want" ] || { echo "::error::$name not in SHASUMS256.txt"; exit 1; }
+          if [ -f "$dir/$name" ] && [ "$(shasum -a 256 "$dir/$name" | cut -d' ' -f1)" = "$want" ]; then
+            echo "Cached: $name"; exit 0
+          fi
+          fetch "$base/$name" "$dir/$name.part"
+          [ "$(shasum -a 256 "$dir/$name.part" | cut -d' ' -f1)" = "$want" ] || { echo "::error::$name checksum mismatch"; exit 1; }
+          mv "$dir/$name.part" "$dir/$name"
+          echo "Fetched: $name"
+
+      - name: Install dependencies
+        run: |
+          bun install --frozen --ignore-scripts
+          bun run --filter=@superset/i18n build
+          bun run --cwd apps/desktop install:deps
+
+      - name: Version
+        working-directory: apps/desktop
+        run: |
+          short=$(git rev-parse --short HEAD)
+          node -e "const fs=require('fs');const p=require('./package.json');p.version=p.version.replace(/-.*$/,'')+'-tsenta.g'+process.argv[1];fs.writeFileSync('./package.json',JSON.stringify(p,null,'\t')+'\n')" "$short"
+
+      - name: Build
+        env:
+          PDEV_BUNDLE_REQUIRED: "1"
+        run: |
+          for attempt in 1 2; do
+            scripts/fork/build.sh mac arm64 && exit 0
+            echo "::warning::build attempt $attempt failed"
+          done
+          exit 1
+
+      - name: Smoke test
+        run: scripts/fork/smoke.sh mac
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: tsenta-preview-mac-arm64
+          path: |
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.zip
+          retention-days: 7
+          if-no-files-found: error

@@ -1,11 +1,11 @@
 /**
- * Electron Builder configuration for the Paradev Boxes fork.
+ * Electron Builder configuration for the Paradev Tsenta fork.
  *
  * Extends the base config the way electron-builder.canary.ts does, with its
  * own identity so it installs beside Paradev and Paradev Canary: bundle id,
  * product name (which names userData, logs and the single-instance lock),
- * URL scheme, and release feed. Build with SUPERSET_WORKSPACE_NAME=boxes so
- * the runtime scheme (superset-boxes) matches; scripts/fork/build.sh sets
+ * URL scheme, and release feed. Build with SUPERSET_WORKSPACE_NAME=tsenta so
+ * the runtime scheme (superset-tsenta) matches; scripts/fork/build.sh sets
  * everything. The app home is not its own: the entry point, fork/main.cjs,
  * points it at Paradev's ~/.paradev before the main bundle loads, so both
  * apps share projects, workspaces, sign-in, host-service and terminals.
