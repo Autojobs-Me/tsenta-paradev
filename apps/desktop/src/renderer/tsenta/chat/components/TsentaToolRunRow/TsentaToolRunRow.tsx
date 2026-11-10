@@ -118,9 +118,7 @@ function TsentaToolRunRow({
 		>
 			<CollapsibleTrigger
 				aria-label={
-					expanded
-						? t({ message: `Collapse ${summary}` })
-						: t({ message: `Expand ${summary}` })
+					expanded ? t({ message: "Collapse" }) : t({ message: "Expand" })
 				}
 				className="group flex w-full min-w-0 items-center py-1 text-left text-muted-foreground transition-colors hover:text-foreground"
 			>

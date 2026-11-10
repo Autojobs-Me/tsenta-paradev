@@ -109,22 +109,27 @@ export function TsentaTranscriptOutline({
 						aria-label={t({ message: "User messages" })}
 						className="relative flex max-h-80 flex-col gap-0.5 overflow-y-auto overflow-x-hidden"
 					>
-						{entries.map((entry, index) => (
-							<button
-								aria-current={entry.id === currentId ? "true" : undefined}
-								aria-label={t({ message: `Jump to user message ${index + 1}` })}
-								className={cn(
-									"inline-flex h-8 w-full shrink-0 items-center justify-start truncate rounded-md px-2 text-left font-450 text-foreground/90 text-sm hover:bg-sidebar-accent",
-									entry.id === currentId && "bg-foreground/5",
-								)}
-								key={entry.id}
-								onClick={() => navigate(entry.id)}
-								ref={entry.id === currentId ? centerInList : undefined}
-								type="button"
-							>
-								<span className="truncate">{entry.summary}</span>
-							</button>
-						))}
+						{entries.map((entry, index) => {
+							const position = index + 1;
+							return (
+								<button
+									aria-current={entry.id === currentId ? "true" : undefined}
+									aria-label={t({
+										message: `Jump to user message ${position}`,
+									})}
+									className={cn(
+										"inline-flex h-8 w-full shrink-0 items-center justify-start truncate rounded-md px-2 text-left font-450 text-foreground/90 text-sm hover:bg-sidebar-accent",
+										entry.id === currentId && "bg-foreground/5",
+									)}
+									key={entry.id}
+									onClick={() => navigate(entry.id)}
+									ref={entry.id === currentId ? centerInList : undefined}
+									type="button"
+								>
+									<span className="truncate">{entry.summary}</span>
+								</button>
+							);
+						})}
 					</nav>
 				</HoverCardContent>
 			</HoverCard>

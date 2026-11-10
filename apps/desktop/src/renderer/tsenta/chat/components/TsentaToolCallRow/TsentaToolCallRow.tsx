@@ -23,6 +23,7 @@ import {
 	ToolCard,
 	useCardOpen,
 } from "../ToolCard";
+import { PlanProposalCard, proposedPlan } from "./components/PlanProposalCard";
 import { ToolErrorRow } from "./components/ToolErrorRow";
 import { toolFace } from "./utils/toolFace";
 import { toolIcon } from "./utils/toolIcon";
@@ -34,10 +35,12 @@ const TITLE_SWEEP_SECONDS = 1.6;
  * Paradev's row otherwise.
  */
 export function ToolCallRow({ item }: { item: ToolCall }) {
-	return isConductorSkin() ? (
-		<TsentaToolCallRow item={item} />
+	if (!isConductorSkin()) return <ParadevToolCallRow item={item} />;
+	const plan = item.toolName === "ExitPlanMode" ? proposedPlan(item) : null;
+	return plan ? (
+		<PlanProposalCard item={item} plan={plan} />
 	) : (
-		<ParadevToolCallRow item={item} />
+		<TsentaToolCallRow item={item} />
 	);
 }
 
