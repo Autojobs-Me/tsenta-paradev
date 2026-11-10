@@ -7,6 +7,7 @@ import {
 import { TsentaWorkspaceHeader } from "renderer/tsenta/components/TsentaWorkspaceHeader";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { FoldedPaneControls } from "./components/FoldedPaneControls";
+import { TabStatusIcon } from "./components/TabStatusIcon";
 import { foldPaneHeaders } from "./utils/foldPaneHeaders";
 
 /** What the Conductor layout needs beyond Workspace's own props. */
@@ -29,6 +30,8 @@ type TsentaWorkspaceProps<TData> = WorkspaceProps<TData> & {
  *   tab strip;
  * - Paradev's launcher row below the tab bar is not drawn; its launchers
  *   join the strip's "+" menu (TsentaAddTabMenu), which lists Chat first;
+ * - each tab's agent status leads its title in Conductor's glyphs
+ *   (TabStatusIcon), in place of Paradev's trailing dot;
  * - a chat or terminal alone in its tab drops its own header row, and the
  *   strip's trailing end takes that header's controls (FoldedPaneControls),
  *   so the strip is the one row above the transcript.
@@ -50,6 +53,8 @@ function ConductorWorkspace<TData>({
 	renderTabBarTrailing,
 	renderBelowTabBar: _launcherRow,
 	renderAddTabMenu,
+	renderTabIcon,
+	renderTabAccessory: _statusDot,
 	...props
 }: TsentaWorkspaceProps<TData>) {
 	const { registry, store, paneActions } = props;
@@ -63,6 +68,9 @@ function ConductorWorkspace<TData>({
 			<Workspace<TData>
 				{...props}
 				registry={foldedRegistry}
+				renderTabIcon={(tab) =>
+					renderTabIcon?.(tab) ?? <TabStatusIcon<TData> tab={tab} />
+				}
 				renderTabBarTrailing={() => (
 					<FoldedPaneControls<TData>
 						store={store}

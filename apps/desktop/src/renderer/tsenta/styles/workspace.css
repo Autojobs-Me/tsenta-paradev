@@ -81,6 +81,17 @@ html[data-skin="conductor"] [data-pane-area="center"]
 	padding-left: 0.5rem;
 }
 
+/*
+ * A tab's status icon (TabStatusIcon) renders nothing while the tab has no
+ * news; its slot then takes no room, as Conductor's tab shows no icon.
+ */
+html[data-skin="conductor"] [data-pane-area="center"]
+	[data-pane-tab]
+	> div:first-child
+	> span:empty {
+	display: none;
+}
+
 /* Close: a 20px ghost holding a 12px x, shown on hover (DS §6.15). */
 html[data-skin="conductor"] [data-pane-area="center"]
 	[data-pane-tab]
