@@ -64,7 +64,8 @@ allowlist=(
 	# renderer/tsenta (TsentaWorkspace, the same Workspace with the skin off).
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx'
 	# Conductor transcript (plan step 11): the 56rem chat column under the
-	# skin, and the data-tsenta="transcript" hook chat.css keys on.
+	# skin, the data-tsenta="transcript" hook chat.css keys on, and the
+	# working row at the transcript's end (TsentaTranscriptFooter).
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/constants.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/Transcript.tsx'
 	# ...and data-tsenta="markdown" on the agent text root, for Conductor's prose.

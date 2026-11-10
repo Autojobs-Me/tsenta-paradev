@@ -1,0 +1,1 @@
+export { TsentaTranscriptFooter } from "./TsentaTranscriptFooter";

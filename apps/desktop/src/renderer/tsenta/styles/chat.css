@@ -212,3 +212,17 @@ html[data-skin="conductor"]
 	:is(a, strong, em, code, h1, h2, h3, h4, blockquote) {
 	color: inherit;
 }
+
+/* Working row (WC §8) ------------------------------------------------------ */
+
+/*
+ * Conductor says a turn is working once, at the end of the transcript
+ * (TsentaTranscriptFooter), and how long a finished turn took in its
+ * footer. Paradev's line under each prompt ("Working for 8s", "Worked for
+ * 8s") goes. Its rows are the scroller's items keyed working:<turn>.
+ */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[role="log"]
+	> [data-message-id^="working:"] {
+	display: none;
+}

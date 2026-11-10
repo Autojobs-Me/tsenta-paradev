@@ -32,6 +32,7 @@ import {
 	useState,
 } from "react";
 import { env } from "renderer/env.renderer";
+import { TsentaTranscriptFooter } from "renderer/tsenta/chat/components/TsentaTranscriptFooter";
 import {
 	CHAT_COLUMN_CLASSNAME,
 	CHAT_SCROLLER_GUTTER_CLASSNAME,
@@ -454,6 +455,12 @@ export function Transcript({
 						)}
 					>
 						{contentChildren}
+						{/* tsenta:conductor (plan step 11): Conductor's working row. */}
+						<TsentaTranscriptFooter
+							groups={groups}
+							sessionId={sessionId}
+							snapshot={snapshot}
+						/>
 					</MessageScroller.Content>
 				</MessageScroller.Viewport>
 				<div className="pointer-events-none absolute inset-x-0 bottom-9 flex justify-center">
