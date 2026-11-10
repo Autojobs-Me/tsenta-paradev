@@ -8,13 +8,16 @@ import {
 	useState,
 	useSyncExternalStore,
 } from "react";
+// tsenta:conductor (plan step 7): Conductor's hover card delay.
+import { isConductorSkin } from "renderer/tsenta/skin";
 import type { DashboardSidebarWorkspace } from "../../types";
 import {
 	isPointInsideCardCone,
 	type Point,
 } from "../../utils/isPointInsideCardCone";
 
-const OPEN_DELAY_MS = 400;
+// tsenta:conductor (plan step 7): Conductor opens the card after 700ms.
+const OPEN_DELAY_MS = isConductorSkin() ? 700 : 400;
 const CLOSE_DELAY_MS = 100;
 // Cap how long we'll tolerate the pointer drifting inside the safe triangle
 // before giving up and closing anyway, in case it stalls mid-gap.

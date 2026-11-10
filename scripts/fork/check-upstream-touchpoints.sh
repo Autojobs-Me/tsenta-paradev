@@ -37,6 +37,8 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarGroupHeader/DashboardSidebarGroupHeader.tsx'
 	# ...and the repository header swap.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarProjectSection/DashboardSidebarProjectSection.tsx'
+	# ...and Conductor's hover card delay.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/DashboardSidebarHoverProvider/DashboardSidebarHoverProvider.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarSectionHeader/DashboardSidebarSectionHeader.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/DashboardSidebarWorkspaceItem.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/DashboardSidebarExpandedWorkspaceRow.tsx'

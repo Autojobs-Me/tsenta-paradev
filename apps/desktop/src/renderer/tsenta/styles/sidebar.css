@@ -231,6 +231,29 @@ html[data-skin="conductor"] [data-tsenta="ws-row"][data-pending] {
 	opacity: 0.5;
 }
 
+/* Workspace hover card (SS §4.7) ----------------------------------------- */
+
+/*
+ * Conductor's preview card: as wide as its content between 280px and 340px,
+ * 12px padding, a 6px radius and a real border rather than the popup ring,
+ * 10px clear of the row (Paradev's popover sits 4px off, the margin adds 6).
+ */
+html[data-skin="conductor"]
+[data-slot="popover-content"][data-dashboard-sidebar-hover-card] {
+	width: auto;
+	min-width: 280px;
+	max-width: 340px;
+	padding: 0.75rem;
+	border-width: 1px;
+	border-radius: calc(var(--radius) - 2px);
+	--tw-ring-shadow: 0 0 #0000;
+}
+
+html[data-skin="conductor"]
+	[data-slot="popover-content"][data-dashboard-sidebar-hover-card][data-side="right"] {
+	margin-left: 6px;
+}
+
 /* Footer (SS §3.5) -------------------------------------------------------- */
 
 /*
