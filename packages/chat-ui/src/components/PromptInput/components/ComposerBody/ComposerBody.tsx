@@ -1298,6 +1298,8 @@ export function ComposerBody({
 						editor.focus();
 					}}
 					className={buttons.ghost}
+					// tsenta:conductor (plan step 12): placed in Conductor's toolbar by composer.css.
+					data-composer-dictate
 				>
 					<MicIcon className="size-4" />
 				</button>

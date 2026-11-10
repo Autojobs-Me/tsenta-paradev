@@ -50,8 +50,9 @@ import { useFooterTier } from "renderer/routes/_authenticated/components/AgentCo
 import { useGitHubMentionProviders } from "renderer/routes/_authenticated/components/AgentComposer/hooks/useGitHubMentionProviders";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
-// tsenta:conductor (plan step 12): Conductor's Stop beside Send.
+// tsenta:conductor (plan step 12): Conductor's Stop beside Send, and its toolbar.
 import { TsentaComposerStop } from "renderer/tsenta/composer/components/TsentaComposerStop";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { useChatComposerStore } from "../../../../stores/chatComposerStore";
 import { CHAT_COLUMN_CLASSNAME, CHAT_GUTTER_CLASSNAME } from "../../constants";
 import { useChatWiring } from "../../hooks/useSessionClient";
@@ -682,6 +683,8 @@ export const Composer = memo(function Composer({
 							)}
 							{configOptions && onSetConfigOption && (
 								<ModelPicker
+									// tsenta:conductor (plan step 12): the trigger is bottom-left.
+									align={isConductorSkin() ? "start" : "end"}
 									agentSwitcher={agentModelsOnly ? undefined : agentSwitcher}
 									configOptions={configOptions}
 									hideEffortLabel={footerTier >= 1}

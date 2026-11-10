@@ -101,10 +101,14 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/NoticeRow/index.ts'
 	# Conductor composer (plan step 12): data-tsenta="composer" on the chat
 	# session's composer and the fork's second Stop in its toolbar, and the
-	# card, send and stop hooks (data-composer-root, data-composer-send,
-	# data-composer-stop) composer.css keys on in chat-ui's ComposerBody.
+	# card, send, stop and mic hooks (data-composer-root, data-composer-send,
+	# data-composer-stop, data-composer-dictate) composer.css keys on in
+	# chat-ui's ComposerBody.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx'
 	'packages/chat-ui/src/components/PromptInput/components/ComposerBody/ComposerBody.tsx'
+	# ...and the model picker's trigger hook, with an align prop so its menu
+	# opens from the composer's left edge, where Conductor keeps the trigger.
+	'apps/desktop/src/renderer/routes/_authenticated/components/AgentComposer/components/ModelPicker/ModelPicker.tsx'
 )
 
 base="${1:-}"

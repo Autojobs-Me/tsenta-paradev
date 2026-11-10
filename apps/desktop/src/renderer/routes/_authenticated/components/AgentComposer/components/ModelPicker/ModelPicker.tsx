@@ -38,6 +38,8 @@ export type ModelPickerProps = {
 	hideModelLabel?: boolean;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+	/** tsenta:conductor (plan step 12): the trigger edge the menu lines up with. */
+	align?: "start" | "end";
 };
 
 const TRAIT_ROW_CLASS = cn(
@@ -47,6 +49,7 @@ const TRAIT_ROW_CLASS = cn(
 
 export function ModelPicker({
 	agentSwitcher,
+	align = "end",
 	configOptions,
 	hideEffortLabel,
 	hideModelLabel,
@@ -160,6 +163,8 @@ export function ModelPicker({
 					title={hiddenLabels || undefined}
 					type="button"
 					data-footer-label
+					// tsenta:conductor (plan step 12): Conductor's model trigger in composer.css.
+					data-tsenta="model-picker"
 				>
 					{agentIcon ? (
 						<img
@@ -192,7 +197,8 @@ export function ModelPicker({
 				</button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
-				align="end"
+				// tsenta:conductor (plan step 12): upstream's align="end", now a prop.
+				align={align}
 				className={cn(
 					MENU_PANEL_CLASS,
 					"flex w-[296px] flex-col overflow-hidden p-0",
