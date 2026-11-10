@@ -1,4 +1,5 @@
 import { Trans, useLingui } from "@lingui/react/macro";
+import { draftText } from "@superset/chat-ui/PromptInput";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
 import {
 	ClipboardList,
@@ -7,6 +8,7 @@ import {
 	Gauge,
 	GitPullRequest,
 	House,
+	Pencil,
 	Plus,
 	Puzzle,
 	Search,
@@ -29,6 +31,7 @@ import {
 import { useDashboardNavigation } from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardNavigation";
 import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/hooks/useFailedAutomations";
 import { useOpenNewWorkspaceInViewedProject } from "renderer/routes/_authenticated/_dashboard/hooks/useOpenNewWorkspaceInViewedProject";
+import { useNewWorkspaceDraftStore } from "renderer/stores/new-workspace-draft";
 import { COLLAPSED_WORKSPACE_SIDEBAR_WIDTH } from "renderer/stores/workspace-sidebar-state";
 import { SidebarNavRow } from "./components/SidebarNavRow";
 
@@ -45,8 +48,9 @@ const TRAFFIC_LIGHTS_CLEARANCE = 86;
  *
  * - Row 1: the sidebar toggle past the window buttons, and on the right the
  *   offline badge, the ports pill and back and forward.
- * - One nav block of identical rows: Home, Create and Search, then Paradev's
- *   other destinations in the same row look.
+ * - One nav block of identical rows: Home, Create (with a pencil while a
+ *   new-workspace draft waits) and Search, then Paradev's other
+ *   destinations in the same row look.
  *
  * The row keeps Paradev's macOS metrics (WindowChrome constants and
  * ZoomStable), so the controls stay centred on the native window buttons
@@ -57,6 +61,13 @@ export function TsentaSidebarHeader() {
 	const navigation = useDashboardNavigation();
 	const openNewWorkspace = useOpenNewWorkspaceInViewedProject();
 	const paletteToggle = useCommandPaletteToggle();
+	// Conductor marks Create with a pencil while the new-workspace composer
+	// holds an unsent prompt or attachment.
+	const hasNewWorkspaceDraft = useNewWorkspaceDraftStore(
+		(state) =>
+			draftText(state.promptDraft).trim() !== "" ||
+			state.promptAttachments.length > 0,
+	);
 	const { data: platform } = electronTrpc.window.getPlatform.useQuery();
 	// Mac while loading, so the row never briefly covers the window buttons.
 	const isMac = platform === undefined || platform === "darwin";
@@ -134,6 +145,14 @@ export function TsentaSidebarHeader() {
 					icon={Plus}
 					label={<Trans>Create</Trans>}
 					hotkey="NEW_WORKSPACE"
+					restIndicator={
+						hasNewWorkspaceDraft ? (
+							<Pencil
+								aria-hidden="true"
+								className="size-3 text-sidebar-muted-foreground"
+							/>
+						) : undefined
+					}
 					onClick={() => openNewWorkspace()}
 				/>
 				<SidebarNavRow
