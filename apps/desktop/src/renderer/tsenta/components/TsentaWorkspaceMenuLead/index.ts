@@ -1,0 +1,1 @@
+export { TsentaWorkspaceMenuLead } from "./TsentaWorkspaceMenuLead";

@@ -43,6 +43,9 @@ import type {
 	MovableWorkspace,
 	WorkspaceMoveDirection,
 } from "renderer/routes/_authenticated/_dashboard/hooks/useWorkspaceMoveDirections";
+// tsenta:conductor (plan step 7): Conductor's menu order and keys.
+import { TsentaWorkspaceMenuLead } from "renderer/tsenta/components/TsentaWorkspaceMenuLead";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { useDashboardSidebarPortKill } from "../../../../hooks/useDashboardSidebarPortKill";
 import { useDashboardSidebarHoverActions } from "../../../../providers/DashboardSidebarHoverProvider";
 import { useDashboardSidebarWorkspacePorts } from "../../../../providers/DashboardSidebarPortsProvider";
@@ -136,7 +139,14 @@ export function DashboardSidebarWorkspaceContextMenu({
 			<ContextMenu onOpenChange={setContextMenuOpen}>
 				<ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
 				<ContextMenuContent onCloseAutoFocus={onCloseAutoFocus}>
-					<ContextMenuItem onSelect={onTogglePin}>
+				{/* tsenta:conductor (plan step 7): read state leads, as in Conductor. */}
+				{isConductorSkin() && (
+					<TsentaWorkspaceMenuLead
+						isUnread={isUnread}
+						onToggleUnread={onToggleUnread}
+					/>
+				)}
+				<ContextMenuItem onSelect={onTogglePin} data-tsenta="ws-menu-pin">
 						{isPinned ? (
 							<>
 								<LuPinOff className="size-4 mr-2" />
@@ -148,6 +158,7 @@ export function DashboardSidebarWorkspaceContextMenu({
 								<Trans>Pin</Trans>
 							</>
 						)}
+					{isConductorSkin() && <ContextMenuShortcut>P</ContextMenuShortcut>}
 					</ContextMenuItem>
 					{onRename && (
 						<ContextMenuItem onSelect={() => runAfterClose(onRename)}>
@@ -190,6 +201,10 @@ export function DashboardSidebarWorkspaceContextMenu({
 							</ContextMenuItem>
 						</ContextMenuSubContent>
 					</ContextMenuSub>
+				{
+					// tsenta:conductor (plan step 7): under the skin this item leads the menu (TsentaWorkspaceMenuLead), so its separator goes too.
+					// biome-ignore format: tsenta:conductor leaves upstream's lines as they are, so rebases over edits to them still apply
+					!isConductorSkin() && (<>
 					<ContextMenuSeparator />
 					<ContextMenuItem onSelect={onToggleUnread}>
 						{isUnread ? (
@@ -204,6 +219,8 @@ export function DashboardSidebarWorkspaceContextMenu({
 							</>
 						)}
 					</ContextMenuItem>
+					</>)
+				}
 					{hasStatus && !isCloudWorkspace && (
 						<ContextMenuItem onSelect={onClearStatus}>
 							<LuBellOff className="size-4 mr-2" />
