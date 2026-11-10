@@ -28,7 +28,8 @@ import { getStatusTooltip } from "renderer/screens/main/components/StatusIndicat
 import { RenameInput } from "renderer/screens/main/components/WorkspaceSidebar/RenameInput";
 import { useInlineWorkspacePortsEnabled } from "renderer/stores/inline-workspace-ports";
 import { usePullRequestPaneIntent } from "renderer/stores/pull-request-pane-intent";
-// tsenta:conductor (plan step 7): Conductor's status glyphs.
+// tsenta:conductor (plan step 7): Conductor's status glyphs and diff stats.
+import { RowDiffStat } from "renderer/tsenta/components/RowDiffStat";
 import { TsentaWorkspaceStatusGlyph } from "renderer/tsenta/components/TsentaWorkspaceStatusGlyph";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import type { ActivePaneStatus } from "shared/tabs-types";
@@ -427,6 +428,10 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 											"group-hover:invisible group-[:focus-within:not(:focus:not(:focus-visible))]:invisible",
 									)}
 								>
+									{/* tsenta:conductor (plan step 7): diff stats, hidden on hover with the glyph. */}
+									{isConductorSkin() && (
+										<RowDiffStat workspaceId={workspace.id} />
+									)}
 									{isCloudWorkspace && isActive ? (
 										<DashboardSidebarOpenCloudHostGlyph
 											workspaceId={workspace.id}
