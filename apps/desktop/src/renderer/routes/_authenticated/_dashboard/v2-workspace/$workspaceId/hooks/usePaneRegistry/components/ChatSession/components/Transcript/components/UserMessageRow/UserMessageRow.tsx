@@ -127,6 +127,8 @@ export function UserMessageRow({
 	return (
 		<Message
 			className={cn("group/message pt-1.5 pl-10", copyable ? "pb-0" : "pb-5")}
+			// tsenta:conductor (plan step 11): hooks for Conductor's bubble in chat.css.
+			data-tsenta="user-row"
 			from="user"
 		>
 			{sender && (
@@ -194,6 +196,7 @@ export function UserMessageRow({
 							: "group-[.is-user]:rounded-xl",
 						pending && !pending.failed && "opacity-60",
 					)}
+					data-tsenta="user-bubble"
 				>
 					<div
 						className="break-words text-sm"
@@ -205,7 +208,10 @@ export function UserMessageRow({
 				</MessageContent>
 			)}
 			{copyable && (
-				<div className="-mt-1.5 flex items-center justify-end gap-2 text-muted-foreground/60 opacity-0 transition-opacity focus-within:opacity-100 group-hover/message:opacity-100">
+				<div
+					className="-mt-1.5 flex items-center justify-end gap-2 text-muted-foreground/60 opacity-0 transition-opacity focus-within:opacity-100 group-hover/message:opacity-100"
+					data-tsenta="user-actions"
+				>
 					<MessageTime atMs={item.startedAtMs} />
 					<Tooltip>
 						<TooltipTrigger asChild>
