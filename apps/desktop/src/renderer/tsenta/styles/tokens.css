@@ -281,18 +281,18 @@ html[data-theme-id="conductor-light"] {
  * the clash comes with the colours.
  */
 html:is([data-theme-id="conductor-dark"], [data-theme-id="conductor-light"])
-	:is(
-		[data-slot="popover-content"],
-		[data-slot="dropdown-menu-content"],
-		[data-slot="dropdown-menu-sub-content"],
-		[data-slot="context-menu-content"],
-		[data-slot="context-menu-sub-content"],
-		[data-slot="menubar-content"],
-		[data-slot="select-content"],
-		[data-slot="hover-card-content"],
-		[data-slot="command"],
-		[data-slot="card"]
-	) {
+:is(
+	[data-slot="popover-content"],
+	[data-slot="dropdown-menu-content"],
+	[data-slot="dropdown-menu-sub-content"],
+	[data-slot="context-menu-content"],
+	[data-slot="context-menu-sub-content"],
+	[data-slot="menubar-content"],
+	[data-slot="select-content"],
+	[data-slot="hover-card-content"],
+	[data-slot="command"],
+	[data-slot="card"]
+) {
 	--accent: color-mix(in srgb, var(--foreground) 5%, var(--popover));
 }
 
