@@ -807,6 +807,9 @@ function V2WorkspaceContent() {
 									onBeforeCloseTab={onBeforeCloseTab}
 									onInteractionStateChange={onWorkspaceInteractionStateChange}
 									store={store}
+									// tsenta:conductor (plan step 10): the launcher row's presets,
+									// which the skin lists in the "+" menu.
+									tsenta={{ launchers: { matchedPresets, executePreset } }}
 								/>
 							}
 						</div>
