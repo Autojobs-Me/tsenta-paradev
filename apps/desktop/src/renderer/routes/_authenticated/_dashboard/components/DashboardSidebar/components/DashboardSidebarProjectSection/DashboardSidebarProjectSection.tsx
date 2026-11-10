@@ -5,6 +5,9 @@ import type {
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo } from "react";
 import { DeleteProjectDialog } from "renderer/routes/_authenticated/components/DeleteProjectDialog";
+// tsenta:conductor (plan step 7): Conductor's repository header.
+import { TsentaSidebarProjectRow } from "renderer/tsenta/components/TsentaSidebarProjectRow";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import type { DashboardSidebarProject } from "../../types";
 import { getProjectChildrenWorkspaces } from "../../utils/projectChildren";
 import { DashboardSidebarCollapsedProjectContent } from "./components/DashboardSidebarCollapsedProjectContent";
@@ -72,6 +75,10 @@ export function DashboardSidebarProjectSection({
 
 	const isCloudRepo = project.kind === "cloud-repo";
 	const totalWorkspaceCount = flattenedCollapsedWorkspaces.length;
+	// tsenta:conductor (plan step 7): same props, Conductor's look.
+	const ProjectRow: typeof DashboardSidebarProjectRow = isConductorSkin()
+		? TsentaSidebarProjectRow
+		: DashboardSidebarProjectRow;
 
 	const deleteProjectDialog = canDeleteProject && (
 		<DeleteProjectDialog
@@ -143,7 +150,7 @@ export function DashboardSidebarProjectSection({
 				onDelete={canDeleteProject ? openDeleteDialog : null}
 				onRename={startRename}
 			>
-				<DashboardSidebarProjectRow
+				<ProjectRow
 					projectName={project.name}
 					iconUrl={project.iconUrl}
 					projectColor={project.color}
@@ -156,6 +163,7 @@ export function DashboardSidebarProjectSection({
 					onStartRename={isCloudRepo ? undefined : startRename}
 					onToggleCollapse={() => onToggleCollapse(project.id)}
 					onNewWorkspace={handleNewWorkspace}
+					data-workspace-count={totalWorkspaceCount}
 					{...(dragHandleAttributes ?? {})}
 					{...(dragHandleListeners ?? {})}
 				/>
