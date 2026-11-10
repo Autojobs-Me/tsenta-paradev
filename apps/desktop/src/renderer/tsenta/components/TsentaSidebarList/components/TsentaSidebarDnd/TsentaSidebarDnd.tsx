@@ -49,7 +49,9 @@ const measuring = { droppable: { strategy: MeasuringStrategy.Always } };
 
 /**
  * The row under the pointer when there is one, else the innermost list the
- * pointer is in (a repository inside "My workspaces", say).
+ * pointer is in (a repository inside "My workspaces", say). A row's hit
+ * also says which half of it the pointer is in, measured in the same frame
+ * as the hit itself, so auto-scroll cannot skew it.
  */
 const collisionDetection: CollisionDetection = (args) => {
 	const hits = pointerWithin(args);
@@ -58,7 +60,15 @@ const collisionDetection: CollisionDetection = (args) => {
 			(hit.data?.droppableContainer?.data.current as DropData | undefined)
 				?.type === "tsenta-row",
 	);
-	if (row) return [row];
+	if (row) {
+		const rect = args.droppableRects.get(row.id);
+		const pointer = args.pointerCoordinates;
+		const placement: DropPlacement =
+			rect && pointer && pointer.y > rect.top + rect.height / 2
+				? "after"
+				: "before";
+		return [{ ...row, data: { ...row.data, placement } }];
+	}
 	let innermost: (typeof hits)[number] | null = null;
 	let innermostArea = Number.POSITIVE_INFINITY;
 	for (const hit of hits) {
@@ -72,16 +82,6 @@ const collisionDetection: CollisionDetection = (args) => {
 	}
 	return innermost ? [innermost] : [];
 };
-
-function pointerYOf(event: DragMoveEvent | DragEndEvent): number | null {
-	const start = event.activatorEvent;
-	let y: number | null = null;
-	if (start instanceof MouseEvent) y = start.clientY;
-	else if (typeof TouchEvent !== "undefined" && start instanceof TouchEvent) {
-		y = start.touches[0]?.clientY ?? null;
-	}
-	return y === null ? null : y + event.delta.y;
-}
 
 type SidebarState = ReturnType<typeof useDashboardSidebarState>;
 
@@ -159,11 +159,8 @@ export function TsentaSidebarDnd({
 			const idle = { ...IDLE_DROP_INDICATOR, draggingWorkspaceId };
 			if (!dragged || !over || !overData)
 				return { plan: null, indicator: idle };
-			const pointerY = pointerYOf(event);
 			const placement: DropPlacement =
-				pointerY !== null && pointerY > over.rect.top + over.rect.height / 2
-					? "after"
-					: "before";
+				event.collisions?.[0]?.data?.placement === "after" ? "after" : "before";
 			const plan = planConductorDrop(
 				{
 					workspaceId: dragged.workspace.id,
