@@ -5,6 +5,7 @@ import { V2OpenInMenuButton } from "renderer/routes/_authenticated/_dashboard/v2
 import { useWorkspaceOpenInTarget } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useWorkspaceOpenInTarget";
 import { useWorkspaceRightSidebarOpen } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useWorkspaceRightPane/hooks/useWorkspaceRightSidebarOpen";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
+import { BaseBranchMenu } from "./components/BaseBranchMenu";
 import { HeaderPrControls } from "./components/HeaderPrControls";
 import { WorkspaceTaskChip } from "./components/WorkspaceTaskChip";
 import { WorkspaceTitle } from "./components/WorkspaceTitle";
@@ -51,6 +52,7 @@ export function TsentaWorkspaceHeader({
 				)}
 				<WorkspaceTitle />
 				<WorkspaceTaskChip />
+				<BaseBranchMenu />
 			</div>
 			<div
 				data-tsenta="workspace-header-actions"

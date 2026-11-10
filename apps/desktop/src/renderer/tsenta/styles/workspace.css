@@ -181,6 +181,24 @@ html[data-skin="conductor"]
 }
 
 /*
+ * The workspace activity button sits among Conductor's quiet header icons:
+ * no border or fill until hovered or open.
+ */
+html[data-skin="conductor"] [data-tsenta="workspace-header-actions"]
+	button:has(> svg.lucide-list-tree):not([aria-expanded="true"]) {
+	border-color: transparent;
+	background-color: transparent;
+	color: var(--muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="workspace-header-actions"]
+	button:has(> svg.lucide-list-tree):not([aria-expanded="true"]):hover {
+	background-color: var(--accent);
+	color: var(--foreground);
+}
+
+/*
  * The right pane area keeps Paradev's tabs until plan step 13, but its bar
  * takes the header's 40px, so the lines under the two meet across the
  * window.
