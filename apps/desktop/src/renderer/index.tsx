@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./styles/bundled-fonts";
+import "./tsenta";
 import { initSentry } from "./lib/sentry";
 
 initSentry();

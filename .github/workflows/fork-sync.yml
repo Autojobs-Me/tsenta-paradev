@@ -95,6 +95,22 @@ jobs:
             gh workflow disable "$name" -R "$GITHUB_REPOSITORY" 2>/dev/null || true
           done
 
+  # Lists the upstream files the fork edits, and fails when one is missing from
+  # the allowlist in the script. It does not hold back the build.
+  touchpoints:
+    needs: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ needs.sync.outputs.sha }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Check upstream touchpoints
+        run: scripts/fork/check-upstream-touchpoints.sh origin/fork-base
+
   build:
     name: build (${{ matrix.platform }} ${{ matrix.arch }})
     needs: sync

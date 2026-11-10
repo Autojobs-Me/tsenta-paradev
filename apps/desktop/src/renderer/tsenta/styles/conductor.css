@@ -1,0 +1,14 @@
+/*
+ * Tsenta fork: entry for the Conductor look, imported once as the last
+ * `@import` of renderer/globals.css. It is imported without layer(), so its
+ * rules are unlayered and beat Tailwind's layered utilities. That also beats
+ * per-instance className overrides, so scope every rule tightly (data-slot,
+ * data-tsenta or a container attribute) and under html[data-skin="conductor"].
+ * Later skin files are @imported here, above the variant.
+ */
+
+/* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
+@custom-variant conductor (&:where(
+		[data-skin="conductor"],
+		[data-skin="conductor"] *
+	));

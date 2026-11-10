@@ -192,6 +192,12 @@ The fork is built to rebase cleanly:
   `electron-builder.fork.ts`, `scripts/fork`, this README and NOTICE.
 - It edits one constant in `auto-updater.ts`, plus a few lines in three
   settings and connection components.
+- The Conductor look lives in `apps/desktop/src/renderer/tsenta`, behind
+  `<html data-skin="conductor">`, and enters through one line each in
+  `globals.css`, `index.tsx` and `index.html`. Setting
+  `localStorage["tsenta-skin"]` to `"paradev"` turns it off after a reload.
+- `scripts/fork/check-upstream-touchpoints.sh` lists every upstream file the
+  fork edits and fails on one that is not on its allowlist. Fork sync runs it.
 - It adds no npm dependencies, so `bun.lock` is untouched.
 - Boxes run upstream's CLI and host-service, never a patched one.
 

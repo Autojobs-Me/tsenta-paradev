@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "streamdown/styles.css";
 @import "../../../../packages/ui/src/motion.css";
+@import "./tsenta/styles/conductor.css";
 
 @custom-variant dark (&:is(.dark *));
 
