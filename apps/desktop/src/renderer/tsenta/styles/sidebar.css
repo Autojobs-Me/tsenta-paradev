@@ -185,6 +185,33 @@ html[data-skin="conductor"]
 	color: var(--sidebar-accent-foreground);
 }
 
+/*
+ * Conductor truncates a long name with an ellipsis and leaves it still
+ * (its name span is `truncate`). Paradev's name is a marquee that fades
+ * the clipped end and scrolls on hover; here its text runs inline so the
+ * ellipsis applies, and the fade and the scroll (inline styles) are off.
+ * The full name stays in the title and the hover card.
+ */
+html[data-skin="conductor"] [data-tsenta="ws-row-main"]
+	> :first-child:not(input) {
+	text-overflow: ellipsis;
+	/* biome-ignore lint/complexity/noImportantStyles: only !important beats MarqueeText's inline mask */
+	mask-image: none !important;
+	/* biome-ignore lint/complexity/noImportantStyles: only !important beats MarqueeText's inline mask */
+	-webkit-mask-image: none !important;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row-main"]
+	> :first-child:not(input)
+	> span {
+	display: inline;
+	/* biome-ignore lint/complexity/noImportantStyles: only !important beats MarqueeText's inline scroll */
+	transform: none !important;
+	/* biome-ignore lint/complexity/noImportantStyles: only !important beats MarqueeText's inline scroll */
+	transition: none !important;
+}
+
 html[data-skin="conductor"]
 	[data-tsenta="ws-row"]:is([data-unread], :has([data-lead][data-unread]))
 	[data-tsenta="ws-row-main"]
