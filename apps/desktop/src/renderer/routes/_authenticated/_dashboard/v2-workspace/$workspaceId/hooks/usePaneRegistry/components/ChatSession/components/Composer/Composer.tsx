@@ -50,6 +50,8 @@ import { useFooterTier } from "renderer/routes/_authenticated/components/AgentCo
 import { useGitHubMentionProviders } from "renderer/routes/_authenticated/components/AgentComposer/hooks/useGitHubMentionProviders";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
+// tsenta:conductor (plan step 12): Conductor's Stop beside Send.
+import { TsentaComposerStop } from "renderer/tsenta/composer/components/TsentaComposerStop";
 import { useChatComposerStore } from "../../../../stores/chatComposerStore";
 import { CHAT_COLUMN_CLASSNAME, CHAT_GUTTER_CLASSNAME } from "../../constants";
 import { useChatWiring } from "../../hooks/useSessionClient";
@@ -689,6 +691,8 @@ export const Composer = memo(function Composer({
 									open={modelPickerOpen}
 								/>
 							)}
+							{/* tsenta:conductor (plan step 12): Stop stays while Send shows. */}
+							<TsentaComposerStop onStop={stop} />
 						</>
 					)
 				}

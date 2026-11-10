@@ -1312,6 +1312,8 @@ export function ComposerBody({
 					title={onStop ? undefined : t({ message: "Starting the agent…" })}
 					onClick={onStop}
 					className={onStop ? buttons.filled : buttons.inactiveSend}
+					// tsenta:conductor (plan step 12): Conductor's stop in composer.css.
+					data-composer-stop
 				>
 					<SquareIcon className="size-3 fill-current" />
 				</button>
@@ -1330,6 +1332,8 @@ export function ComposerBody({
 					}
 					disabled={!canSend || disabled || pending}
 					onClick={() => submit()}
+					// tsenta:conductor (plan step 12): Conductor's send, or queue, in composer.css.
+					data-composer-send={status === "ready" ? "send" : "queue"}
 					className={
 						!canSend || disabled || pending
 							? buttons.inactiveSend

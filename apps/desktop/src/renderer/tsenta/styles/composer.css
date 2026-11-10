@@ -101,3 +101,108 @@ html[data-skin="conductor"] [data-tsenta="composer"]
 	gap: 0.375rem;
 	padding: 0.75rem;
 }
+
+/* Send and stop (CO §4.2, items 7 and 8) ------------------------------------ */
+
+/*
+ * A 24px square with a 4px corner in the text colour: Send carries an up
+ * arrow, Stop a 10px square. Send is half strength while there is nothing to
+ * send. data-composer-send and data-composer-stop are chat-ui's two buttons;
+ * data-tsenta="composer-stop" is the fork's second Stop
+ * (TsentaComposerStop), drawn as Conductor's outline Stop while Send shows.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	:is(
+		[data-composer-send],
+		[data-composer-stop],
+		[data-tsenta="composer-stop"]
+	) {
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: calc(var(--radius) - 4px);
+	background-color: var(--foreground);
+	color: var(--background);
+	transition:
+		background-color 150ms ease,
+		border-color 150ms ease;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	:is([data-composer-send], [data-composer-stop]):not(:disabled):hover {
+	background-color: color-mix(in srgb, var(--foreground) 80%, transparent);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	:is([data-composer-send], [data-composer-stop]):disabled {
+	background-color: color-mix(in srgb, var(--foreground) 50%, transparent);
+	color: var(--background);
+	cursor: not-allowed;
+	opacity: 1;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	[data-composer-send]
+	> svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	:is([data-composer-stop], [data-tsenta="composer-stop"])
+	> svg {
+	width: 0.625rem;
+	height: 0.625rem;
+}
+
+/*
+ * When Send would queue the message behind the running turn, Conductor's
+ * glyph is corner-down-left instead of the up arrow. The arrow is hidden and
+ * the glyph painted through a mask, so Paradev's button keeps its own label.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-composer-send="queue"]
+	> svg:not(.animate-spin) {
+	display: none;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	[data-composer-send="queue"]:not(:has(> .animate-spin))::before {
+	content: "";
+	width: 1rem;
+	height: 1rem;
+	background-color: currentColor;
+	mask:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 4v7a4 4 0 0 1-4 4H4'/%3E%3Cpath d='m9 10-5 5 5 5'/%3E%3C/svg%3E")
+		center / contain no-repeat;
+}
+
+/*
+ * The fork's Stop only shows beside Send: while the composer is empty,
+ * chat-ui's own Stop is in the row instead. It is the outline square, as
+ * Conductor draws Stop once Send is there too.
+ */
+html[data-skin="conductor"] [data-tsenta="composer"]
+	[data-tsenta="composer-stop"] {
+	display: none;
+	border: 1px solid var(--input);
+	background-color: var(--background);
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	[data-composer-footer]:has(> [data-composer-send])
+	> [data-tsenta="composer-stop"] {
+	display: flex;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="composer"]
+	[data-tsenta="composer-stop"]:hover {
+	background-color: var(--accent);
+}

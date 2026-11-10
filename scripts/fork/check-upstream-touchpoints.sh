@@ -100,8 +100,9 @@ allowlist=(
 	# ...and error notices as Conductor's destructive badge.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/NoticeRow/index.ts'
 	# Conductor composer (plan step 12): data-tsenta="composer" on the chat
-	# session's composer, and the card hook (data-composer-root) composer.css
-	# keys on in chat-ui's ComposerBody.
+	# session's composer and the fork's second Stop in its toolbar, and the
+	# card, send and stop hooks (data-composer-root, data-composer-send,
+	# data-composer-stop) composer.css keys on in chat-ui's ComposerBody.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx'
 	'packages/chat-ui/src/components/PromptInput/components/ComposerBody/ComposerBody.tsx'
 )
