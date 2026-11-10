@@ -6,6 +6,8 @@ import {
 	DEFAULT_WORKSPACE_SIDEBAR_WIDTH,
 	useWorkspaceSidebarStore,
 } from "renderer/stores/workspace-sidebar-state";
+// tsenta:conductor (plan step 8): Conductor's 40% cap on the sidebar width.
+import { capSidebarMaxWidth } from "renderer/tsenta/sidebar/metrics";
 import { WORKSPACE_SIDEBAR_ATTRIBUTE } from "./constants";
 import { useAutoCollapseInNarrowWindow } from "./hooks/useAutoCollapseInNarrowWindow";
 import { closeFocusedMenu } from "./utils/closeFocusedMenu";
@@ -15,7 +17,12 @@ const subscribeToResize = (onChange: () => void) => {
 	window.addEventListener("resize", onChange);
 	return () => window.removeEventListener("resize", onChange);
 };
-const getMaxWidth = () => getWorkspaceSidebarMaxWidth(window.innerWidth);
+const getMaxWidth = () =>
+	// tsenta:conductor (plan step 8): at most 40% of the window under the skin.
+	capSidebarMaxWidth(
+		getWorkspaceSidebarMaxWidth(window.innerWidth),
+		window.innerWidth,
+	);
 
 export function WorkspaceSidebarPanel({
 	className,

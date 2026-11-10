@@ -44,6 +44,10 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarSectionHeader/DashboardSidebarSectionHeader.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/DashboardSidebarWorkspaceItem.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/DashboardSidebarExpandedWorkspaceRow.tsx'
+	# Conductor sidebar size (plan step 8): 256 / 192 / 480 under the skin,
+	# and the 40% cap where the panel works out its widest.
+	'apps/desktop/src/renderer/stores/workspace-sidebar-state.ts'
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/WorkspaceSidebarPanel/WorkspaceSidebarPanel.tsx'
 )
 
 base="${1:-}"

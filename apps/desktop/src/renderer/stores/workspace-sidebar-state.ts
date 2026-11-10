@@ -1,10 +1,13 @@
+// tsenta:conductor (plan step 8): Conductor's sidebar widths under the skin.
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-export const DEFAULT_WORKSPACE_SIDEBAR_WIDTH = 280;
+// tsenta:conductor (plan step 8): Conductor's 256 / 192 / 480 under the skin.
+export const DEFAULT_WORKSPACE_SIDEBAR_WIDTH = isConductorSkin() ? 256 : 280;
 export const COLLAPSED_WORKSPACE_SIDEBAR_WIDTH = 52;
-export const MIN_WORKSPACE_SIDEBAR_WIDTH = 225;
-export const MAX_WORKSPACE_SIDEBAR_WIDTH = 400;
+export const MIN_WORKSPACE_SIDEBAR_WIDTH = isConductorSkin() ? 192 : 225;
+export const MAX_WORKSPACE_SIDEBAR_WIDTH = isConductorSkin() ? 480 : 400;
 export const WORKSPACE_SIDEBAR_STORAGE_KEY = "workspace-sidebar-store";
 
 // Threshold for snapping to collapsed state
