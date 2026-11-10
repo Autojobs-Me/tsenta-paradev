@@ -463,7 +463,11 @@ export function Transcript({
 						/>
 					</MessageScroller.Content>
 				</MessageScroller.Viewport>
-				<div className="pointer-events-none absolute inset-x-0 bottom-9 flex justify-center">
+				<div
+					className="pointer-events-none absolute inset-x-0 bottom-9 flex justify-center"
+					// tsenta:conductor (plan step 11): Conductor's button in chat.css.
+					data-tsenta="scroll-to-bottom"
+				>
 					<ScrollToBottomButton />
 				</div>
 			</ChatImageGalleryProvider>

@@ -64,8 +64,9 @@ allowlist=(
 	# renderer/tsenta (TsentaWorkspace, the same Workspace with the skin off).
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx'
 	# Conductor transcript (plan step 11): the 56rem chat column under the
-	# skin, the data-tsenta="transcript" hook chat.css keys on, and the
-	# working row at the transcript's end (TsentaTranscriptFooter).
+	# skin, the data-tsenta="transcript" and "scroll-to-bottom" hooks
+	# chat.css keys on, and the working row at the transcript's end
+	# (TsentaTranscriptFooter).
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/constants.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/Transcript.tsx'
 	# ...and data-tsenta="markdown" on the agent text root, for Conductor's prose.
@@ -93,6 +94,8 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ChildItemsList/index.ts'
 	# ...and an approval's stacked answers.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/ApprovalRow/components/OptionButtons/index.ts'
+	# ...and error notices as Conductor's destructive badge.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/components/NoticeRow/index.ts'
 )
 
 base="${1:-}"

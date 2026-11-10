@@ -1,0 +1,1 @@
+export { NoticeRow } from "./TsentaNoticeRow";

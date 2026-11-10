@@ -354,3 +354,75 @@ html[data-skin="conductor"]
 	> [data-slot="button"]:hover {
 	background-color: var(--accent);
 }
+
+/* Errors and stops (WC §7) ------------------------------------------------- */
+
+/*
+ * A failed turn keeps Paradev's card (its title, details and recovery
+ * buttons) on Conductor's destructive badge: a 10% red fill with no
+ * outline and a 6px corner. A response the reader stopped is Conductor's
+ * outline badge, mono, uppercase and tracked, in place of a divider line.
+ * Both key on the data attributes Paradev's rows carry.
+ */
+html[data-skin="conductor"] [data-tsenta="transcript"]
+	[role="alert"][data-turn-failure] {
+	border-color: transparent;
+	border-radius: calc(var(--radius) - 2px);
+	background-color: color-mix(in srgb, var(--destructive) 10%, transparent);
+	box-shadow: none;
+}
+
+html[data-skin="conductor"] [data-tsenta="transcript"] [data-turn-stopped] {
+	width: fit-content;
+	max-width: 100%;
+	padding: 0.125rem 0.5rem;
+	border: 1px solid var(--border);
+	border-radius: calc(var(--radius) - 2px);
+	font-family: var(--font-mono);
+	text-transform: uppercase;
+	letter-spacing: 0.0375rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="transcript"]
+	[data-turn-stopped]
+	> :is(svg, [aria-hidden]) {
+	display: none;
+}
+
+/* Scroll to bottom (WC §11) ------------------------------------------------ */
+
+/*
+ * Conductor's outline icon button, 28px with a 6px corner, and its 12px
+ * chevron in place of Paradev's round arrow button. Keyed on a
+ * data-tsenta="scroll-to-bottom" hook on the button's overlay.
+ */
+html[data-skin="conductor"] [data-tsenta="scroll-to-bottom"] > button {
+	width: 1.75rem;
+	height: 1.75rem;
+	border: 1px solid var(--input);
+	border-radius: calc(var(--radius) - 2px);
+	background-color: var(--background);
+	color: var(--foreground);
+	box-shadow: none;
+	backdrop-filter: none;
+	--tw-ring-shadow: 0 0 #0000;
+}
+
+html[data-skin="conductor"] [data-tsenta="scroll-to-bottom"] > button:hover {
+	background-color: var(--accent);
+}
+
+html[data-skin="conductor"] [data-tsenta="scroll-to-bottom"] > button > svg {
+	display: none;
+}
+
+html[data-skin="conductor"] [data-tsenta="scroll-to-bottom"] > button::before {
+	content: "";
+	width: 0.75rem;
+	height: 0.75rem;
+	background-color: currentColor;
+	mask:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+		center / contain no-repeat;
+}
