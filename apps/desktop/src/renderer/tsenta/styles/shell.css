@@ -153,6 +153,11 @@ html[data-skin="conductor"]:has(
 	width: auto;
 	margin-left: 0.75rem;
 	border-left: 1px solid var(--separator);
+	/*
+	 * The window chrome in the sheet's tab bar measures its traffic-light
+	 * spacer from the window's edge; this is how far in the sheet now starts.
+	 */
+	--tsenta-window-chrome-inset: calc(0.75rem + 1px);
 }
 
 /* The right pane area's left edge (RP §2.1). */

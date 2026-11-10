@@ -26,3 +26,11 @@ export function capSidebarMaxWidth(
 		Math.min(maxWidth, Math.floor(windowWidth * CONDUCTOR_SIDEBAR_MAX_SHARE)),
 	);
 }
+
+/**
+ * Where the first control sits on macOS, clear of the window buttons:
+ * Conductor's 1rem + 66px traffic-light clearance + 4px (shell-sidebar spec
+ * §3.2). The sidebar header and, while the sidebar is hidden, the window
+ * chrome both start there, so the sidebar toggle stays put.
+ */
+export const TRAFFIC_LIGHTS_CLEARANCE = 86;

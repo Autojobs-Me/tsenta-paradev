@@ -33,14 +33,8 @@ import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/
 import { useOpenNewWorkspaceInViewedProject } from "renderer/routes/_authenticated/_dashboard/hooks/useOpenNewWorkspaceInViewedProject";
 import { useNewWorkspaceDraftStore } from "renderer/stores/new-workspace-draft";
 import { COLLAPSED_WORKSPACE_SIDEBAR_WIDTH } from "renderer/stores/workspace-sidebar-state";
+import { TRAFFIC_LIGHTS_CLEARANCE } from "renderer/tsenta/sidebar/metrics";
 import { SidebarNavRow } from "./components/SidebarNavRow";
-
-/**
- * Where the first control sits on macOS, clear of the window buttons:
- * Conductor's 1rem + 66px traffic-light clearance + 4px (shell-sidebar spec
- * §3.2).
- */
-const TRAFFIC_LIGHTS_CLEARANCE = 86;
 
 /**
  * Conductor's sidebar header (shell-sidebar spec §3.2, §3.3), in place of
@@ -54,7 +48,9 @@ const TRAFFIC_LIGHTS_CLEARANCE = 86;
  *
  * The row keeps Paradev's macOS metrics (WindowChrome constants and
  * ZoomStable), so the controls stay centred on the native window buttons
- * under page zoom. The icon rail (collapsed) stays Paradev's.
+ * under page zoom. Collapsed, the sidebar is hidden rather than folded to
+ * Paradev's icon rail (plan step 8), and TsentaWindowChrome carries the
+ * toggle.
  */
 export function TsentaSidebarHeader() {
 	const { t } = useLingui();

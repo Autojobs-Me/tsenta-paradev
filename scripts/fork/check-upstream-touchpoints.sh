@@ -48,6 +48,11 @@ allowlist=(
 	# and the 40% cap where the panel works out its widest.
 	'apps/desktop/src/renderer/stores/workspace-sidebar-state.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/WorkspaceSidebarPanel/WorkspaceSidebarPanel.tsx'
+	# ...hidden rather than folded to the rail when collapsed, with the panel's
+	# state on its wrapper (that file) and Conductor's window chrome in place
+	# of Paradev's while it is hidden.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/layout.tsx'
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/WindowChrome/index.ts'
 )
 
 base="${1:-}"

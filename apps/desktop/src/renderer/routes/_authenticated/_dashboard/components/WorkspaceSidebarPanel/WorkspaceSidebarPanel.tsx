@@ -73,7 +73,12 @@ export function WorkspaceSidebarPanel({
 	);
 
 	return (
-		<div {...{ [WORKSPACE_SIDEBAR_ATTRIBUTE]: "" }} className="contents">
+		<div
+			{...{ [WORKSPACE_SIDEBAR_ATTRIBUTE]: "" }}
+			// tsenta:conductor (plan step 8): lets the skin's content sheet follow the sidebar.
+			data-sidebar-state={isCollapsed ? "collapsed" : "expanded"}
+			className="contents"
+		>
 			{slides ? (
 				<SidebarSlide
 					mode={isCollapsed ? "closed" : "open"}

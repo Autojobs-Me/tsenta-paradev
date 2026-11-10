@@ -36,6 +36,8 @@ import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-section
 import { syncPersistedStoreAcrossWindows } from "renderer/stores/syncPersistedStoreAcrossWindows";
 import { useV2NotificationStore } from "renderer/stores/v2-notifications";
 import { useWorkspaceSidebarStore } from "renderer/stores/workspace-sidebar-state";
+// tsenta:conductor (plan step 8): Conductor hides the collapsed sidebar.
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { ContentBoundary } from "../components/ContentBoundary";
 import { AddRepositoryModals } from "./components/AddRepositoryModals";
 import { ChatTabs } from "./components/ChatTabs";
@@ -207,12 +209,20 @@ function DashboardLayout() {
 	// border, which stops below the strip, is the only divider.
 	const railContinuesHeaderRow = !showsAppTopBar && isWorkspaceSidebarCollapsed;
 
+	// tsenta:conductor (plan step 8): under the skin a collapsed sidebar slides
+	// away entirely, as in Conductor, instead of folding to the icon rail.
+	const hidesCollapsedSidebar = isConductorSkin();
 	const sidebarPanel = (
 		<WorkspaceSidebarPanel
 			className={railContinuesHeaderRow ? "border-r-0" : undefined}
+			collapsedWidth={hidesCollapsedSidebar ? 0 : undefined}
+			slides={hidesCollapsedSidebar}
+			onLayoutFrame={hidesCollapsedSidebar ? relayoutBrowserPanes : undefined}
 		>
 			{isV2CloudEnabled ? (
-				<DashboardSidebar isCollapsed={isWorkspaceSidebarCollapsed} />
+				<DashboardSidebar
+					isCollapsed={isWorkspaceSidebarCollapsed && !hidesCollapsedSidebar}
+				/>
 			) : (
 				<WorkspaceSidebar
 					isCollapsed={isWorkspaceSidebarCollapsed}
