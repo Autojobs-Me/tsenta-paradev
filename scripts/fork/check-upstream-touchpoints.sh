@@ -69,6 +69,9 @@ allowlist=(
 	# (TsentaTranscriptFooter).
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/constants.ts'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Transcript/Transcript.tsx'
+	# ...the same transcript hook on a sub-agent's own transcript, so it reads
+	# like the main one.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/SubagentView/SubagentView.tsx'
 	# ...and data-tsenta="markdown" on the agent text root, for Conductor's prose.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/MarkdownView/MarkdownView.tsx'
 	# ...and Conductor's turn outline (the transcript's stacked marks) in
