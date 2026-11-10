@@ -205,6 +205,32 @@ html[data-skin="conductor"]
 	color: var(--sidebar-accent-foreground);
 }
 
+/*
+ * The hover action is Conductor's bare archive button (SS §4.7, trailing
+ * meta item 6): a 12px icon, muted, brightening on hover, with no wash. A
+ * local workspace keeps Paradev's x, because its action deletes.
+ */
+html[data-skin="conductor"] [data-tsenta="ws-row-close"] {
+	background-color: transparent;
+	color: var(--sidebar-muted-foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="ws-row-close"]:is(:hover, :focus-visible) {
+	background-color: transparent;
+	color: var(--sidebar-foreground);
+}
+
+html[data-skin="conductor"] [data-tsenta="ws-row-close"] > svg {
+	width: 0.75rem;
+	height: 0.75rem;
+}
+
+/* A workspace still being created is dimmed, as Conductor's placeholder is. */
+html[data-skin="conductor"] [data-tsenta="ws-row"][data-pending] {
+	opacity: 0.5;
+}
+
 /* Footer (SS §3.5) -------------------------------------------------------- */
 
 /*

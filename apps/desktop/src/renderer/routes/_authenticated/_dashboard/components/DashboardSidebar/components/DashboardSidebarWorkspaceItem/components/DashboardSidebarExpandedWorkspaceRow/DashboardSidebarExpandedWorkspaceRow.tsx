@@ -468,6 +468,7 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 														}
 													}}
 													className="flex size-5 items-center justify-center rounded text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
+													data-tsenta="ws-row-close"
 													aria-label={closeLabel}
 												>
 													{isCloudWorkspace ? (
