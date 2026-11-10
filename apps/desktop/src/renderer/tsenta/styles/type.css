@@ -1,0 +1,199 @@
+/*
+ * Tsenta fork: typography for the Conductor look (plan step 2; design-system
+ * spec §3 and §6.6).
+ *
+ * Geist and Geist Mono are vendored from the geist npm package (OFL 1.1, see
+ * NOTICE) rather than added as a dependency. Vite emits them as same-origin
+ * assets, which the font-src 'self' CSP in index.html allows.
+ */
+
+@font-face {
+	font-family: "Geist";
+	src: url("../fonts/Geist-Variable.woff2") format("woff2-variations");
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Geist Mono";
+	src: url("../fonts/GeistMono-Variable.woff2") format("woff2-variations");
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+/*
+ * Conductor's type scale (§3.3): three new sizes, and a letter-spacing on
+ * every size. Tailwind theme tokens cannot be scoped, so each one reads a
+ * --tsenta-text-* value that is only set under the skin, below. With the skin
+ * off that value is undefined, which makes the declaration fall back to
+ * inheriting: the same as Tailwind emitting nothing, which is what Paradev
+ * gets today (stock sizes carry no letter-spacing, and text-2xs, used twice
+ * upstream, does not exist).
+ */
+@theme inline {
+	--text-3xs: var(--tsenta-text-3xs);
+	--text-3xs--line-height: var(--tsenta-text-3xs-leading);
+	--text-3xs--letter-spacing: var(--tsenta-text-3xs-tracking);
+	--text-2xs: var(--tsenta-text-2xs);
+	--text-2xs--line-height: var(--tsenta-text-2xs-leading);
+	--text-2xs--letter-spacing: var(--tsenta-text-2xs-tracking);
+	--text-xs--letter-spacing: var(--tsenta-text-xs-tracking);
+	--text-sm--letter-spacing: var(--tsenta-text-sm-tracking);
+	--text-md: var(--tsenta-text-md);
+	--text-md--line-height: var(--tsenta-text-md-leading);
+	--text-md--letter-spacing: var(--tsenta-text-md-tracking);
+	--text-base--letter-spacing: var(--tsenta-text-base-tracking);
+	--text-lg--letter-spacing: var(--tsenta-text-lg-tracking);
+	--text-xl--letter-spacing: var(--tsenta-text-xl-tracking);
+	--text-2xl--letter-spacing: var(--tsenta-text-2xl-tracking);
+	--text-3xl--letter-spacing: var(--tsenta-text-3xl-tracking);
+	--text-4xl--letter-spacing: var(--tsenta-text-4xl-tracking);
+	--text-5xl--letter-spacing: var(--tsenta-text-5xl-tracking);
+}
+
+/*
+ * New utilities nothing upstream uses: font-450 (ghost and outline buttons,
+ * idle workspace names) and font-geist-mono (labels and keys; it stays Geist
+ * Mono when --font-mono changes).
+ */
+@theme {
+	--font-weight-450: 450;
+	--font-geist-mono: "Geist Mono", monospace;
+}
+
+html[data-skin="conductor"] {
+	/*
+	 * §3.1. Tailwind's preflight and the font-sans and font-mono classes read
+	 * these at use time, so this switches the whole app.
+	 */
+	--font-sans: "Geist", system-ui, sans-serif;
+	--font-mono: "Geist Mono", ui-monospace, monospace;
+
+	--tsenta-text-3xs: 0.625rem;
+	--tsenta-text-3xs-leading: 0.75rem;
+	--tsenta-text-3xs-tracking: 0.04em;
+	--tsenta-text-2xs: 0.6875rem;
+	--tsenta-text-2xs-leading: 0.875rem;
+	--tsenta-text-2xs-tracking: 0.02em;
+	--tsenta-text-xs-tracking: 0.01em;
+	--tsenta-text-sm-tracking: 0em;
+	--tsenta-text-md: 0.9375rem;
+	--tsenta-text-md-leading: 1.375rem;
+	--tsenta-text-md-tracking: -0.005em;
+	--tsenta-text-base-tracking: -0.01em;
+	--tsenta-text-lg-tracking: -0.016em;
+	--tsenta-text-xl-tracking: -0.02em;
+	--tsenta-text-2xl-tracking: -0.024em;
+	--tsenta-text-3xl-tracking: -0.03em;
+	--tsenta-text-4xl-tracking: -0.036em;
+	--tsenta-text-5xl-tracking: -0.04em;
+
+	/*
+	 * Tracking scale. tracking-wide is 0.025px in Conductor's source, probably
+	 * a typo for em, but that is what it renders, so it is copied. tracking-tight
+	 * (-0.025em) and the leading scale already match Tailwind's.
+	 */
+	--tracking-normal: 0.14px;
+	--tracking-wide: 0.025px;
+	--tracking-wider: 0.6px;
+	--tracking-widest: 1.44px;
+}
+
+/*
+ * Body defaults (§3.2). Conductor keeps these in its base layer, so a class
+ * on the element still wins; the same here. Paradev already sets
+ * user-select: none on html and body.
+ */
+@layer base {
+	html[data-skin="conductor"] body {
+		cursor: default;
+		font-size: var(--text-sm);
+		line-height: 1.25rem;
+		font-feature-settings:
+			"rlig" 1,
+			"calt" 1;
+	}
+
+	/* Text entry only: checkbox, radio and range inputs keep their cursor. */
+	html[data-skin="conductor"] :is(textarea, [contenteditable="true"]),
+	html[data-skin="conductor"]
+		input:not([type="checkbox"], [type="radio"], [type="range"]) {
+		cursor: text;
+		user-select: text;
+	}
+
+	html[data-skin="conductor"] :is(button, [role="button"]):disabled {
+		cursor: default;
+	}
+
+	/*
+	 * Conductor's global kbd (§6.6): a shortcut shows as muted Geist Mono
+	 * glyphs, not a key cap. inline-flex where Conductor has flex, because
+	 * Paradev puts bare <kbd>s inline in text (tooltips that are not flex
+	 * rows). The Kbd and KbdGroup primitives (data-slot) are left out: they
+	 * nest, and the margin and padding would add up.
+	 */
+	html[data-skin="conductor"] kbd:not([data-slot]) {
+		margin-left: 0.25rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.125rem;
+		padding-inline: 0.25rem;
+		font-family: var(--font-geist-mono);
+		color: var(--muted-foreground);
+		font-size: 12px;
+	}
+
+	/* Modifier glyphs, which Conductor wraps in a span, draw larger. */
+	html[data-skin="conductor"] kbd:not([data-slot]) span {
+		padding-top: 0.125rem;
+		font-size: 16px;
+	}
+}
+
+/* Conductor forces this with !important; unlayered is enough to beat classes. */
+html[data-skin="conductor"] ::placeholder {
+	opacity: 0.7;
+}
+
+/*
+ * Section labels (§3.3). Unlayered, as in Conductor, so it beats text-* and
+ * tracking-* classes on the same element.
+ */
+html[data-skin="conductor"] .sidebar-label {
+	font-family: var(--font-geist-mono);
+	--tw-tracking: var(--tracking-wider);
+	letter-spacing: var(--tracking-wider);
+	text-transform: uppercase;
+	font-size: 10px;
+}
+
+/*
+ * Key caps (the Kbd primitive) are Geist Mono in Conductor too. Only the
+ * family is forced: callers size and colour their key caps per use.
+ */
+html[data-skin="conductor"] [data-slot="kbd"] {
+	font-family: var(--font-geist-mono);
+}
+
+/*
+ * HotkeyLabel, which every shortcut tooltip uses, renders each key as a Kbd
+ * key cap. In a tooltip Conductor shows plain glyphs after the label instead
+ * (§6.6). HotkeyLabel's gap-2 already matches Conductor's kbd margin plus
+ * padding.
+ */
+html[data-skin="conductor"] [data-slot="tooltip-content"]
+	[data-slot="kbd-group"] {
+	gap: 0.125rem;
+}
+
+html[data-skin="conductor"] [data-slot="tooltip-content"] [data-slot="kbd"] {
+	height: auto;
+	min-width: 0;
+	padding: 0;
+	border-radius: 0;
+	background: transparent;
+	font-weight: inherit;
+}

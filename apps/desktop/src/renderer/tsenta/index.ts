@@ -10,6 +10,7 @@
 // Paradev's built-in list.
 import "./themes/register";
 import { applySkin } from "./skin";
+import { adoptConductorTerminalFontSize } from "./terminal/font-size";
 import {
 	adoptConductorThemes,
 	syncThemeIdAttribute,
@@ -18,3 +19,4 @@ import {
 applySkin();
 syncThemeIdAttribute();
 adoptConductorThemes();
+void adoptConductorTerminalFontSize();

@@ -9,6 +9,8 @@
 
 /* Colour tokens: Tailwind mappings, Conductor values, structural overrides. */
 @import "./tokens.css";
+/* Fonts, type scale, body defaults, labels and keys. */
+@import "./type.css";
 
 /* Set on <html> by tsenta-boot.js and renderer/tsenta/skin.ts. */
 @custom-variant conductor (&:where(
