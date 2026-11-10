@@ -56,7 +56,7 @@ export function WorkspaceTitle() {
 			<PopoverTrigger asChild>
 				<button
 					type="button"
-					aria-label={t({ message: `Workspace details: ${name}` })}
+					aria-label={t({ message: "Workspace details" })}
 					className="no-drag mx-1 flex h-6 min-w-0 cursor-pointer items-center rounded-sm px-1.5 text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[state=open]:bg-accent"
 				>
 					<span className="flex size-3.5 shrink-0 items-center justify-center">

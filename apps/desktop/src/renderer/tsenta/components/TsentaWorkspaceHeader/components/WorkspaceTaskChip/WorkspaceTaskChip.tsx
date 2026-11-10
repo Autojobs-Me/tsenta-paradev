@@ -1,4 +1,3 @@
-import { useLingui } from "@lingui/react/macro";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { Link } from "@tanstack/react-router";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
@@ -11,7 +10,6 @@ import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-works
  * (TSE-123), and it opens the task. Nothing shows without a linked task.
  */
 export function WorkspaceTaskChip() {
-	const { t } = useLingui();
 	const { workspace } = useWorkspace();
 	const taskId = workspace.taskId;
 	const { data: task } = cloudTrpc.task.byIdOrSlug.useQuery(taskId ?? "", {
@@ -24,7 +22,6 @@ export function WorkspaceTaskChip() {
 				<Link
 					to="/tasks/$taskId"
 					params={{ taskId: task.id }}
-					aria-label={t({ message: `Open task ${task.slug}` })}
 					className="no-drag flex h-6 shrink-0 cursor-pointer items-center rounded-sm px-1.5 font-mono text-xs text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
 				>
 					{task.slug}

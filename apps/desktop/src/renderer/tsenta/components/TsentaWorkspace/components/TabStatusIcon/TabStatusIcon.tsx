@@ -29,7 +29,7 @@ export function TabStatusIcon<TData>({ tab }: { tab: Tab<TData> }) {
 			return (
 				<span
 					role="img"
-					aria-label={t({ message: "Agent working" })}
+					aria-label={t({ message: "Working", context: "agent status" })}
 					className="flex size-3 items-center justify-center text-muted-foreground"
 				>
 					<WaveSpinner />
@@ -57,7 +57,7 @@ export function TabStatusIcon<TData>({ tab }: { tab: Tab<TData> }) {
 			return (
 				<CircleAlert
 					role="img"
-					aria-label={t({ message: "Agent failed" })}
+					aria-label={t({ message: "Failed", context: "agent status" })}
 					className="size-3 text-destructive"
 				/>
 			);

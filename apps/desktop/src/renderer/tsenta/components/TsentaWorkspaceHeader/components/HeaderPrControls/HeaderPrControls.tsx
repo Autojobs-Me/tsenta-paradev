@@ -121,7 +121,7 @@ export function HeaderPrControls() {
 			actionButton = (
 				<span
 					role="img"
-					aria-label={t({ message: "Agent working" })}
+					aria-label={t({ message: "Working", context: "agent status" })}
 					className="flex size-3 items-center justify-center text-muted-foreground"
 				>
 					<WaveSpinner />
@@ -202,7 +202,7 @@ export function HeaderPrControls() {
 		case "checks_pending":
 			actionButton = (
 				<span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
-					<Trans>Checks pending…</Trans>
+					<Trans>Checks running</Trans>
 				</span>
 			);
 			break;
