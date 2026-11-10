@@ -215,7 +215,7 @@ html[data-skin="conductor"]
 html[data-skin="conductor"]
 	[data-tsenta="composer"]
 	[data-composer-footer]
-	> [data-composer-dictate] {
+	> button[data-composer-dictate] {
 	border-radius: calc(var(--radius) - 2px);
 }
 
