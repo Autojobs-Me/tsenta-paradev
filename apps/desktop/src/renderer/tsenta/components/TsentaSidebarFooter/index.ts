@@ -1,0 +1,1 @@
+export { TsentaSidebarFooter } from "./TsentaSidebarFooter";

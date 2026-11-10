@@ -54,3 +54,44 @@ html[data-skin="conductor"]
 	width: 0.75rem;
 	height: 0.75rem;
 }
+
+/* Footer (SS §3.5) -------------------------------------------------------- */
+
+/*
+ * The organization menu's trigger reads as Conductor's footer label: the
+ * name alone, 12px muted, at most 8rem wide, brightening on hover. Its
+ * avatar and paid-plan chip give way; the fork's PlanBadge sits beside it.
+ */
+html[data-skin="conductor"] [data-tsenta="sidebar-footer-org"] > button {
+	width: auto;
+	min-width: 0;
+	gap: 0;
+	padding: 0;
+	border-radius: calc(var(--radius) - 4px);
+	background-color: transparent;
+	color: var(--muted-foreground);
+	font-size: 0.75rem;
+	line-height: 1rem;
+	letter-spacing: var(--tsenta-text-xs-tracking);
+	font-weight: 400;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="sidebar-footer-org"]
+	> button:is(:hover, [data-state="open"]) {
+	color: var(--foreground);
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="sidebar-footer-org"]
+	> button
+	> :is([data-slot="avatar"], [data-slot="badge"]) {
+	display: none;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="sidebar-footer-org"]
+	> button
+	> .truncate {
+	max-width: 8rem;
+}

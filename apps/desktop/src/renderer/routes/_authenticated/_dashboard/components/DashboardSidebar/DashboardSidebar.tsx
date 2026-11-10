@@ -39,7 +39,8 @@ import { useLocalHostService } from "renderer/routes/_authenticated/providers/Lo
 import { useReleaseNotesCardStore } from "renderer/stores/release-notes-card";
 import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
 import { useV2NotificationStore } from "renderer/stores/v2-notifications";
-// tsenta:conductor (plan step 6): the Conductor sidebar header.
+// tsenta:conductor (plan step 6): the Conductor sidebar header and footer.
+import { TsentaSidebarFooter } from "renderer/tsenta/components/TsentaSidebarFooter";
 import { TsentaSidebarHeader } from "renderer/tsenta/components/TsentaSidebarHeader";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import {
@@ -651,6 +652,10 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 											{workspaceList}
 										</OverflowFadeContainer>
 										{cardSlot}
+										{
+											// tsenta:conductor (plan step 6): Conductor's footer in place of the expanded bar.
+											// biome-ignore format: tsenta:conductor leaves the bar at upstream's indentation, so rebases over edits to it still apply
+											isConductorSkin() && !isCollapsed ? <TsentaSidebarFooter /> : (
 										<div
 											ref={footerRef}
 											className={cn(
@@ -704,6 +709,8 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 												</TooltipContent>
 											</Tooltip>
 										</div>
+											)
+										}
 									</div>
 								)}
 							</DashboardSidebarDndProvider>
