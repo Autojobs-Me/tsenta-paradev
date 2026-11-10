@@ -1429,6 +1429,8 @@ export function ComposerBody({
 				<div
 					ref={setMenuSlot}
 					className="pointer-events-none absolute inset-x-0 bottom-full pb-2 [&>*]:pointer-events-auto"
+					// tsenta:conductor (plan step 12): Conductor's @ and / lists in composer.css.
+					data-composer-menus
 				>
 					{browseOpen && (
 						<MentionMenu

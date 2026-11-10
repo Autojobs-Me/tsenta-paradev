@@ -102,9 +102,9 @@ allowlist=(
 	# Conductor composer (plan step 12): data-tsenta="composer" and
 	# data-plan-mode on the chat session's composer, the model menu's align
 	# and the fork's second Stop in its toolbar, and the
-	# card, send, stop and mic hooks (data-composer-root, data-composer-send,
-	# data-composer-stop, data-composer-dictate) composer.css keys on in
-	# chat-ui's ComposerBody.
+	# card, send, stop, mic and menu hooks (data-composer-root,
+	# data-composer-send, data-composer-stop, data-composer-dictate,
+	# data-composer-menus) composer.css keys on in chat-ui's ComposerBody.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx'
 	'packages/chat-ui/src/components/PromptInput/components/ComposerBody/ComposerBody.tsx'
 	# ...and the model picker's trigger and menu hooks, with an align prop so
