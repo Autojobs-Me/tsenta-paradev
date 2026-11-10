@@ -166,6 +166,66 @@ html[data-skin="conductor"]
 	border-left-color: var(--separator);
 }
 
+/* Sidebar open and close (SS §1.5, §3.7) --------------------------------- */
+
+/*
+ * Conductor slides the sidebar in and out with a critically damped spring
+ * (visualDuration 0.3s, no bounce). This is that spring's curve over its
+ * first 300ms, sampled in 5% steps and run to the end: Paradev's
+ * SidebarSlide animates the width over a fixed 300ms (an inline style), so
+ * only the easing changes. The content sheet's 12px gutter grows and shrinks
+ * on the same curve, so its edge moves as one with the sidebar's.
+ */
+html[data-skin="conductor"] {
+	--tsenta-sheet-ease: linear(
+		0,
+		0.03,
+		0.101,
+		0.192,
+		0.291,
+		0.389,
+		0.482,
+		0.566,
+		0.64,
+		0.705,
+		0.761,
+		0.809,
+		0.849,
+		0.883,
+		0.911,
+		0.934,
+		0.953,
+		0.969,
+		0.981,
+		0.992,
+		1
+	);
+}
+
+html[data-skin="conductor"] [data-workspace-sidebar] > [data-sidebar-slide] {
+	transition-timing-function: var(--tsenta-sheet-ease);
+}
+
+html[data-skin="conductor"] [data-pane-area="center"] > .bg-background {
+	transition: margin-left 300ms var(--tsenta-sheet-ease);
+}
+
+/*
+ * Conductor skips the motion when the system asks for less. SidebarSlide's
+ * motion-reduce class cannot do that against its inline transition, so the
+ * duration goes to zero here; the slide still settles on its own timer.
+ */
+@media (prefers-reduced-motion: reduce) {
+	html[data-skin="conductor"] [data-workspace-sidebar] > [data-sidebar-slide] {
+		/* biome-ignore lint/complexity/noImportantStyles: only !important beats SidebarSlide's inline transition-duration */
+		transition-duration: 0s !important;
+	}
+
+	html[data-skin="conductor"] [data-pane-area="center"] > .bg-background {
+		transition: none;
+	}
+}
+
 /* Resize handles (SS §3.6, RP §2.1) --------------------------------------- */
 
 /*
