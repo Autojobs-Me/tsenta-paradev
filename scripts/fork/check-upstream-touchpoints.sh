@@ -60,6 +60,9 @@ allowlist=(
 	# data-pane-add-tab, data-pane-tab and data-active hooks for workspace.css.
 	'packages/panes/src/react/components/Workspace/components/TabBar/TabBar.tsx'
 	'packages/panes/src/react/components/Workspace/components/TabBar/components/TabItem/TabItem.tsx'
+	# Conductor workspace header (plan step 9): the center Workspace comes from
+	# renderer/tsenta (TsentaWorkspace, the same Workspace with the skin off).
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx'
 )
 
 base="${1:-}"

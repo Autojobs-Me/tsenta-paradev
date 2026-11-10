@@ -2,6 +2,9 @@
  * Tsenta fork: Conductor's workspace view above the panes (plan steps 9 and
  * 10; workspace-chat spec §1, composer spec §10, design-system spec §6.15).
  *
+ * The header row is the fork's TsentaWorkspaceHeader, a .sheet-canvas row on
+ * the chrome; shell.css draws the content sheet's top hairline below it.
+ *
  * The center tab strip is packages/panes' TabBar, keyed on the hooks it
  * carries: data-pane-tabbar on the bar, data-pane-tab and data-active on each
  * tab, data-pane-add-tab on the "+" button. Conductor draws one 40px strip on
@@ -134,4 +137,24 @@ html[data-skin="conductor"]
 html[data-skin="conductor"] [data-pane-area="center"] [data-pane-add-tab] svg {
 	width: 0.75rem;
 	height: 0.75rem;
+}
+
+/* Header row (WC §1) ------------------------------------------------------ */
+
+/*
+ * The controls Paradev kept at the end of its tab bar sit in one wrapper
+ * with its own 4px gaps; here they join the header's right cluster and take
+ * Conductor's 12px.
+ */
+html[data-skin="conductor"] [data-tsenta="workspace-header-trailing"] > div {
+	display: contents;
+}
+
+/*
+ * The right pane area keeps Paradev's tabs until plan step 13, but its bar
+ * takes the header's 40px, so the lines under the two meet across the
+ * window.
+ */
+html[data-skin="conductor"] [data-pane-area="right"] [data-pane-tabbar] {
+	height: 2.5rem;
 }

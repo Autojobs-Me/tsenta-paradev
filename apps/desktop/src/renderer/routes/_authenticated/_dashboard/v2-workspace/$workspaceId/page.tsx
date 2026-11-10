@@ -1,4 +1,3 @@
-import { Workspace } from "@superset/panes";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
 import { cn } from "@superset/ui/utils";
 import { workspaceTrpc } from "@superset/workspace-client";
@@ -27,6 +26,9 @@ import {
 import { CommandPalette } from "renderer/screens/main/components/CommandPalette";
 import { useRightPaneAreaEnabled } from "renderer/stores/right-pane-area";
 import { getV2NotificationSourcesForTab } from "renderer/stores/v2-notifications";
+// tsenta:conductor (plan steps 9 and 10): packages/panes' Workspace with the
+// skin off; under it, Conductor's header row above the tab strip.
+import { TsentaWorkspace as Workspace } from "renderer/tsenta/components/TsentaWorkspace";
 import { useStore } from "zustand";
 import { usePendingCloudChat } from "../hooks/usePendingCloudChat";
 import { useWorkspace } from "../providers/WorkspaceProvider";

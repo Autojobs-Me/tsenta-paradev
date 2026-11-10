@@ -1,0 +1,1 @@
+export { TsentaWorkspaceHeader } from "./TsentaWorkspaceHeader";
