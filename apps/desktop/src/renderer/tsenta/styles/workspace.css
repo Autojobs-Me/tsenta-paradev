@@ -51,7 +51,6 @@ html[data-skin="conductor"] [data-pane-area="center"] [data-pane-tab] {
 	padding-top: 0.125rem;
 	border: 0;
 	border-radius: 0;
-	background-color: transparent;
 	color: var(--muted-foreground);
 	font-size: 0.75rem;
 	line-height: 1rem;
@@ -66,8 +65,12 @@ html[data-skin="conductor"]
 	color: var(--foreground);
 }
 
-html[data-skin="conductor"]
-	[data-pane-area="center"]
+/*
+ * The active tab keeps Paradev's bg-background, the strip's own colour here
+ * (Conductor's data-[active]:bg-background), so no rule clears tab fills
+ * and a pane dragged over a tab still tints it.
+ */
+html[data-skin="conductor"] [data-pane-area="center"]
 	[data-pane-tab][data-active] {
 	color: var(--foreground);
 	box-shadow: inset 0 -2px 0 var(--highlight-muted);
