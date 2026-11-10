@@ -1,18 +1,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { draftText } from "@superset/chat-ui/PromptInput";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
-import {
-	ClipboardList,
-	Clock,
-	FileText,
-	Gauge,
-	GitPullRequest,
-	House,
-	Pencil,
-	Plus,
-	Puzzle,
-	Search,
-} from "lucide-react";
+import { House, Pencil, Plus, Search } from "lucide-react";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import { ZoomStable } from "renderer/components/ZoomStable";
 import { env } from "renderer/env.renderer";
@@ -28,11 +17,11 @@ import {
 	WINDOW_CONTROLS_ROW_TOP,
 } from "renderer/routes/_authenticated/_dashboard/components/WindowChrome";
 import { useDashboardNavigation } from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardNavigation";
-import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/hooks/useFailedAutomations";
 import { useOpenNewWorkspaceInViewedProject } from "renderer/routes/_authenticated/_dashboard/hooks/useOpenNewWorkspaceInViewedProject";
 import { useNewWorkspaceDraftStore } from "renderer/stores/new-workspace-draft";
 import { COLLAPSED_WORKSPACE_SIDEBAR_WIDTH } from "renderer/stores/workspace-sidebar-state";
 import { TsentaSidebarToggle } from "renderer/tsenta/components/TsentaSidebarToggle";
+import { useConductorNavigationCommands } from "renderer/tsenta/palette/useConductorNavigationCommands";
 import { TRAFFIC_LIGHTS_CLEARANCE } from "renderer/tsenta/sidebar/metrics";
 import { SidebarNavRow } from "./components/SidebarNavRow";
 
@@ -42,9 +31,10 @@ import { SidebarNavRow } from "./components/SidebarNavRow";
  *
  * - Row 1: the sidebar toggle past the window buttons, and on the right the
  *   offline badge, the ports pill and back and forward.
- * - One nav block of identical rows: Home, Create (with a pencil while a
- *   new-workspace draft waits) and Search, then Paradev's other
- *   destinations in the same row look.
+ * - Conductor's nav block: Home, Create (with a pencil while a new-workspace
+ *   draft waits) and Search. Paradev's other destinations (Automations,
+ *   Tasks, Pull requests, Pages, Plugins) move to the command palette's
+ *   Navigation group as "Go to" entries; Usage is already there.
  *
  * The row keeps Paradev's macOS metrics (WindowChrome constants and
  * ZoomStable), so the controls stay centred on the native window buttons
@@ -68,13 +58,11 @@ export function TsentaSidebarHeader() {
 	// Mac while loading, so the row never briefly covers the window buttons.
 	const isMac = platform === undefined || platform === "darwin";
 	const zoomFactor = useZoomFactor();
-	// Same gates as DashboardSidebarHeader.
+	// Same gate as DashboardSidebarHeader's Plugins row.
 	const isPluginsEnabled =
 		(useFeatureFlagEnabled(FEATURE_FLAGS.PLUGINS) ?? false) ||
 		env.NODE_ENV === "development";
-	const { myFailedCount } = useFailedAutomations();
-	const { data: isUsageInSidebarEnabled } =
-		electronTrpc.settings.getShowUsageInSidebar.useQuery();
+	useConductorNavigationCommands(navigation, { isPluginsEnabled });
 
 	return (
 		<div
@@ -156,59 +144,6 @@ export function TsentaSidebarHeader() {
 					onPointerDown={paletteToggle.onPointerDown}
 					onClick={paletteToggle.onClick}
 				/>
-				<div className="relative">
-					<SidebarNavRow
-						icon={Clock}
-						label={<Trans>Automations</Trans>}
-						isActive={navigation.isAutomationsOpen}
-						onClick={navigation.openAutomations}
-					/>
-					{myFailedCount > 0 && (
-						<button
-							type="button"
-							onClick={navigation.openFailedAutomations}
-							title={t({
-								message: `${myFailedCount} of your automations failed their last run`,
-							})}
-							className="absolute top-1/2 right-1.5 flex h-4 min-w-4 -translate-y-1/2 items-center justify-center rounded-full bg-red-500/15 px-1 text-[10px] font-medium tabular-nums text-red-600 transition-colors hover:bg-red-500/25 dark:text-red-400"
-						>
-							{myFailedCount > 9 ? "9+" : myFailedCount}
-						</button>
-					)}
-				</div>
-				<SidebarNavRow
-					icon={ClipboardList}
-					label={<Trans>Tasks</Trans>}
-					isActive={navigation.isTasksOpen}
-					onClick={navigation.openTasks}
-				/>
-				<SidebarNavRow
-					icon={GitPullRequest}
-					label={<Trans>Pull requests</Trans>}
-					isActive={navigation.isPullRequestsOpen}
-					onClick={navigation.openPullRequests}
-				/>
-				<SidebarNavRow
-					icon={FileText}
-					label={<Trans>Pages</Trans>}
-					isActive={navigation.isPagesOpen}
-					onClick={navigation.openPages}
-				/>
-				{isUsageInSidebarEnabled && (
-					<SidebarNavRow
-						icon={Gauge}
-						label={<Trans>Usage</Trans>}
-						onClick={navigation.openUsage}
-					/>
-				)}
-				{isPluginsEnabled && (
-					<SidebarNavRow
-						icon={Puzzle}
-						label={<Trans>Plugins</Trans>}
-						isActive={navigation.isPluginsOpen}
-						onClick={navigation.openPlugins}
-					/>
-				)}
 			</nav>
 		</div>
 	);
