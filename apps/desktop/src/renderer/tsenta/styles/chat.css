@@ -427,6 +427,19 @@ html[data-skin="conductor"] [data-tsenta="scroll-to-bottom"] > button::before {
 		center / contain no-repeat;
 }
 
+/* Turn outline (WC §11) ---------------------------------------------------- */
+
+/*
+ * The outline (TsentaTranscriptOutline) sits over the transcript's top right
+ * corner, where Paradev opens its find bar (a <search> on the transcript's
+ * root while open). While find is open the marks step down below the bar,
+ * so they never cover its next and close buttons.
+ */
+html[data-skin="conductor"] [data-tsenta="transcript"]:has(> search)
+	~ [data-tsenta="transcript-outline"] {
+	top: 2.75rem;
+}
+
 /* File badges (WC §5.5, §6.5) ---------------------------------------------- */
 
 /*
