@@ -686,6 +686,8 @@ const DashboardSidebarContent = memo(function DashboardSidebarContent({
 													onHostFilterChange={setSidebarProjectHostFilter}
 													filterQuery={projectFilterQuery}
 													onFilterQueryChange={setProjectFilterQuery}
+													onReorderProjects={handleReorderProjects}
+													isProjectDragDisabled={isProjectDragDisabled}
 												/>
 											) : (
 												workspaceList

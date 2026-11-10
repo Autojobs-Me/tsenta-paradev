@@ -177,6 +177,7 @@ export function TsentaMyWorkspaces({
 								key={repo.project.id}
 								group={repo}
 								onToggleCollapse={onToggleProjectCollapsed}
+								canReorder={repos.length > 1}
 								{...rowProps}
 							/>
 						))}

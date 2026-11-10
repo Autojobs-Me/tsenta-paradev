@@ -6,6 +6,8 @@ export interface DropIndicator {
 	listKey: string | null;
 	/** The row the insertion line sits against, if any. */
 	rowKey: string | null;
+	/** While a repository header is dragged: the one the line sits against. */
+	repoId: string | null;
 	placement: DropPlacement;
 	/** The dragged workspace, so its own row can dim. */
 	draggingWorkspaceId: string | null;
@@ -14,6 +16,7 @@ export interface DropIndicator {
 export const IDLE_DROP_INDICATOR: DropIndicator = {
 	listKey: null,
 	rowKey: null,
+	repoId: null,
 	placement: "before",
 	draggingWorkspaceId: null,
 };
@@ -33,6 +36,7 @@ export function createDropIndicatorStore() {
 			if (
 				next.listKey === state.listKey &&
 				next.rowKey === state.rowKey &&
+				next.repoId === state.repoId &&
 				next.placement === state.placement &&
 				next.draggingWorkspaceId === state.draggingWorkspaceId
 			) {

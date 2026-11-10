@@ -1,1 +1,4 @@
-export { TsentaSidebarDragGhost } from "./TsentaSidebarDragGhost";
+export {
+	TsentaSidebarDragGhost,
+	TsentaSidebarRepoDragGhost,
+} from "./TsentaSidebarDragGhost";

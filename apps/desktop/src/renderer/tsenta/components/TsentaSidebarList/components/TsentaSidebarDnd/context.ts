@@ -5,7 +5,10 @@ import {
 	useContext,
 	useSyncExternalStore,
 } from "react";
-import type { DashboardSidebarWorkspace } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
+import type {
+	DashboardSidebarProject,
+	DashboardSidebarWorkspace,
+} from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
 import type {
 	ConductorDropTarget,
 	DropPlacement,
@@ -24,6 +27,14 @@ export interface SidebarRowDragData {
 	laneProjectId: string | null;
 	isPinned: boolean;
 }
+
+/** A repository header, dragged to reorder the projects. */
+export interface SidebarRepoDragData {
+	type: "tsenta-repo";
+	project: DashboardSidebarProject;
+}
+
+export type SidebarDragData = SidebarRowDragData | SidebarRepoDragData;
 
 export interface SidebarRowDropData {
 	type: "tsenta-row";
@@ -61,6 +72,8 @@ interface TsentaSidebarDndValue {
 	store: DropIndicatorStore;
 	/** Rows are inert while the sidebar shows a sorted or filtered view. */
 	isDisabled: boolean;
+	/** Repository headers are inert while a filter hides projects. */
+	isRepoDragDisabled: boolean;
 	/** The dragged workspace, while a row is dragged. */
 	activeWorkspaceId: string | null;
 }
@@ -85,6 +98,18 @@ export function useRowDropIndicator(rowKey: string): DropPlacement | null {
 			const state = store.get();
 			return state.rowKey === rowKey ? state.placement : null;
 		}, [store, rowKey]),
+	);
+}
+
+/** The side of this repository the insertion line sits on, or null. */
+export function useRepoDropIndicator(projectId: string): DropPlacement | null {
+	const { store } = useTsentaSidebarDnd();
+	return useSyncExternalStore(
+		store.subscribe,
+		useCallback(() => {
+			const state = store.get();
+			return state.repoId === projectId ? state.placement : null;
+		}, [store, projectId]),
 	);
 }
 

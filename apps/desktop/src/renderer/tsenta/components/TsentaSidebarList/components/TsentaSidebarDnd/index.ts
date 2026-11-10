@@ -1,7 +1,9 @@
 export {
 	type SidebarListTarget,
+	type SidebarRepoDragData,
 	type SidebarRowDragData,
 	type SidebarRowDropData,
+	useRepoDropIndicator,
 	useRowDropIndicator,
 	useSidebarListDrop,
 	useTsentaSidebarDnd,

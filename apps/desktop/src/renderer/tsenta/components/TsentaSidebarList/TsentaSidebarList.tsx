@@ -55,6 +55,10 @@ export interface TsentaSidebarListProps {
 	onHostFilterChange: (filter: SidebarProjectHostFilter) => void;
 	filterQuery: string;
 	onFilterQueryChange: (query: string) => void;
+	/** Paradev's project reorder, which a repository header drop makes. */
+	onReorderProjects: (projectIds: string[]) => void;
+	/** Paradev's rule: no project reorder while a filter hides projects. */
+	isProjectDragDisabled: boolean;
 }
 
 // Bulk actions are host-backed and project-scoped: Paradev's rule.
@@ -90,6 +94,8 @@ export function TsentaSidebarList({
 	onHostFilterChange,
 	filterQuery,
 	onFilterQueryChange,
+	onReorderProjects,
+	isProjectDragDisabled,
 }: TsentaSidebarListProps) {
 	const model = useMemo(
 		() => buildConductorSidebarModel({ projects, sessionChildren }),
@@ -242,6 +248,10 @@ export function TsentaSidebarList({
 					null),
 		[projects, sessionChildren],
 	);
+	const projectOrder = useMemo(
+		() => allProjects.map((project) => project.id),
+		[allProjects],
+	);
 	const mutations = useMemo(
 		() => ({
 			reorderPinnedWorkspaces,
@@ -264,6 +274,9 @@ export function TsentaSidebarList({
 			laneChildren={laneChildren}
 			mutations={mutations}
 			disabled={isChildDragDisabled}
+			projectOrder={projectOrder}
+			onReorderProjects={onReorderProjects}
+			isRepoDragDisabled={isProjectDragDisabled}
 		>
 			<div
 				data-tsenta="sidebar-list"
