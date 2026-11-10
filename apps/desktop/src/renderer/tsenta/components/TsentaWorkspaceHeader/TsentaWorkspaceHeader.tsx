@@ -45,7 +45,7 @@ export function TsentaWorkspaceHeader({
 			)}
 		>
 			<div className="flex min-w-0 shrink items-center gap-1 overflow-hidden">
-				{leading && (
+				{leading && isChromeVisible && (
 					<div className="no-drag flex h-full shrink-0 items-center">
 						{leading}
 					</div>
