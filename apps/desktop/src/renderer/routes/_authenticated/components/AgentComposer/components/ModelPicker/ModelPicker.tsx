@@ -197,8 +197,10 @@ export function ModelPicker({
 				</button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
-				// tsenta:conductor (plan step 12): upstream's align="end", now a prop.
+				// tsenta:conductor (plan step 12): upstream's align="end", now a prop,
+				// and the hook for Conductor's picker look in composer.css.
 				align={align}
+				data-tsenta="model-picker-menu"
 				className={cn(
 					MENU_PANEL_CLASS,
 					"flex w-[296px] flex-col overflow-hidden p-0",

@@ -106,8 +106,9 @@ allowlist=(
 	# chat-ui's ComposerBody.
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx'
 	'packages/chat-ui/src/components/PromptInput/components/ComposerBody/ComposerBody.tsx'
-	# ...and the model picker's trigger hook, with an align prop so its menu
-	# opens from the composer's left edge, where Conductor keeps the trigger.
+	# ...and the model picker's trigger and menu hooks, with an align prop so
+	# its menu opens from the composer's left edge, where Conductor keeps the
+	# trigger.
 	'apps/desktop/src/renderer/routes/_authenticated/components/AgentComposer/components/ModelPicker/ModelPicker.tsx'
 )
 

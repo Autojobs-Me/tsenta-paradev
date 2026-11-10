@@ -358,3 +358,115 @@ html[data-skin="conductor"]
 	[data-tsenta="composer-stop"]:hover {
 	background-color: var(--accent);
 }
+
+/* Model and mode menus (CO §5.2) -------------------------------------------- */
+
+/*
+ * AgentComposer's frosted panels (MENU_PANEL_CLASS: the model and mode menus
+ * and the model menu's submenus) are Conductor's plain popover: an 8px
+ * corner on --popover with no blur, and rows with a 6px corner.
+ */
+html[data-skin="conductor"]
+:is(
+	[data-slot="dropdown-menu-content"],
+	[data-slot="dropdown-menu-sub-content"]
+)[class~="backdrop-blur-2xl"] {
+	border-radius: var(--radius);
+	background-color: var(--popover);
+	backdrop-filter: none;
+}
+
+html[data-skin="conductor"]
+	[class~="backdrop-blur-2xl"]
+	[role^="menuitem"][class~="rounded-[0.625rem]"] {
+	border-radius: calc(var(--radius) - 2px);
+}
+
+/*
+ * The model menu is Conductor's two-layer picker: a 22rem frame on --muted
+ * with 4px around an inner card on --popover behind a 1px ring. Paradev's
+ * menu holds two sections (the models, then effort and the other settings),
+ * so each is drawn as part of that one card, and the line between them is
+ * Conductor's 70% border.
+ */
+html[data-skin="conductor"]
+[data-slot="dropdown-menu-content"][data-tsenta="model-picker-menu"] {
+	width: 22rem;
+	padding: 0.25rem;
+	background-color: var(--muted);
+}
+
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"] > * {
+	border-inline: 1px solid var(--popover-ring);
+	background-color: var(--popover);
+}
+
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"] > :first-child {
+	border-top: 1px solid var(--popover-ring);
+	border-top-left-radius: calc(var(--radius) - 2px);
+	border-top-right-radius: calc(var(--radius) - 2px);
+}
+
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"] > :last-child {
+	border-bottom: 1px solid var(--popover-ring);
+	border-bottom-left-radius: calc(var(--radius) - 2px);
+	border-bottom-right-radius: calc(var(--radius) - 2px);
+}
+
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"] > * + * {
+	border-top-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+/* The models section: 4px inside the card, like Conductor's p-1. */
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"]
+	> :has(> [role="tabpanel"]) {
+	padding: 0.25rem;
+}
+
+/* Paradev's agent tabs and the search row keep their lines, at 70%. */
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"]
+	:is([role="tablist"], label) {
+	border-bottom-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+/* Search: "Search models" in 14px with a muted 14px glass, 8px in. */
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"] label {
+	margin-bottom: 0.25rem;
+	padding-inline: 0.5rem;
+	color: var(--muted-foreground);
+}
+
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"] label > input {
+	font-size: 0.875rem;
+}
+
+html[data-skin="conductor"]
+	[data-tsenta="model-picker-menu"]
+	label
+	> input::placeholder {
+	color: var(--muted-foreground);
+}
+
+/* The list grows further before it scrolls (Conductor caps at 28rem). */
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"]
+	[role="tabpanel"] {
+	max-height: 15rem;
+	padding: 0;
+}
+
+/*
+ * Rows are Conductor's: 6px corner, 8px by 6px padding, 14px text, the 5%
+ * wash when highlighted (primitives.css).
+ */
+html[data-skin="conductor"] [data-tsenta="model-picker-menu"]
+	:is(
+		[data-slot="dropdown-menu-item"],
+		[data-slot="dropdown-menu-sub-trigger"]
+	) {
+	height: auto;
+	min-height: 2rem;
+	padding-block: 0.375rem;
+	border-radius: calc(var(--radius) - 2px);
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
