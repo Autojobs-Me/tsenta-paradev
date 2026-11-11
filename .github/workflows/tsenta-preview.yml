@@ -1,8 +1,9 @@
 # Preview build of a Tsenta UI branch, for looking at it before it ships.
 #
-# Every push to a tsenta/* branch except the agents' scratch branches (tsenta/wip-*), or a manual run, builds the macOS arm64 app
-# with scripts/fork/build.sh and uploads it as the tsenta-preview-mac-arm64
-# artifact. With the MAC_CERTIFICATE, CSC_NAME and APPLE_* secrets it is signed
+# Every push to a tsenta/* branch except the agents' scratch branches (tsenta/wip-*), or a manual run, builds the macOS arm64
+# and Windows x64 apps with scripts/fork/build.sh and uploads them as the
+# tsenta-preview-mac-arm64 and tsenta-preview-win-x64 artifacts. Windows is a
+# client for boxes and remote hosts only: local terminals do not run there. With the MAC_CERTIFICATE, CSC_NAME and APPLE_* secrets it is signed
 # with Tsenta's Developer ID and notarized; without them it is ad-hoc signed, and
 # after downloading it needs right-click > Open once.
 # It installs as Paradev Tsenta (com.tsenta.paradev) beside Paradev and shares
@@ -29,14 +30,24 @@ permissions:
   contents: read
 
 jobs:
-  mac:
-    name: build (mac arm64)
-    runs-on: macos-latest
+  build:
+    name: build (${{ matrix.platform }} ${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-latest, platform: mac, arch: arm64 }
+          - { runner: windows-latest, platform: win, arch: x64 }
     defaults:
       run:
         shell: bash
     steps:
+      # Paradev's component tree nests deeper than Windows' 260-character MAX_PATH.
+      - if: runner.os == 'Windows'
+        run: git config --system core.longpaths true
+
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
@@ -49,10 +60,12 @@ jobs:
             ~/.bun/install/cache
             ~/Library/Caches/electron
             ~/Library/Caches/electron-builder
-          key: macOS-arm64-tsenta-preview-${{ hashFiles('bun.lock') }}
+            ~/AppData/Local/electron/Cache
+            ~/AppData/Local/electron-builder/Cache
+          key: ${{ runner.os }}-${{ matrix.arch }}-tsenta-preview-${{ hashFiles('bun.lock') }}
           restore-keys: |
-            macOS-arm64-tsenta-preview-
-            macOS-arm64-boxes-
+            ${{ runner.os }}-${{ matrix.arch }}-tsenta-preview-
+            ${{ runner.os }}-${{ matrix.arch }}-boxes-
 
       # Same as fork-sync.yml: Electron's download answers 504 for minutes at a
       # stretch, so fetch it with patient retries and check its SHA256 first.
@@ -60,19 +73,23 @@ jobs:
         run: |
           set -euo pipefail
           version=$(node -p "require('./apps/desktop/package.json').devDependencies.electron")
-          dir="$HOME/Library/Caches/electron"
-          name="electron-v$version-darwin-arm64.zip"
+          case "${{ matrix.platform }}" in
+            mac) os=darwin; dir="$HOME/Library/Caches/electron" ;;
+            win) os=win32; dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          name="electron-v$version-$os-${{ matrix.arch }}.zip"
           base="https://github.com/electron/electron/releases/download/v$version"
           mkdir -p "$dir"
           fetch() { curl -fsSL --retry 30 --retry-all-errors --retry-delay 20 --retry-max-time 1500 -o "$2" "$1"; }
           fetch "$base/SHASUMS256.txt" "$RUNNER_TEMP/SHASUMS256.txt"
           want=$(grep " \*\?$name\$" "$RUNNER_TEMP/SHASUMS256.txt" | cut -d' ' -f1)
           [ -n "$want" ] || { echo "::error::$name not in SHASUMS256.txt"; exit 1; }
-          if [ -f "$dir/$name" ] && [ "$(shasum -a 256 "$dir/$name" | cut -d' ' -f1)" = "$want" ]; then
+          sha() { if command -v sha256sum >/dev/null; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1; }
+          if [ -f "$dir/$name" ] && [ "$(sha "$dir/$name")" = "$want" ]; then
             echo "Cached: $name"; exit 0
           fi
           fetch "$base/$name" "$dir/$name.part"
-          [ "$(shasum -a 256 "$dir/$name.part" | cut -d' ' -f1)" = "$want" ] || { echo "::error::$name checksum mismatch"; exit 1; }
+          [ "$(sha "$dir/$name.part")" = "$want" ] || { echo "::error::$name checksum mismatch"; exit 1; }
           mv "$dir/$name.part" "$dir/$name"
           echo "Fetched: $name"
 
@@ -115,7 +132,8 @@ jobs:
 
       - name: Build
         env:
-          PDEV_BUNDLE_REQUIRED: "1"
+          # pdev has no Windows build; macOS must ship it.
+          PDEV_BUNDLE_REQUIRED: ${{ matrix.platform != 'win' && '1' || '' }}
           # Paradev's analytics key: its per-account feature flags (cloud workspaces, ...) need it.
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
@@ -123,17 +141,25 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_SIGNING_ENDPOINT: ${{ vars.AZURE_SIGNING_ENDPOINT }}
+          AZURE_SIGNING_ACCOUNT: ${{ vars.AZURE_SIGNING_ACCOUNT }}
+          AZURE_SIGNING_PROFILE: ${{ vars.AZURE_SIGNING_PROFILE }}
+          AZURE_PUBLISHER_NAME: ${{ vars.AZURE_PUBLISHER_NAME }}
         run: |
           for attempt in 1 2; do
-            scripts/fork/build.sh mac arm64 && exit 0
+            scripts/fork/build.sh ${{ matrix.platform }} ${{ matrix.arch }} && exit 0
             echo "::warning::build attempt $attempt failed"
           done
           exit 1
 
       - name: Smoke test
-        run: scripts/fork/smoke.sh mac
+        run: scripts/fork/smoke.sh ${{ matrix.platform }}
 
       - name: Check signature and notarization
+        if: runner.os == 'macOS'
         run: |
           [ -n "${CSC_KEYCHAIN:-}" ] || { echo "Not signed (no MAC_CERTIFICATE): skipped."; exit 0; }
           app=$(find apps/desktop/release -maxdepth 2 -name "*.app" -type d | head -1)
@@ -147,9 +173,10 @@ jobs:
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: tsenta-preview-mac-arm64
+          name: tsenta-preview-${{ matrix.platform }}-${{ matrix.arch }}
           path: |
             apps/desktop/release/*.dmg
             apps/desktop/release/*.zip
+            apps/desktop/release/*.exe
           retention-days: 7
           if-no-files-found: error

@@ -19,7 +19,7 @@ cli=$(find . -type f \( -name superset -o -name superset.exe \) -path "*/bin/*" 
 case "$platform" in
 	mac) app=$(find . -path "*.app/Contents/MacOS/*" -type f -perm -111 -maxdepth 5 | grep -v Helper | head -n 1) ;;
 	linux) app=$(find . -maxdepth 2 -path "*-unpacked/paradev-boxes-app" -type f | head -n 1) ;;
-	win) app=$(find . -maxdepth 2 -path "*win-unpacked/*.exe" -name "Superset Boxes.exe" | head -n 1) ;;
+	win) app=$(find . -maxdepth 2 -path "*win-unpacked/*.exe" -name "Superset Tsenta.exe" | head -n 1) ;;
 esac
 [ -n "$app" ] || { echo "::error::packaged app not found"; exit 1; }
 
