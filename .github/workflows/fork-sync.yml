@@ -41,6 +41,7 @@ jobs:
       changed: ${{ steps.rebase.outputs.changed }}
       sha: ${{ steps.rebase.outputs.sha }}
       canary: ${{ steps.rebase.outputs.canary }}
+      base: ${{ steps.rebase.outputs.base }}
       version: ${{ steps.rebase.outputs.version }}
     steps:
       # A full clone, not blob:none: the rebase needs upstream's blobs, and a
@@ -88,6 +89,9 @@ jobs:
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "canary=${new:0:9}" >> "$GITHUB_OUTPUT"
+          # The upstream commit the fork sits on, after any rebase above.
+          git fetch -q origin fork-base
+          echo "base=$(git rev-parse --short=9 FETCH_HEAD)" >> "$GITHUB_OUTPUT"
           echo "version=$(jq -r .version apps/desktop/package.json)-boxes.$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
 
       - name: Keep upstream workflows disabled
@@ -304,7 +308,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           SHA: ${{ needs.sync.outputs.sha }}
           VERSION: ${{ needs.sync.outputs.version }}
-          CANARY: ${{ needs.sync.outputs.canary }}
+          BASE: ${{ needs.sync.outputs.base }}
           MAC_SIGNED: ${{ secrets.APPLE_TEAM_ID != '' }}
           WIN_SIGNED: ${{ secrets.AZURE_CLIENT_ID != '' }}
         run: |
@@ -317,8 +321,10 @@ jobs:
           # to install one. Linux updates need no signature.
           [ "$MAC_SIGNED" = true ] || rm -f latest-mac.yml
           [ "$WIN_SIGNED" = true ] || rm -f latest.yml
-          platforms=$(ls | sed -nE 's/.*\.(dmg|AppImage|exe)$/\1/p' | sort -u | sed 's/dmg/macOS/;s/AppImage/Linux/;s/exe/Windows/' | paste -sd, -)
-          notes=$(printf 'Paradev canary %s plus the Paradev Boxes commits (%s). Built: %s.\n\n- macOS: unsigned builds need right-click, Open the first time.\n- Linux: AppImage, deb or rpm, x64 and arm64. Updates itself.\n- Windows: experimental, launch-tested only. Meant as a client for boxes and other remote hosts; local workspaces will not work (no Windows terminal daemon upstream). SmartScreen warns on unsigned builds.\n\nSee the README for providers and known gaps.' "$CANARY" "${SHA:0:9}" "$platforms")
+          platforms=$(ls | sed -nE 's/.*\.(dmg|AppImage|exe)$/\1/p' | sort -u | sed 's/dmg/macOS/;s/AppImage/Linux/;s/exe/Windows/' | paste -sd, - | sed 's/,/, /g')
+          if [ "$MAC_SIGNED" = true ]; then mac="signed and notarized, and updates itself"; else mac="not signed: right-click it and choose Open the first time"; fi
+          if [ "$WIN_SIGNED" = true ]; then win="signed, and updates itself"; else win="not signed: SmartScreen warns the first time"; fi
+          notes=$(printf 'Tsenta'"'"'s build of Paradev: Paradev %s with the Tsenta changes on top (%s). Built for %s.\n\n- **macOS** (Apple silicon): download the `.dmg`. It is %s.\n- **Windows** (x64): download the `.exe`. It is %s. Use it with cloud workspaces and boxes; local terminals do not run on Windows yet.\n\nWhat differs from Paradev: see the [README](https://github.com/%s#readme).' "$BASE" "${SHA:0:9}" "$platforms" "$mac" "$win" "$GITHUB_REPOSITORY")
           # Move the tag and swap assets in place rather than deleting the
           # release, so the update feed never 404s mid-publish: binaries
           # first, manifests last, then drop assets from older builds.
