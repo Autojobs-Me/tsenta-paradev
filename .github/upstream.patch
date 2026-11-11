@@ -1,8 +1,32 @@
 diff --git a/apps/desktop/electron.vite.config.ts b/apps/desktop/electron.vite.config.ts
-index 13709a2741..21c23d97e0 100644
+index 13709a2741..24e34bf9e4 100644
 --- a/apps/desktop/electron.vite.config.ts
 +++ b/apps/desktop/electron.vite.config.ts
-@@ -120,6 +120,9 @@ export default defineConfig({
+@@ -1,4 +1,5 @@
+-import { resolve } from "node:path";
++import { createRequire } from "node:module";
++import { dirname, resolve } from "node:path";
+ import babel from "@rolldown/plugin-babel";
+ import { sentryVitePlugin } from "@sentry/vite-plugin";
+ import tailwindcss from "@tailwindcss/vite";
+@@ -53,6 +54,16 @@ const hostServiceSentryPlugin = process.env.SENTRY_AUTH_TOKEN
+ 
+ const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "superset.sh";
+ 
++// tsenta:fork: the real @tanstack/react-router, for the renderer alias below.
++const routerEsmEntry = resolve(
++	dirname(
++		createRequire(import.meta.url).resolve(
++			"@tanstack/react-router/package.json",
++		),
++	),
++	"dist/esm/index.js",
++);
++
+ export default defineConfig({
+ 	main: {
+ 		plugins: [linguiMacroPlugin(), copyResourcesPlugin()],
+@@ -120,6 +131,9 @@ export default defineConfig({
  		},
  
  		build: {
@@ -12,6 +36,28 @@ index 13709a2741..21c23d97e0 100644
  			sourcemap: true,
  			rollupOptions: {
  				input: {
+@@ -264,7 +278,20 @@ export default defineConfig({
+ 			htmlEnvTransformPlugin(),
+ 		],
+ 
+-		resolve: { tsconfigPaths: true },
++		resolve: {
++			tsconfigPaths: true,
++			// tsenta:fork: a route-aware useMatchRoute under React Compiler (renderer/tsenta/router).
++			alias: [
++				{
++					find: /^@tanstack\/react-router$/,
++					replacement: resolve("src/renderer/tsenta/router/react-router.ts"),
++				},
++				{
++					find: /^@tanstack\/react-router-original$/,
++					replacement: routerEsmEntry,
++				},
++			],
++		},
+ 
+ 		worker: {
+ 			format: "es",
 diff --git a/apps/desktop/scripts/check-runtime-dependencies.ts b/apps/desktop/scripts/check-runtime-dependencies.ts
 index 4ad4ac3bd4..697ecff525 100644
 --- a/apps/desktop/scripts/check-runtime-dependencies.ts
@@ -794,21 +840,45 @@ index 735d5d5c08..11569b4a64 100644
  					<img
  						alt="Paradev"
  						className={`h-8 w-auto select-none ${
+diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceSidebar/components/FilesTab/components/FileMenuItems/FileMenuItems.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceSidebar/components/FilesTab/components/FileMenuItems/FileMenuItems.tsx
+index e1099f58c0..39e14417f1 100644
+--- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceSidebar/components/FilesTab/components/FileMenuItems/FileMenuItems.tsx
++++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceSidebar/components/FilesTab/components/FileMenuItems/FileMenuItems.tsx
+@@ -12,6 +12,7 @@ import {
+ 	Trash2,
+ } from "lucide-react";
+ import { modifierLabel, useSidebarFilePolicy } from "renderer/lib/clickPolicy";
++import { TsentaDownloadMenuItem } from "renderer/tsenta/components/TsentaDownloadMenuItem";
+ import { PathActions } from "../PathActions";
+ 
+ interface FileMenuItemsProps {
+@@ -62,6 +63,8 @@ export function FileMenuItems({
+ 			</DropdownMenuItem>
+ 			<DropdownMenuSeparator />
+ 			<PathActions absolutePath={absolutePath} relativePath={relativePath} />
++			{/* tsenta:conductor: Download, under the skin. */}
++			<TsentaDownloadMenuItem absolutePath={absolutePath} />
+ 			<DropdownMenuSeparator />
+ 			<DropdownMenuItem onSelect={() => setTimeout(onRename, 0)}>
+ 				<Pencil />
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
-index 45c1343bea..d626d347c4 100644
+index 45c1343bea..2acb9c6cd5 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
-@@ -1,5 +1,9 @@
+@@ -1,5 +1,12 @@
  import type { RendererContext } from "@superset/panes";
++import { workspaceTrpc } from "@superset/workspace-client";
  import { useCallback } from "react";
 +import {
++	openFileTab,
 +	openInCenter,
 +	useTsentaCenterStore,
 +} from "renderer/tsenta/providers/TsentaCenterStore";
++import { toAbsoluteWorkspacePath } from "shared/absolute-paths";
  import { useChangesTab } from "../../../../components/WorkspaceSidebar/hooks/useChangesTab";
  import type {
  	DiffPaneData,
-@@ -7,6 +11,7 @@ import type {
+@@ -7,6 +14,7 @@ import type {
  	PaneViewerData,
  } from "../../../../types";
  import { openBesidePane } from "../../../../utils/openBesidePane";
@@ -816,12 +886,16 @@ index 45c1343bea..d626d347c4 100644
  import { useDiffPaneTarget } from "../../../useDiffPaneTarget";
  
  interface ChangesListPaneProps {
-@@ -22,28 +27,34 @@ export function ChangesListPane({
+@@ -22,28 +30,45 @@ export function ChangesListPane({
  	const paneId = context.pane.id;
  	const selectedDiffTarget = useDiffPaneTarget(store);
  
 +	// tsenta:conductor: from the right panel, diffs and files open in the center.
 +	const centerStore = useTsentaCenterStore();
++	const worktreePath = workspaceTrpc.workspace.get.useQuery(
++		{ id: workspaceId },
++		{ enabled: centerStore !== null },
++	).data?.worktreePath;
  	const handleSelectFile = useCallback(
  		(path: string, openInNewTab?: boolean, changeKey?: string) => {
 -			openBesidePane(
@@ -847,11 +921,18 @@ index 45c1343bea..d626d347c4 100644
 +					focusTick: Date.now(),
 +				} as DiffPaneData,
 +			};
++			if (centerStore && worktreePath) {
++				return openFileTab(
++					centerStore,
++					toAbsoluteWorkspacePath(worktreePath, path),
++					"diff",
++				);
++			}
 +			if (centerStore) return openInCenter(centerStore, pane);
 +			openBesidePane(store, paneId, pane, openInNewTab);
  		},
 -		[store, paneId],
-+		[centerStore, store, paneId],
++		[centerStore, worktreePath, store, paneId],
  	);
  
  	const handleOpenFile = useCallback(
@@ -866,7 +947,7 @@ index 45c1343bea..d626d347c4 100644
  			openBesidePane(
  				store,
  				paneId,
-@@ -51,7 +62,7 @@ export function ChangesListPane({
+@@ -51,7 +76,7 @@ export function ChangesListPane({
  				openInNewTab,
  			);
  		},
@@ -1164,7 +1245,7 @@ index 6853e0edcd..d1b0d4e50a 100644
  export const CHAT_MARKDOWN_COMPONENTS = {
  	code: ChatCodeBlock,
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx
-index 7c3e14c3e0..152a10a41b 100644
+index 7c3e14c3e0..df7dd69d2b 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx
 @@ -14,6 +14,7 @@ import {
@@ -1187,6 +1268,18 @@ index 7c3e14c3e0..152a10a41b 100644
  	const narrowLayout = !isNarrow
  		? null
  		: !filePath
+@@ -111,7 +115,10 @@ export function FileViewLayout({
+ 	const tabHasTreePane =
+ 		context.pane.kind !== "files" &&
+ 		Object.values(context.tab.panes).some((pane) => pane.kind === "files");
+-	if (!showTree || tabHasTreePane) return children;
++	// tsenta:conductor: a file tab is the file alone; the right panel holds the tree.
++	if (!showTree || tabHasTreePane || (isConductorSkin() && filePath)) {
++		return children;
++	}
+ 
+ 	const panelTransition =
+ 		animating && !isNarrow && "transition-[flex-grow] duration-200 ease-out";
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx
 index d16d59cc3a..d8a310e505 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx
@@ -1219,6 +1312,39 @@ index d16d59cc3a..d8a310e505 100644
  	);
  
  	return (
+diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/PagesListPane/PagesListPane.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/PagesListPane/PagesListPane.tsx
+index 24d93591c4..eaa9dde9dd 100644
+--- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/PagesListPane/PagesListPane.tsx
++++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/PagesListPane/PagesListPane.tsx
+@@ -9,6 +9,7 @@ import { useDebouncedValue } from "renderer/hooks/useDebouncedValue";
+ import { usePagePolicy } from "renderer/lib/clickPolicy";
+ import { electronTrpcClient } from "renderer/lib/trpc-client";
+ import { usePagesList } from "renderer/routes/_authenticated/_dashboard/hooks/usePagesList";
++import { TsentaPageContextMenu } from "renderer/tsenta/components/TsentaPageContextMenu";
+ import { useStore } from "zustand";
+ import { NewPageComposer } from "../../../../components/NewPageComposer";
+ import {
+@@ -116,12 +117,14 @@ export function PagesListPane({
+ 	const cards = (pages: PagesListItem[]) => (
+ 		<div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2 px-1">
+ 			{pages.map((page) => (
+-				<PagesListCard
+-					key={page.id}
+-					page={page}
+-					isActive={page.id === activePageId}
+-					onOpen={handleOpen}
+-				/>
++				// tsenta:conductor: right-click a page to download it.
++				<TsentaPageContextMenu key={page.id} page={page}>
++					<PagesListCard
++						page={page}
++						isActive={page.id === activePageId}
++						onOpen={handleOpen}
++					/>
++				</TsentaPageContextMenu>
+ 			))}
+ 		</div>
+ 	);
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx
 index 351e6ff565..627bf3cd79 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx
@@ -1739,6 +1865,85 @@ index 2c30be6089..0187c977d9 100644
  				>
  					{browseOpen && (
  						<MentionMenu
+diff --git a/packages/host-service/src/trpc/router/workspace-creation/procedures/search-remote-branches.ts b/packages/host-service/src/trpc/router/workspace-creation/procedures/search-remote-branches.ts
+index 8cc9267b8e..247a4e6f4b 100644
+--- a/packages/host-service/src/trpc/router/workspace-creation/procedures/search-remote-branches.ts
++++ b/packages/host-service/src/trpc/router/workspace-creation/procedures/search-remote-branches.ts
+@@ -4,12 +4,23 @@ import { protectedProcedure } from "../../../index";
+ 
+ const PER_PAGE = 100;
+ 
+-const ghBranchSchema = z.array(
+-	z.object({
+-		name: z.string(),
+-		commit: z.object({ url: z.string() }).partial().optional(),
++// tsenta:fork: GitHub filters by name, newest first, so any of a big repo's
++// branches can match; the REST list stopped at its first 100 names.
++const REFS_QUERY = `query($owner: String!, $repo: String!, $q: String) {
++  repository(owner: $owner, name: $repo) {
++    refs(refPrefix: "refs/heads/", query: $q, first: ${PER_PAGE}, orderBy: { field: TAG_COMMIT_DATE, direction: DESC }) {
++      nodes { name }
++    }
++  }
++}`;
++
++const ghRefsSchema = z.object({
++	data: z.object({
++		repository: z.object({
++			refs: z.object({ nodes: z.array(z.object({ name: z.string() })) }),
++		}),
+ 	}),
+-);
++});
+ 
+ /**
+  * Branches for a repo the user may not have checked out, read through `gh`
+@@ -28,9 +39,17 @@ export const searchRemoteBranches = protectedProcedure
+ 	.query(async ({ ctx, input }) => {
+ 		let raw: unknown;
+ 		try {
++			const query = input.query?.trim();
+ 			raw = await ctx.execGh([
+ 				"api",
+-				`repos/${input.owner}/${input.repo}/branches?per_page=${PER_PAGE}`,
++				"graphql",
++				"-f",
++				`query=${REFS_QUERY}`,
++				"-f",
++				`owner=${input.owner}`,
++				"-f",
++				`repo=${input.repo}`,
++				...(query ? ["-f", `q=${query}`] : []),
+ 			]);
+ 		} catch (error) {
+ 			throw new TRPCError({
+@@ -41,7 +60,7 @@ export const searchRemoteBranches = protectedProcedure
+ 			});
+ 		}
+ 
+-		const parsed = ghBranchSchema.safeParse(raw);
++		const parsed = ghRefsSchema.safeParse(raw);
+ 		if (!parsed.success) {
+ 			throw new TRPCError({
+ 				code: "INTERNAL_SERVER_ERROR",
+@@ -50,10 +69,15 @@ export const searchRemoteBranches = protectedProcedure
+ 		}
+ 
+ 		const needle = input.query?.trim().toLowerCase();
+-		const items = parsed.data
++		const items = parsed.data.data.repository.refs.nodes
+ 			.map((branch) => branch.name)
+ 			.filter((name) => (needle ? name.toLowerCase().includes(needle) : true))
+-			.sort((a, b) => a.localeCompare(b));
++			// An exact match leads; the rest keep GitHub's newest-first order.
++			.sort(
++				(a, b) =>
++					Number(b.toLowerCase() === needle) -
++					Number(a.toLowerCase() === needle),
++			);
+ 
+ 		return { items };
+ 	});
 diff --git a/packages/panes/src/react/components/Workspace/components/TabBar/TabBar.tsx b/packages/panes/src/react/components/Workspace/components/TabBar/TabBar.tsx
 index 3ebcca4ea6..b77c22449b 100644
 --- a/packages/panes/src/react/components/Workspace/components/TabBar/TabBar.tsx

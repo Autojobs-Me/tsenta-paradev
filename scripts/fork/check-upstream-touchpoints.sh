@@ -132,6 +132,11 @@ allowlist=(
 	# and files picked there open in the center (TsentaCenterStore).
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx'
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx'
+	# Download on right-click: files (FileMenuItems) and pages (PagesListPane).
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceSidebar/components/FilesTab/components/FileMenuItems/FileMenuItems.tsx'
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/PagesListPane/PagesListPane.tsx'
+	# Cloud branch search asks GitHub to filter, so a big repo's branches all match.
+	'packages/host-service/src/trpc/router/workspace-creation/procedures/search-remote-branches.ts'
 )
 
 base="${1:-}"
