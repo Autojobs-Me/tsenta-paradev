@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- tsenta:fork: Tailwind's layer order before any stylesheet. Vite 8 can load a
+         JS-imported CSS chunk (packages/ui fade-edge.css) first, which ranked utilities below base. -->
+    <style>@layer properties, theme, base, components, utilities;</style>
     <!-- Theme boot script must run before body to prevent flash -->
     <script type="module" src="/theme-boot.js"></script>
     <script src="/tsenta-boot.js"></script>
