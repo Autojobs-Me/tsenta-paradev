@@ -4,12 +4,23 @@ import { protectedProcedure } from "../../../index";
 
 const PER_PAGE = 100;
 
-const ghBranchSchema = z.array(
-	z.object({
-		name: z.string(),
-		commit: z.object({ url: z.string() }).partial().optional(),
+// tsenta:fork: GitHub filters by name, newest first, so any of a big repo's
+// branches can match; the REST list stopped at its first 100 names.
+const REFS_QUERY = `query($owner: String!, $repo: String!, $q: String) {
+  repository(owner: $owner, name: $repo) {
+    refs(refPrefix: "refs/heads/", query: $q, first: ${PER_PAGE}, orderBy: { field: TAG_COMMIT_DATE, direction: DESC }) {
+      nodes { name }
+    }
+  }
+}`;
+
+const ghRefsSchema = z.object({
+	data: z.object({
+		repository: z.object({
+			refs: z.object({ nodes: z.array(z.object({ name: z.string() })) }),
+		}),
 	}),
-);
+});
 
 /**
  * Branches for a repo the user may not have checked out, read through `gh`
@@ -28,9 +39,17 @@ export const searchRemoteBranches = protectedProcedure
 	.query(async ({ ctx, input }) => {
 		let raw: unknown;
 		try {
+			const query = input.query?.trim();
 			raw = await ctx.execGh([
 				"api",
-				`repos/${input.owner}/${input.repo}/branches?per_page=${PER_PAGE}`,
+				"graphql",
+				"-f",
+				`query=${REFS_QUERY}`,
+				"-f",
+				`owner=${input.owner}`,
+				"-f",
+				`repo=${input.repo}`,
+				...(query ? ["-f", `q=${query}`] : []),
 			]);
 		} catch (error) {
 			throw new TRPCError({
@@ -41,7 +60,7 @@ export const searchRemoteBranches = protectedProcedure
 			});
 		}
 
-		const parsed = ghBranchSchema.safeParse(raw);
+		const parsed = ghRefsSchema.safeParse(raw);
 		if (!parsed.success) {
 			throw new TRPCError({
 				code: "INTERNAL_SERVER_ERROR",
@@ -50,10 +69,15 @@ export const searchRemoteBranches = protectedProcedure
 		}
 
 		const needle = input.query?.trim().toLowerCase();
-		const items = parsed.data
+		const items = parsed.data.data.repository.refs.nodes
 			.map((branch) => branch.name)
 			.filter((name) => (needle ? name.toLowerCase().includes(needle) : true))
-			.sort((a, b) => a.localeCompare(b));
+			// An exact match leads; the rest keep GitHub's newest-first order.
+			.sort(
+				(a, b) =>
+					Number(b.toLowerCase() === needle) -
+					Number(a.toLowerCase() === needle),
+			);
 
 		return { items };
 	});
