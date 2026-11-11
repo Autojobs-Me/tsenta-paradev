@@ -9,6 +9,9 @@ import { useHotkeyDisplay } from "renderer/hotkeys";
 import supersetEmptyStateWordmark from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/assets/superset-empty-state-wordmark.svg";
 import { EmptyTabActionButton } from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/components/EmptyTabActionButton";
 import { useTheme } from "renderer/stores/theme";
+// tsenta:conductor: Tsenta's mark under the skin.
+import tsentaMark from "renderer/tsenta/assets/tsenta-mark.svg";
+import { isConductorSkin } from "renderer/tsenta/skin";
 
 interface WorkspaceEmptyStateProps {
 	onOpenBrowser: () => void;
@@ -118,7 +121,7 @@ export function WorkspaceEmptyState({
 								: "brightness-0 opacity-75"
 						}`}
 						draggable={false}
-						src={supersetEmptyStateWordmark}
+						src={isConductorSkin() ? tsentaMark : supersetEmptyStateWordmark}
 					/>
 				</div>
 				<div className="mx-auto grid w-full max-w-md gap-0.5">

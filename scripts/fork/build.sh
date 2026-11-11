@@ -51,6 +51,14 @@ export REALTIME_URL=https://realtime.superset.sh
 # Sentry stays off: no DSN, no sourcemap upload. PostHog comes from the environment (see the header).
 unset SENTRY_DSN_DESKTOP SENTRY_DSN_HOST_SERVICE SENTRY_AUTH_TOKEN
 
+# Tsenta's icons (apps/desktop/fork/icons) replace Paradev's for the build:
+# the installer, dock and window icons all come from build/icons. Restored on exit.
+icons="$PWD/apps/desktop/src/resources/build/icons"
+trap 'git checkout -q -- "$icons"' EXIT
+for name in icon icon-canary; do
+	for ext in icns ico png; do cp "apps/desktop/fork/icons/icon.$ext" "$icons/$name.$ext"; done
+done
+
 cd apps/desktop
 bun run clean:dev
 bun run generate:icons

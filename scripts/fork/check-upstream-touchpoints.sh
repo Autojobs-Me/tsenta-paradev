@@ -114,6 +114,13 @@ allowlist=(
 	# its menu opens from the composer's left edge, where Conductor keeps the
 	# trigger.
 	'apps/desktop/src/renderer/routes/_authenticated/components/AgentComposer/components/ModelPicker/ModelPicker.tsx'
+	# Tsenta's mark in place of Paradev's logo (sign-in, loading, onboarding,
+	# the empty workspace), swapped by the logo's barrel and one src line.
+	'apps/desktop/src/renderer/components/SupersetLogo/index.ts'
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceEmptyState/WorkspaceEmptyState.tsx'
+	# The workspace's PR at the top of the Changes pane, now that the header's
+	# activity menu (page.tsx) is not drawn under the skin.
+	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx'
 )
 
 base="${1:-}"
