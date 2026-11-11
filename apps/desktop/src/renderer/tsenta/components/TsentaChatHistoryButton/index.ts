@@ -1,0 +1,1 @@
+export { TsentaChatHistoryButton } from "./TsentaChatHistoryButton";

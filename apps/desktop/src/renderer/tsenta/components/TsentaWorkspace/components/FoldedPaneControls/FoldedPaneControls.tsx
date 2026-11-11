@@ -11,6 +11,8 @@ import type {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { Fragment, type ReactNode, useMemo } from "react";
 import { useChatSubagentStore } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/stores/chatSubagentStore";
+import type { PaneViewerData } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/types";
+import { TsentaChatHistoryButton } from "renderer/tsenta/components/TsentaChatHistoryButton";
 import { useStore } from "zustand";
 import type { StoreApi } from "zustand/vanilla";
 import { foldsPaneHeader } from "../../utils/foldPaneHeaders";
@@ -160,11 +162,18 @@ function FoldedTitle<TData>({
 	}
 	if (context.pane.kind === "chat-v3") {
 		const { terminalId } = context.pane.data as { terminalId?: string };
-		return terminalId ? (
-			<NestedChatTitle chatKey={terminalId}>
-				{definition.renderTitle?.(context)}
-			</NestedChatTitle>
-		) : null;
+		return (
+			<>
+				{terminalId ? (
+					<NestedChatTitle chatKey={terminalId}>
+						{definition.renderTitle?.(context)}
+					</NestedChatTitle>
+				) : null}
+				<TsentaChatHistoryButton
+					context={context as unknown as RendererContext<PaneViewerData>}
+				/>
+			</>
+		);
 	}
 	return null;
 }
