@@ -1,4 +1,5 @@
-import { resolve } from "node:path";
+import { createRequire } from "node:module";
+import { dirname, resolve } from "node:path";
 import babel from "@rolldown/plugin-babel";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
@@ -52,6 +53,16 @@ const hostServiceSentryPlugin = process.env.SENTRY_AUTH_TOKEN
 	: null;
 
 const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "superset.sh";
+
+// tsenta:fork: the real @tanstack/react-router, for the renderer alias below.
+const routerEsmEntry = resolve(
+	dirname(
+		createRequire(import.meta.url).resolve(
+			"@tanstack/react-router/package.json",
+		),
+	),
+	"dist/esm/index.js",
+);
 
 export default defineConfig({
 	main: {
@@ -266,7 +277,20 @@ export default defineConfig({
 			htmlEnvTransformPlugin(),
 		],
 
-		resolve: { tsconfigPaths: true },
+		resolve: {
+			tsconfigPaths: true,
+			// tsenta:fork: a route-aware useMatchRoute under React Compiler (renderer/tsenta/router).
+			alias: [
+				{
+					find: /^@tanstack\/react-router$/,
+					replacement: resolve("src/renderer/tsenta/router/react-router.ts"),
+				},
+				{
+					find: /^@tanstack\/react-router-original$/,
+					replacement: routerEsmEntry,
+				},
+			],
+		},
 
 		worker: {
 			format: "es",
