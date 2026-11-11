@@ -134,11 +134,16 @@ index 34f0baef80..26a62ef1aa 100644
  @custom-variant dark (&:is(.dark *));
  
 diff --git a/apps/desktop/src/renderer/index.html b/apps/desktop/src/renderer/index.html
-index dfb1d05144..76462392ce 100644
+index dfb1d05144..b9b9def21a 100644
 --- a/apps/desktop/src/renderer/index.html
 +++ b/apps/desktop/src/renderer/index.html
-@@ -4,6 +4,7 @@
+@@ -2,8 +2,12 @@
+ <html lang="en">
+   <head>
      <meta charset="UTF-8" />
++    <!-- tsenta:fork: Tailwind's layer order before any stylesheet. Vite 8 can load a
++         JS-imported CSS chunk (packages/ui fade-edge.css) first, which ranked utilities below base. -->
++    <style>@layer properties, theme, base, components, utilities;</style>
      <!-- Theme boot script must run before body to prevent flash -->
      <script type="module" src="/theme-boot.js"></script>
 +    <script src="/tsenta-boot.js"></script>
