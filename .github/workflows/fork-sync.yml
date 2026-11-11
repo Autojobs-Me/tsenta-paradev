@@ -130,8 +130,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { runner: blacksmith-6vcpu-macos-latest, platform: mac, arch: arm64 }
-          - { runner: blacksmith-8vcpu-windows-2025, platform: win, arch: x64 }
+          - { runner: blacksmith-12vcpu-macos-latest, platform: mac, arch: arm64 }
+          - { runner: blacksmith-16vcpu-windows-2025, platform: win, arch: x64 }
           # Linux desktop builds work (build.sh linux x64|arm64, smoke-tested)
           # but are not shipped for now. To ship them, add:
           #   - { runner: blacksmith-4vcpu-ubuntu-2404, platform: linux, arch: x64 }
