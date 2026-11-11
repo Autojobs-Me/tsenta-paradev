@@ -29,6 +29,7 @@ import { getV2NotificationSourcesForTab } from "renderer/stores/v2-notifications
 // tsenta:conductor (plan steps 9 and 10): packages/panes' Workspace with the
 // skin off; under it, Conductor's header row above the tab strip.
 import { TsentaWorkspace as Workspace } from "renderer/tsenta/components/TsentaWorkspace";
+import { useTsentaRightTabs } from "renderer/tsenta/hooks/useTsentaRightTabs";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { useStore } from "zustand";
 import { usePendingCloudChat } from "../hooks/usePendingCloudChat";
@@ -289,7 +290,8 @@ function V2WorkspaceContent() {
 	useOpenNewTabWhenRightPaneOpensEmpty({
 		store: rightStore,
 		isOpen: sidebarOpen,
-		enabled: isRightPaneAreaEnabled && isRightLayoutReady,
+		// tsenta:conductor: the skin opens the sidebar on its fixed tabs instead.
+		enabled: isRightPaneAreaEnabled && isRightLayoutReady && !isConductorSkin(),
 	});
 	const launcher = useV2TerminalLauncher();
 	const {
@@ -490,6 +492,13 @@ function V2WorkspaceContent() {
 	const hostTarget = useWorkspaceHostTarget(workspaceId);
 	const isSandbox =
 		hostTarget.status === "ready" && hostTarget.kind === "sandbox";
+	// tsenta:conductor: Conductor's fixed right panel tabs, mounted on first open.
+	useTsentaRightTabs({
+		store: rightStore,
+		isOpen: sidebarOpen,
+		isReady: isRightPaneAreaEnabled && isRightLayoutReady,
+		sandbox: isSandbox,
+	});
 	const addDesktopTab = useCallback(() => {
 		viewerTarget.reveal();
 		viewerTarget.store.getState().addTab({

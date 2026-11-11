@@ -1,0 +1,1 @@
+export { useTsentaRightTabs } from "./useTsentaRightTabs";
