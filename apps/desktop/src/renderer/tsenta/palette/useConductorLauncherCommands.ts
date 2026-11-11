@@ -9,16 +9,21 @@ import type {
 import { useV2AgentConfigs } from "renderer/hooks/useV2AgentConfigs";
 import type { HotkeyId } from "renderer/hotkeys";
 import { resolveV2PresetIcon } from "renderer/lib/preset-icon";
+import type { V2TerminalPresetRow } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
-import type { TsentaLaunchers } from "renderer/tsenta/components/TsentaAddTabMenu";
 
 const PROVIDER_ID = "tsenta.launchers";
+
+export interface TsentaLaunchers {
+	/** The project's terminal presets, the agent launchers among them. */
+	matchedPresets: V2TerminalPresetRow[];
+	executePreset: (preset: V2TerminalPresetRow) => void | Promise<void>;
+}
 
 /**
  * Paradev's launcher row (Claude, Codex, OpenCode and the rest), which the
  * skin does not draw, as command palette entries in the Workspace group, so
- * a launcher is one ⌘K and its name away as well as in the tab strip's "+"
- * menu. Titled by the preset's own name and run through the workspace's
+ * a launcher is one ⌘K and its name away. Titled by the preset's own name and run through the workspace's
  * executePreset, with the row's ⌘⌥ shortcuts. Registered while the
  * workspace view is open under the skin.
  */

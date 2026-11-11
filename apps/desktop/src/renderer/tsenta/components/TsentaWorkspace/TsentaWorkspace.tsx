@@ -1,11 +1,11 @@
 import { Workspace, type WorkspaceProps } from "@superset/panes";
-import { useMemo } from "react";
-import {
-	TsentaAddTabMenu,
-	type TsentaLaunchers,
-} from "renderer/tsenta/components/TsentaAddTabMenu";
+import { type ComponentProps, isValidElement, useMemo } from "react";
+import { AddTabMenu } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/AddTabMenu";
 import { TsentaWorkspaceHeader } from "renderer/tsenta/components/TsentaWorkspaceHeader";
-import { useConductorLauncherCommands } from "renderer/tsenta/palette/useConductorLauncherCommands";
+import {
+	type TsentaLaunchers,
+	useConductorLauncherCommands,
+} from "renderer/tsenta/palette/useConductorLauncherCommands";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { FoldedPaneControls } from "./components/FoldedPaneControls";
 import { TabStatusIcon } from "./components/TabStatusIcon";
@@ -13,7 +13,7 @@ import { foldPaneHeaders } from "./utils/foldPaneHeaders";
 
 /** What the Conductor layout needs beyond Workspace's own props. */
 export interface TsentaWorkspaceExtras {
-	/** Paradev's launcher row's presets, listed in the "+" menu instead. */
+	/** Paradev's launcher row's presets, listed in the command palette instead. */
 	launchers?: TsentaLaunchers;
 }
 
@@ -30,8 +30,9 @@ type TsentaWorkspaceProps<TData> = WorkspaceProps<TData> & {
  *   Conductor's header row (TsentaWorkspaceHeader), on the chrome above the
  *   tab strip;
  * - Paradev's launcher row below the tab bar is not drawn; its launchers
- *   join the strip's "+" menu (TsentaAddTabMenu), which lists Chat first,
- *   and the command palette;
+ *   join the command palette;
+ * - the strip's "+" opens a chat with the default model, with no menu
+ *   (Paradev's menu's Chat item); terminals and the rest keep their hotkeys;
  * - each tab's agent status leads its title in Conductor's glyphs
  *   (TabStatusIcon), in place of Paradev's trailing dot;
  * - a chat or terminal alone in its tab drops its own header row, and the
@@ -62,6 +63,14 @@ function ConductorWorkspace<TData>({
 	const { registry, store, paneActions } = props;
 	const foldedRegistry = useMemo(() => foldPaneHeaders(registry), [registry]);
 	useConductorLauncherCommands(tsenta?.launchers);
+	const paradevMenu = renderAddTabMenu?.({
+		runAfterClose: (action) => action(),
+	});
+	const onAddChat =
+		isValidElement<ComponentProps<typeof AddTabMenu>>(paradevMenu) &&
+		paradevMenu.type === AddTabMenu
+			? paradevMenu.props.onAddChat
+			: undefined;
 	return (
 		<>
 			<TsentaWorkspaceHeader
@@ -81,13 +90,8 @@ function ConductorWorkspace<TData>({
 						paneActions={paneActions}
 					/>
 				)}
-				renderAddTabMenu={(actions) => (
-					<TsentaAddTabMenu
-						paradevMenu={renderAddTabMenu?.(actions)}
-						runAfterClose={actions.runAfterClose}
-						launchers={tsenta?.launchers}
-					/>
-				)}
+				renderAddTabMenu={onAddChat ? undefined : renderAddTabMenu}
+				onAddTab={onAddChat ?? props.onAddTab}
 			/>
 		</>
 	);
