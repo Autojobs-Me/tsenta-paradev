@@ -22,7 +22,7 @@ describe("seedRightTabs", () => {
 		const store = createWorkspaceStore<PaneViewerData>();
 		seedRightTabs(store, { sandbox: false, createPane });
 		expect(kinds(store)).toEqual([
-			"diff",
+			"changes-list",
 			"files",
 			"browser",
 			"terminal",
@@ -40,7 +40,7 @@ describe("seedRightTabs", () => {
 		seedRightTabs(store, { sandbox: true, createPane });
 		expect(kinds(store)).toEqual([
 			"browser",
-			"diff",
+			"changes-list",
 			"files",
 			"terminal",
 			"pages-list",

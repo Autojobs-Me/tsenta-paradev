@@ -1,8 +1,9 @@
 import type { RendererContext } from "@superset/panes";
 import { useCallback } from "react";
-// tsenta:conductor: the workspace's pull request leads the Changes pane.
-import { TsentaChangesPrBar } from "renderer/tsenta/components/TsentaChangesPrBar";
-import { isConductorSkin } from "renderer/tsenta/skin";
+import {
+	openInCenter,
+	useTsentaCenterStore,
+} from "renderer/tsenta/providers/TsentaCenterStore";
 import { useChangesTab } from "../../../../components/WorkspaceSidebar/hooks/useChangesTab";
 import type {
 	DiffPaneData,
@@ -10,6 +11,7 @@ import type {
 	PaneViewerData,
 } from "../../../../types";
 import { openBesidePane } from "../../../../utils/openBesidePane";
+import { openFileFromTree } from "../../../../utils/openFileFromTree";
 import { useDiffPaneTarget } from "../../../useDiffPaneTarget";
 
 interface ChangesListPaneProps {
@@ -25,28 +27,34 @@ export function ChangesListPane({
 	const paneId = context.pane.id;
 	const selectedDiffTarget = useDiffPaneTarget(store);
 
+	// tsenta:conductor: from the right panel, diffs and files open in the center.
+	const centerStore = useTsentaCenterStore();
 	const handleSelectFile = useCallback(
 		(path: string, openInNewTab?: boolean, changeKey?: string) => {
-			openBesidePane(
-				store,
-				paneId,
-				{
-					kind: "diff",
-					data: {
-						path,
-						changeKey,
-						collapsedFiles: [],
-						focusTick: Date.now(),
-					} as DiffPaneData,
-				},
-				openInNewTab,
-			);
+			const pane = {
+				kind: "diff",
+				data: {
+					path,
+					changeKey,
+					collapsedFiles: [],
+					focusTick: Date.now(),
+				} as DiffPaneData,
+			};
+			if (centerStore) return openInCenter(centerStore, pane);
+			openBesidePane(store, paneId, pane, openInNewTab);
 		},
-		[store, paneId],
+		[centerStore, store, paneId],
 	);
 
 	const handleOpenFile = useCallback(
 		(filePath: string, openInNewTab?: boolean) => {
+			if (centerStore) {
+				return openFileFromTree({
+					store: centerStore,
+					filePath,
+					pin: openInNewTab,
+				});
+			}
 			openBesidePane(
 				store,
 				paneId,
@@ -54,7 +62,7 @@ export function ChangesListPane({
 				openInNewTab,
 			);
 		},
-		[store, paneId],
+		[centerStore, store, paneId],
 	);
 
 	const changesTab = useChangesTab({
@@ -66,9 +74,6 @@ export function ChangesListPane({
 
 	return (
 		<div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
-			{isConductorSkin() && (
-				<TsentaChangesPrBar workspaceId={workspaceId} store={store} />
-			)}
 			{changesTab.content}
 		</div>
 	);

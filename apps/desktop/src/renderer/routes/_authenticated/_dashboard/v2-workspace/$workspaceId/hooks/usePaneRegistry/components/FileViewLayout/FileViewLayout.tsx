@@ -14,6 +14,7 @@ import {
 	useState,
 } from "react";
 import type { ImperativePanelHandle } from "react-resizable-panels";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { useFileTreeVisibilityStore } from "../../../../state/fileTreeVisibilityStore";
 import type { FilePaneData, PaneViewerData } from "../../../../types";
 import { openFileFromTree } from "../../../../utils/openFileFromTree";
@@ -67,7 +68,10 @@ export function FileViewLayout({
 	const [animating, setAnimating] = useState(false);
 	const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
 	const width = useElementWidth(rootElement);
-	const isNarrow = width !== null && width < SIDE_BY_SIDE_MIN_WIDTH;
+	// tsenta:conductor: with no file open the tree fills the pane, as Conductor's All files.
+	const isNarrow =
+		(width !== null && width < SIDE_BY_SIDE_MIN_WIDTH) ||
+		(isConductorSkin() && !filePath);
 	const narrowLayout = !isNarrow
 		? null
 		: !filePath

@@ -4,8 +4,10 @@ import type { PaneViewerData } from "renderer/routes/_authenticated/_dashboard/v
 import type { StoreApi } from "zustand/vanilla";
 
 /** Conductor's right panel, in order. Desktop only exists on cloud boxes. */
-export const RIGHT_TAB_KINDS: RightPaneKind[] = [
-	"diff",
+export type RightTabKind = RightPaneKind | "changes-list";
+
+export const RIGHT_TAB_KINDS: RightTabKind[] = [
+	"changes-list",
 	"files",
 	"browser",
 	"terminal",
@@ -25,9 +27,10 @@ export function seedRightTabs(
 		createPane,
 	}: {
 		sandbox: boolean;
-		createPane: (kind: RightPaneKind) => CreatePaneInput<PaneViewerData>;
+		createPane: (kind: RightTabKind) => CreatePaneInput<PaneViewerData>;
 	},
 ): void {
+	dropSeededDiffTab(store);
 	const before = store.getState();
 	const present = new Set<string>(
 		before.tabs.flatMap((tab) =>
@@ -44,4 +47,35 @@ export function seedRightTabs(
 	const first = store.getState().tabs[0];
 	const active = before.activeTabId ?? first?.id;
 	if (active) store.getState().setActiveTab(active);
+}
+
+/**
+ * An earlier build seeded an empty diff pane as the Changes tab; the list
+ * (changes-list) is that tab now and diffs open in the center, so it goes.
+ */
+function dropSeededDiffTab(
+	store: StoreApi<WorkspaceStore<PaneViewerData>>,
+): void {
+	const state = store.getState();
+	for (const tab of state.tabs) {
+		const panes = Object.values(tab.panes);
+		const only = panes.length === 1 ? panes[0] : undefined;
+		if (only?.kind === "diff" && !(only.data as { path?: string }).path) {
+			state.removeTab(tab.id, { intent: "remove" });
+		}
+	}
+}
+
+/** Selects the first tab holding a pane of `kind`; false when there is none. */
+export function selectRightTab(
+	store: StoreApi<WorkspaceStore<PaneViewerData>>,
+	kind: RightTabKind,
+): boolean {
+	const state = store.getState();
+	const tab = state.tabs.find((candidate) =>
+		Object.values(candidate.panes).some((pane) => pane.kind === kind),
+	);
+	if (!tab) return false;
+	state.setActiveTab(tab.id);
+	return true;
 }

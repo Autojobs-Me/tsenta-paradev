@@ -1,5 +1,6 @@
 import type { RendererContext } from "@superset/panes";
 import { useCallback } from "react";
+import { useTsentaCenterStore } from "renderer/tsenta/providers/TsentaCenterStore";
 import { FilesTab } from "../../../../../../components/WorkspaceSidebar/components/FilesTab";
 import { useWorkspaceGitStatus } from "../../../../../../providers/WorkspaceGitStatusProvider";
 import type { FilePaneData, PaneViewerData } from "../../../../../../types";
@@ -25,15 +26,17 @@ export function FileViewTree({
 			? (context.pane.data as FilePaneData).filePath
 			: undefined;
 
+	// tsenta:conductor: from the right panel, files open in the center.
+	const centerStore = useTsentaCenterStore();
 	const handleSelectFile = useCallback(
 		(filePath: string, openInNewTab?: boolean) =>
 			openFileFromTree({
-				store,
+				store: centerStore ?? store,
 				filePath,
-				sourcePaneId: paneId,
+				sourcePaneId: centerStore ? undefined : paneId,
 				pin: openInNewTab,
 			}),
-		[store, paneId],
+		[centerStore, store, paneId],
 	);
 
 	return (

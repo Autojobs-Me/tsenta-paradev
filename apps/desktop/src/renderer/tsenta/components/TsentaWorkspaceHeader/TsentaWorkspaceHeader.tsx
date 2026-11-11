@@ -3,10 +3,8 @@ import type { ReactNode } from "react";
 import { useWindowChromeVisible } from "renderer/routes/_authenticated/_dashboard/components/WindowChrome";
 import { V2OpenInMenuButton } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/V2OpenInMenuButton";
 import { useWorkspaceOpenInTarget } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useWorkspaceOpenInTarget";
-import { useWorkspaceRightSidebarOpen } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useWorkspaceRightPane/hooks/useWorkspaceRightSidebarOpen";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { BaseBranchMenu } from "./components/BaseBranchMenu";
-import { HeaderPrControls } from "./components/HeaderPrControls";
 import { WorkspaceTaskChip } from "./components/WorkspaceTaskChip";
 import { WorkspaceTitle } from "./components/WorkspaceTitle";
 
@@ -22,9 +20,9 @@ interface TsentaWorkspaceHeaderProps {
  * shell-sidebar spec §1.3): a 40px row on the chrome above the content
  * sheet, holding the window chrome while the sidebar is hidden, the
  * workspace's status and name with its id, and on the right the branch,
- * the open-in button, the pull request pill and git action (while the right
- * panel is closed), then the controls Paradev kept at the end of its tab
- * bar. The whole row drags the window.
+ * the open-in button, then the controls Paradev kept at the end of its tab
+ * bar. The pull request lives in the right panel's top bar
+ * (ChangesControl). The whole row drags the window.
  */
 export function TsentaWorkspaceHeader({
 	leading,
@@ -33,7 +31,6 @@ export function TsentaWorkspaceHeader({
 	const { workspace } = useWorkspace();
 	const isChromeVisible = useWindowChromeVisible();
 	const openInTarget = useWorkspaceOpenInTarget(workspace.id);
-	const { isOpen: isRightPaneOpen } = useWorkspaceRightSidebarOpen();
 	const name = workspace.name || workspace.branch;
 
 	return (
@@ -74,8 +71,6 @@ export function TsentaWorkspaceHeader({
 						hotkeys={false}
 					/>
 				)}
-				{/* With the right panel open, its own header holds these. */}
-				{!isRightPaneOpen && <HeaderPrControls />}
 				<div data-tsenta="workspace-header-trailing" className="contents">
 					{trailing}
 				</div>

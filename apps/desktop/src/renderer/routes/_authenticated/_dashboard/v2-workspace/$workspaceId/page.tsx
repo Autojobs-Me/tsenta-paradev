@@ -29,7 +29,12 @@ import { getV2NotificationSourcesForTab } from "renderer/stores/v2-notifications
 // tsenta:conductor (plan steps 9 and 10): packages/panes' Workspace with the
 // skin off; under it, Conductor's header row above the tab strip.
 import { TsentaWorkspace as Workspace } from "renderer/tsenta/components/TsentaWorkspace";
-import { useTsentaRightTabs } from "renderer/tsenta/hooks/useTsentaRightTabs";
+import {
+	selectRightTab,
+	useTsentaRightRegistry,
+	useTsentaRightTabs,
+} from "renderer/tsenta/hooks/useTsentaRightTabs";
+import { TsentaCenterStoreProvider } from "renderer/tsenta/providers/TsentaCenterStore";
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { useStore } from "zustand";
 import { usePendingCloudChat } from "../hooks/usePendingCloudChat";
@@ -468,6 +473,8 @@ function V2WorkspaceContent() {
 	);
 	const openRightChangesTab = useCallback(() => {
 		setRightSidebarOpen(true);
+		// tsenta:conductor: the fixed Changes tab, not a diff tab.
+		if (isConductorSkin() && selectRightTab(rightStore, "changes-list")) return;
 		openChangesPaneInStore(rightStore, "tab");
 	}, [rightStore, setRightSidebarOpen]);
 	const toggleRightChangesTab = useCallback(() => {
@@ -493,6 +500,7 @@ function V2WorkspaceContent() {
 	const isSandbox =
 		hostTarget.status === "ready" && hostTarget.kind === "sandbox";
 	// tsenta:conductor: Conductor's fixed right panel tabs, mounted on first open.
+	const rightPaneRegistry = useTsentaRightRegistry(paneRegistry);
 	useTsentaRightTabs({
 		store: rightStore,
 		isOpen: sidebarOpen,
@@ -644,12 +652,25 @@ function V2WorkspaceContent() {
 		<RightPaneArea
 			key={workspaceId}
 			store={rightStore}
-			registry={paneRegistry}
+			registry={rightPaneRegistry}
 			paneActions={defaultPaneActions}
 			contextMenuActions={defaultContextMenuActions}
 			onBeforeCloseTab={onBeforeCloseRightTab}
 			onInteractionStateChange={onWorkspaceInteractionStateChange}
-			toolbar={renderWorkspaceToolbar(true)}
+			toolbar={
+				<>
+					{/* tsenta:conductor: the PR and ship control tops the right panel. */}
+					{isConductorSkin() && isLayoutReady && (
+						<ChangesControl
+							workspaceId={workspaceId}
+							isChangesOpen={isChangesOpen}
+							onToggleChanges={toggleChanges}
+							onOpenPullRequest={openPullRequestPane}
+						/>
+					)}
+					{renderWorkspaceToolbar(true)}
+				</>
+			}
 			isFullScreen={rightPaneMode === "expanded"}
 			onToggleFullScreen={toggleRightPaneAreaFullScreen}
 			isFocused={isRightAreaFocused}
@@ -686,7 +707,12 @@ function V2WorkspaceContent() {
 						side={
 							isRightPaneAreaEnabled ? (
 								<>
-									{rightPaneArea}
+									{
+										// tsenta:conductor: the right panel opens files and diffs in the center.
+										<TsentaCenterStoreProvider value={store}>
+											{rightPaneArea}
+										</TsentaCenterStoreProvider>
+									}
 									{rightPaneMode === "expanded" && <HostConnectionPill />}
 								</>
 							) : (

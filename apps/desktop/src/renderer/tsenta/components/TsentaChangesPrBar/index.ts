@@ -1,1 +1,0 @@
-export { TsentaChangesPrBar } from "./TsentaChangesPrBar";

@@ -13,7 +13,7 @@ const TREE_DEFAULT_KEY = "tsenta-changes-tree-default";
 
 /**
  * Under the skin the right sidebar opens on fixed tabs, as Conductor's panel
- * does: Changes, Files, Browser, Terminal, Pages, and Desktop on cloud
+ * does: Changes (the list), Files, Browser, Terminal, Pages, and Desktop on cloud
  * boxes. A tab the user closed comes back the next time the sidebar opens.
  * The Changes list starts as a tree, once per machine.
  */
@@ -40,7 +40,12 @@ export function useTsentaRightTabs({
 		seedRightTabs(store, {
 			sandbox,
 			createPane: (kind) =>
-				createRightPane(kind, { mintTerminalId: launcher.mint, browserUrl }),
+				kind === "changes-list"
+					? { kind, data: { kind } as PaneViewerData }
+					: createRightPane(kind, {
+							mintTerminalId: launcher.mint,
+							browserUrl,
+						}),
 		});
 	}, [store, isOpen, isReady, sandbox]);
 

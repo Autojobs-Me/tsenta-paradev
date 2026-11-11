@@ -22,10 +22,11 @@ export const FOLDED_PANE_KINDS: ReadonlySet<string> = new Set([
 export function foldsPaneHeader<TData>(
 	definition: PaneDefinition<TData> | undefined,
 	context: RendererContext<TData>,
+	kinds: ReadonlySet<string> = FOLDED_PANE_KINDS,
 ): boolean {
 	return (
 		definition !== undefined &&
-		FOLDED_PANE_KINDS.has(context.pane.kind) &&
+		kinds.has(context.pane.kind) &&
 		context.pane.parentDirection === null &&
 		!definition.renderToolbar
 	);
@@ -39,10 +40,11 @@ export function foldsPaneHeader<TData>(
  */
 export function foldPaneHeaders<TData>(
 	registry: PaneRegistry<TData>,
+	kinds: ReadonlySet<string> = FOLDED_PANE_KINDS,
 ): PaneRegistry<TData> {
 	const folded: PaneRegistry<TData> = {};
 	for (const [kind, definition] of Object.entries(registry)) {
-		if (!FOLDED_PANE_KINDS.has(kind) || definition.renderToolbar) {
+		if (!kinds.has(kind) || definition.renderToolbar) {
 			folded[kind] = definition;
 			continue;
 		}
@@ -50,7 +52,7 @@ export function foldPaneHeaders<TData>(
 		folded[kind] = {
 			...definition,
 			hideHeader: (context) =>
-				foldsPaneHeader(definition, context) ||
+				foldsPaneHeader(definition, context, kinds) ||
 				(hideHeader?.(context) ?? false),
 		};
 	}

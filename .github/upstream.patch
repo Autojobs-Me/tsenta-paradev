@@ -765,28 +765,30 @@ index f7b63c5f8c..0438192fa7 100644
  			onRetry={isCheckFailing ? retryChecks : onRetry}
  		/>
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceEmptyState/WorkspaceEmptyState.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceEmptyState/WorkspaceEmptyState.tsx
-index 735d5d5c08..84cfab2376 100644
+index 735d5d5c08..11569b4a64 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceEmptyState/WorkspaceEmptyState.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/WorkspaceEmptyState/WorkspaceEmptyState.tsx
-@@ -9,6 +9,9 @@ import { useHotkeyDisplay } from "renderer/hotkeys";
+@@ -9,6 +9,8 @@ import { useHotkeyDisplay } from "renderer/hotkeys";
  import supersetEmptyStateWordmark from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/assets/superset-empty-state-wordmark.svg";
  import { EmptyTabActionButton } from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/components/EmptyTabActionButton";
  import { useTheme } from "renderer/stores/theme";
-+// tsenta:conductor: Tsenta's mark under the skin.
-+import tsentaMark from "renderer/tsenta/assets/tsenta-mark.svg";
++// tsenta:conductor: no logo in the empty state; it flashed as a new chat opened.
 +import { isConductorSkin } from "renderer/tsenta/skin";
  
  interface WorkspaceEmptyStateProps {
  	onOpenBrowser: () => void;
-@@ -118,7 +121,7 @@ export function WorkspaceEmptyState({
- 								: "brightness-0 opacity-75"
- 						}`}
- 						draggable={false}
--						src={supersetEmptyStateWordmark}
-+						src={isConductorSkin() ? tsentaMark : supersetEmptyStateWordmark}
- 					/>
- 				</div>
- 				<div className="mx-auto grid w-full max-w-md gap-0.5">
+@@ -109,7 +111,10 @@ export function WorkspaceEmptyState({
+ 	return (
+ 		<div className="flex h-full flex-1 items-center justify-center px-6 py-10">
+ 			<div className="w-full max-w-xl">
+-				<div className="mb-7 flex items-center justify-center py-3">
++				<div
++					className="mb-7 flex items-center justify-center py-3"
++					hidden={isConductorSkin()}
++				>
+ 					<img
+ 						alt="Paradev"
+ 						className={`h-8 w-auto select-none ${
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
 index 45c1343bea..8f02a84726 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
