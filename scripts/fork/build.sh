@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Builds Paradev Tsenta from this checkout, against Paradev's hosted backend,
-# with telemetry off. Installers land in apps/desktop/release.
+# Builds Paradev Tsenta from this checkout, against Paradev's hosted backend.
+# Analytics follow Paradev's app when NEXT_PUBLIC_POSTHOG_KEY/HOST are set (CI
+# passes them from secrets): its per-account feature flags (cloud workspaces,
+# channels, plugins, ...) need them. Sentry stays off. Installers land in apps/desktop/release.
 #   scripts/fork/build.sh [mac|linux|win] [arm64|x64]   defaults: this machine
 #   FORK_DIR_ONLY=1 scripts/fork/build.sh               just the unpacked app
 # Signing: CSC_NAME="Apple Development: ..." (or a Developer ID) signs with that
@@ -46,8 +48,8 @@ export NEXT_PUBLIC_DOCS_URL=https://docs.paradev.com
 export NEXT_PUBLIC_MARKETING_URL=https://paradev.com
 export RELAY_URL=https://relay.superset.sh
 export REALTIME_URL=https://realtime.superset.sh
-# Telemetry stays off: no PostHog key, no Sentry DSN, no sourcemap upload.
-unset NEXT_PUBLIC_POSTHOG_KEY NEXT_PUBLIC_POSTHOG_HOST SENTRY_DSN_DESKTOP SENTRY_DSN_HOST_SERVICE SENTRY_AUTH_TOKEN
+# Sentry stays off: no DSN, no sourcemap upload. PostHog comes from the environment (see the header).
+unset SENTRY_DSN_DESKTOP SENTRY_DSN_HOST_SERVICE SENTRY_AUTH_TOKEN
 
 cd apps/desktop
 bun run clean:dev

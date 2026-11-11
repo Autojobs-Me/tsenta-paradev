@@ -39,7 +39,10 @@ export NEXT_PUBLIC_DOCS_URL=https://docs.paradev.com
 export NEXT_PUBLIC_MARKETING_URL=https://paradev.com
 export RELAY_URL=https://relay.superset.sh
 export REALTIME_URL=https://realtime.superset.sh
-unset NEXT_PUBLIC_POSTHOG_KEY NEXT_PUBLIC_POSTHOG_HOST SENTRY_DSN_DESKTOP SENTRY_DSN_HOST_SERVICE SENTRY_AUTH_TOKEN
+unset SENTRY_DSN_DESKTOP SENTRY_DSN_HOST_SERVICE SENTRY_AUTH_TOKEN
+# Paradev's analytics key, so per-account feature flags match Paradev's app; kept in a private local file.
+posthog_env="${TSENTA_DEV_POSTHOG_ENV:-$HOME/.tsenta-dev/posthog.env}"
+if [ -r "$posthog_env" ]; then . "$posthog_env"; else echo "[tsenta-dev] no $posthog_env: feature flags stay at their defaults" >&2; fi
 # The app reaches Paradev's API through the local dev proxy (see the header).
 export NEXT_PUBLIC_API_URL=http://localhost:5938 NEXT_PUBLIC_STREAMS_URL=http://localhost:5939
 bun scripts/fork/dev-proxy.ts &
