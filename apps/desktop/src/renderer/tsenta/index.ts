@@ -9,6 +9,9 @@
 // First, before anything loads the theme store: adds the Conductor themes to
 // Paradev's built-in list.
 import "./themes/register";
+import { env } from "renderer/env.renderer";
+import { posthog } from "renderer/lib/posthog";
+import { applyForkFeatureFlags } from "./feature-flags";
 import { applySkin } from "./skin";
 import { adoptConductorTerminalFontSize } from "./terminal/font-size";
 import {
@@ -34,6 +37,11 @@ function runStep(name: string, step: () => unknown): void {
 	}
 }
 
+// Before React renders: PostHogProvider hands the hooks this bootstrap. Not
+// tied to the skin, as it restores Paradev's own behaviour (cloud workspaces).
+runStep("applyForkFeatureFlags", () =>
+	applyForkFeatureFlags(posthog, Boolean(env.NEXT_PUBLIC_POSTHOG_KEY)),
+);
 runStep("applySkin", applySkin);
 runStep("syncThemeIdAttribute", syncThemeIdAttribute);
 runStep("adoptConductorThemes", adoptConductorThemes);
