@@ -1,8 +1,8 @@
 # Tsenta Paradev
 
 Tsenta's fork of [Paradev](https://github.com/ParadevAI/Paradev), the desktop
-app for running coding agents in workspaces. It is Paradev's canary plus a
-short stack of Tsenta commits, rebased onto upstream twice a day. It installs
+app for running coding agents in workspaces. It is Paradev's `main` plus a
+short stack of Tsenta commits on top, rebased onto upstream as it moves. It installs
 beside Paradev as **Superset Tsenta** (`com.tsenta.paradev`) and shares
 Paradev's app home (`~/.paradev`), so projects, workspaces and sign-in carry
 over.
@@ -13,7 +13,7 @@ Not affiliated with Superset Inc. or the Paradev project. MIT, like upstream.
 
 | Where | What |
 | --- | --- |
-| [Releases → `boxes-canary`](https://github.com/Autojobs-Me/tsenta-paradev/releases/tag/boxes-canary) | The latest synced build: macOS arm64 (`.dmg`, `.zip`) and Windows x64 (`.exe`). |
+| [Releases → `boxes-canary`](https://github.com/Autojobs-Me/tsenta-paradev/releases/tag/boxes-canary) | The latest published build: macOS arm64 (`.dmg`, `.zip`) and Windows x64 (`.exe`). |
 | Actions → **Tsenta preview** → artifacts | A build of each push to a `tsenta/*` branch: `tsenta-preview-mac-arm64`, `tsenta-preview-win-x64`. |
 
 - **macOS**: signed and notarized when the signing secrets are set; otherwise right-click → Open the first time.
@@ -32,6 +32,7 @@ stock Paradev back.
 | `+` in the tab strip opens a chat with the default model, no menu | `tsenta/components/TsentaWorkspace` |
 | The pull request shows at the top of the Changes pane; no PR button in the header | `tsenta/components/TsentaChangesPrBar` |
 | ⌘N opens the new-workspace popup over the current view | `tsenta/components/TsentaNewWorkspaceDialog` |
+| The right sidebar opens on fixed tabs (Changes, Files, Browser, Terminal, Pages, Desktop on cloud boxes), each loaded on first open; Changes shows a tree | `tsenta/hooks/useTsentaRightTabs` |
 | Model pickers show "Ultracode" on Claude models (on through `"ultracode": true` in `~/.claude/settings.json`) | `tsenta/composer/ultracode` |
 | Paradev Boxes: workspaces on Daytona, E2B or Blaxel sandboxes | [BOXES.md](BOXES.md) |
 
@@ -41,18 +42,20 @@ Every change the fork makes to Paradev's own files is in one diff:
 ## How it stays on upstream
 
 - The `fork-base` branch is the upstream commit the fork sits on. Every commit after it on `main` is Tsenta's.
-- [`fork-sync.yml`](workflows/fork-sync.yml) runs at 02:00 and 14:00 UTC. It rebases those commits onto Paradev's `desktop-canary` tag, pushes `main` and `fork-base`, keeps upstream's workflows disabled, then builds and publishes `boxes-canary`. On a conflict it stops and changes nothing.
-- It needs the secret `FORK_SYNC_TOKEN` (fine-grained, this repository: Contents, Workflows, Actions read and write). Without it, a push that touches upstream's workflow files fails.
-
-To sync by hand:
+- Syncing is done by hand (an agent will take it over): rebase those commits onto upstream `main`, resolve conflicts keeping both sides' intent, verify, then push `main` and move `fork-base`.
+- [`fork-sync.yml`](workflows/fork-sync.yml) has no schedule. Run it by hand (Actions → Fork sync → `force_build`) to build macOS and Windows and publish `boxes-canary`. It only rebases when Paradev's `desktop-canary` tag is newer than `fork-base`, and never moves the fork backwards.
 
 ```sh
 git remote add upstream https://github.com/ParadevAI/Paradev.git
-git fetch upstream tag desktop-canary && git fetch origin fork-base
-git rebase --onto desktop-canary origin/fork-base main   # fix conflicts, keep both sides' intent
+git fetch upstream main && git fetch origin fork-base
+git rebase --onto upstream/main origin/fork-base main   # fix conflicts, keep both sides' intent
+# verify (see below), then:
 git push --force-with-lease origin main
-git push --force origin desktop-canary^{commit}:refs/heads/fork-base
+git push origin upstream/main:refs/heads/fork-base
+scripts/fork/upstream-patch.sh && git commit -am "chore(fork): upstream.patch after sync" && git push
 ```
+
+Rebasing `main` rewrites it: rebase any `tsenta/*` branch onto the new `main` afterwards.
 
 ## Changing the fork (rules for people and agents)
 
@@ -87,7 +90,7 @@ launches the packaged app and checks that it stays up.
 
 | Workflow | When | Does |
 | --- | --- | --- |
-| `fork-sync.yml` | 02:00 and 14:00 UTC, or by hand (`force_build` builds without an upstream change) | Rebase onto canary, touchpoint check, build mac arm64 and win x64, publish `boxes-canary` |
+| `fork-sync.yml` | By hand (`force_build` builds without an upstream change) | Rebase onto a newer canary if there is one, touchpoint check, build mac arm64 and win x64, publish `boxes-canary` |
 | `tsenta-preview.yml` | Push to `tsenta/*` (not `tsenta/wip-*`), or by hand | Build mac arm64 and win x64 previews as artifacts |
 
 All other workflows are upstream's and stay disabled.
