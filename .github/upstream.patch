@@ -790,28 +790,86 @@ index 735d5d5c08..11569b4a64 100644
  						alt="Paradev"
  						className={`h-8 w-auto select-none ${
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
-index 45c1343bea..8f02a84726 100644
+index 45c1343bea..d626d347c4 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx
-@@ -1,5 +1,8 @@
+@@ -1,5 +1,9 @@
  import type { RendererContext } from "@superset/panes";
  import { useCallback } from "react";
-+// tsenta:conductor: the workspace's pull request leads the Changes pane.
-+import { TsentaChangesPrBar } from "renderer/tsenta/components/TsentaChangesPrBar";
-+import { isConductorSkin } from "renderer/tsenta/skin";
++import {
++	openInCenter,
++	useTsentaCenterStore,
++} from "renderer/tsenta/providers/TsentaCenterStore";
  import { useChangesTab } from "../../../../components/WorkspaceSidebar/hooks/useChangesTab";
  import type {
  	DiffPaneData,
-@@ -63,6 +66,9 @@ export function ChangesListPane({
+@@ -7,6 +11,7 @@ import type {
+ 	PaneViewerData,
+ } from "../../../../types";
+ import { openBesidePane } from "../../../../utils/openBesidePane";
++import { openFileFromTree } from "../../../../utils/openFileFromTree";
+ import { useDiffPaneTarget } from "../../../useDiffPaneTarget";
  
- 	return (
- 		<div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
-+			{isConductorSkin() && (
-+				<TsentaChangesPrBar workspaceId={workspaceId} store={store} />
-+			)}
- 			{changesTab.content}
- 		</div>
+ interface ChangesListPaneProps {
+@@ -22,28 +27,34 @@ export function ChangesListPane({
+ 	const paneId = context.pane.id;
+ 	const selectedDiffTarget = useDiffPaneTarget(store);
+ 
++	// tsenta:conductor: from the right panel, diffs and files open in the center.
++	const centerStore = useTsentaCenterStore();
+ 	const handleSelectFile = useCallback(
+ 		(path: string, openInNewTab?: boolean, changeKey?: string) => {
+-			openBesidePane(
+-				store,
+-				paneId,
+-				{
+-					kind: "diff",
+-					data: {
+-						path,
+-						changeKey,
+-						collapsedFiles: [],
+-						focusTick: Date.now(),
+-					} as DiffPaneData,
+-				},
+-				openInNewTab,
+-			);
++			const pane = {
++				kind: "diff",
++				data: {
++					path,
++					changeKey,
++					collapsedFiles: [],
++					focusTick: Date.now(),
++				} as DiffPaneData,
++			};
++			if (centerStore) return openInCenter(centerStore, pane);
++			openBesidePane(store, paneId, pane, openInNewTab);
+ 		},
+-		[store, paneId],
++		[centerStore, store, paneId],
  	);
+ 
+ 	const handleOpenFile = useCallback(
+ 		(filePath: string, openInNewTab?: boolean) => {
++			if (centerStore) {
++				return openFileFromTree({
++					store: centerStore,
++					filePath,
++					pin: openInNewTab,
++				});
++			}
+ 			openBesidePane(
+ 				store,
+ 				paneId,
+@@ -51,7 +62,7 @@ export function ChangesListPane({
+ 				openInNewTab,
+ 			);
+ 		},
+-		[store, paneId],
++		[centerStore, store, paneId],
+ 	);
+ 
+ 	const changesTab = useChangesTab({
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx
 index 7d680a15da..302f4cefaa 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChatSession/components/Composer/Composer.tsx
@@ -1100,8 +1158,64 @@ index 6853e0edcd..d1b0d4e50a 100644
  
  export const CHAT_MARKDOWN_COMPONENTS = {
  	code: ChatCodeBlock,
+diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx
+index 7c3e14c3e0..152a10a41b 100644
+--- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx
++++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/FileViewLayout.tsx
+@@ -14,6 +14,7 @@ import {
+ 	useState,
+ } from "react";
+ import type { ImperativePanelHandle } from "react-resizable-panels";
++import { isConductorSkin } from "renderer/tsenta/skin";
+ import { useFileTreeVisibilityStore } from "../../../../state/fileTreeVisibilityStore";
+ import type { FilePaneData, PaneViewerData } from "../../../../types";
+ import { openFileFromTree } from "../../../../utils/openFileFromTree";
+@@ -67,7 +68,10 @@ export function FileViewLayout({
+ 	const [animating, setAnimating] = useState(false);
+ 	const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
+ 	const width = useElementWidth(rootElement);
+-	const isNarrow = width !== null && width < SIDE_BY_SIDE_MIN_WIDTH;
++	// tsenta:conductor: with no file open the tree fills the pane, as Conductor's All files.
++	const isNarrow =
++		(width !== null && width < SIDE_BY_SIDE_MIN_WIDTH) ||
++		(isConductorSkin() && !filePath);
+ 	const narrowLayout = !isNarrow
+ 		? null
+ 		: !filePath
+diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx
+index d16d59cc3a..d8a310e505 100644
+--- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx
++++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/FileViewLayout/components/FileViewTree/FileViewTree.tsx
+@@ -1,5 +1,6 @@
+ import type { RendererContext } from "@superset/panes";
+ import { useCallback } from "react";
++import { useTsentaCenterStore } from "renderer/tsenta/providers/TsentaCenterStore";
+ import { FilesTab } from "../../../../../../components/WorkspaceSidebar/components/FilesTab";
+ import { useWorkspaceGitStatus } from "../../../../../../providers/WorkspaceGitStatusProvider";
+ import type { FilePaneData, PaneViewerData } from "../../../../../../types";
+@@ -25,15 +26,17 @@ export function FileViewTree({
+ 			? (context.pane.data as FilePaneData).filePath
+ 			: undefined;
+ 
++	// tsenta:conductor: from the right panel, files open in the center.
++	const centerStore = useTsentaCenterStore();
+ 	const handleSelectFile = useCallback(
+ 		(filePath: string, openInNewTab?: boolean) =>
+ 			openFileFromTree({
+-				store,
++				store: centerStore ?? store,
+ 				filePath,
+-				sourcePaneId: paneId,
++				sourcePaneId: centerStore ? undefined : paneId,
+ 				pin: openInNewTab,
+ 			}),
+-		[store, paneId],
++		[centerStore, store, paneId],
+ 	);
+ 
+ 	return (
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx
-index 351e6ff565..ad32affc7d 100644
+index 351e6ff565..627bf3cd79 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/page.tsx
 @@ -1,4 +1,3 @@
@@ -1109,19 +1223,24 @@ index 351e6ff565..ad32affc7d 100644
  import { FEATURE_FLAGS } from "@superset/shared/constants";
  import { cn } from "@superset/ui/utils";
  import { workspaceTrpc } from "@superset/workspace-client";
-@@ -27,6 +26,11 @@ import {
+@@ -27,6 +26,16 @@ import {
  import { CommandPalette } from "renderer/screens/main/components/CommandPalette";
  import { useRightPaneAreaEnabled } from "renderer/stores/right-pane-area";
  import { getV2NotificationSourcesForTab } from "renderer/stores/v2-notifications";
 +// tsenta:conductor (plan steps 9 and 10): packages/panes' Workspace with the
 +// skin off; under it, Conductor's header row above the tab strip.
 +import { TsentaWorkspace as Workspace } from "renderer/tsenta/components/TsentaWorkspace";
-+import { useTsentaRightTabs } from "renderer/tsenta/hooks/useTsentaRightTabs";
++import {
++	selectRightTab,
++	useTsentaRightRegistry,
++	useTsentaRightTabs,
++} from "renderer/tsenta/hooks/useTsentaRightTabs";
++import { TsentaCenterStoreProvider } from "renderer/tsenta/providers/TsentaCenterStore";
 +import { isConductorSkin } from "renderer/tsenta/skin";
  import { useStore } from "zustand";
  import { usePendingCloudChat } from "../hooks/usePendingCloudChat";
  import { useWorkspace } from "../providers/WorkspaceProvider";
-@@ -286,7 +290,8 @@ function V2WorkspaceContent() {
+@@ -286,7 +295,8 @@ function V2WorkspaceContent() {
  	useOpenNewTabWhenRightPaneOpensEmpty({
  		store: rightStore,
  		isOpen: sidebarOpen,
@@ -1131,11 +1250,21 @@ index 351e6ff565..ad32affc7d 100644
  	});
  	const launcher = useV2TerminalLauncher();
  	const {
-@@ -487,6 +492,13 @@ function V2WorkspaceContent() {
+@@ -463,6 +473,8 @@ function V2WorkspaceContent() {
+ 	);
+ 	const openRightChangesTab = useCallback(() => {
+ 		setRightSidebarOpen(true);
++		// tsenta:conductor: the fixed Changes tab, not a diff tab.
++		if (isConductorSkin() && selectRightTab(rightStore, "changes-list")) return;
+ 		openChangesPaneInStore(rightStore, "tab");
+ 	}, [rightStore, setRightSidebarOpen]);
+ 	const toggleRightChangesTab = useCallback(() => {
+@@ -487,6 +499,14 @@ function V2WorkspaceContent() {
  	const hostTarget = useWorkspaceHostTarget(workspaceId);
  	const isSandbox =
  		hostTarget.status === "ready" && hostTarget.kind === "sandbox";
 +	// tsenta:conductor: Conductor's fixed right panel tabs, mounted on first open.
++	const rightPaneRegistry = useTsentaRightRegistry(paneRegistry);
 +	useTsentaRightTabs({
 +		store: rightStore,
 +		isOpen: sidebarOpen,
@@ -1145,7 +1274,49 @@ index 351e6ff565..ad32affc7d 100644
  	const addDesktopTab = useCallback(() => {
  		viewerTarget.reveal();
  		viewerTarget.store.getState().addTab({
-@@ -763,7 +775,8 @@ function V2WorkspaceContent() {
+@@ -632,12 +652,25 @@ function V2WorkspaceContent() {
+ 		<RightPaneArea
+ 			key={workspaceId}
+ 			store={rightStore}
+-			registry={paneRegistry}
++			registry={rightPaneRegistry}
+ 			paneActions={defaultPaneActions}
+ 			contextMenuActions={defaultContextMenuActions}
+ 			onBeforeCloseTab={onBeforeCloseRightTab}
+ 			onInteractionStateChange={onWorkspaceInteractionStateChange}
+-			toolbar={renderWorkspaceToolbar(true)}
++			toolbar={
++				<>
++					{/* tsenta:conductor: the PR and ship control tops the right panel. */}
++					{isConductorSkin() && isLayoutReady && (
++						<ChangesControl
++							workspaceId={workspaceId}
++							isChangesOpen={isChangesOpen}
++							onToggleChanges={toggleChanges}
++							onOpenPullRequest={openPullRequestPane}
++						/>
++					)}
++					{renderWorkspaceToolbar(true)}
++				</>
++			}
+ 			isFullScreen={rightPaneMode === "expanded"}
+ 			onToggleFullScreen={toggleRightPaneAreaFullScreen}
+ 			isFocused={isRightAreaFocused}
+@@ -674,7 +707,12 @@ function V2WorkspaceContent() {
+ 						side={
+ 							isRightPaneAreaEnabled ? (
+ 								<>
+-									{rightPaneArea}
++									{
++										// tsenta:conductor: the right panel opens files and diffs in the center.
++										<TsentaCenterStoreProvider value={store}>
++											{rightPaneArea}
++										</TsentaCenterStoreProvider>
++									}
+ 									{rightPaneMode === "expanded" && <HostConnectionPill />}
+ 								</>
+ 							) : (
+@@ -763,7 +801,8 @@ function V2WorkspaceContent() {
  											)}
  										>
  											<CloudWorkspaceTabBarControls workspaceId={workspaceId} />
@@ -1155,7 +1326,7 @@ index 351e6ff565..ad32affc7d 100644
  											{isRightPaneAreaEnabled ? (
  												!sidebarOpen && renderWorkspaceToolbar(false)
  											) : (
-@@ -805,6 +818,9 @@ function V2WorkspaceContent() {
+@@ -805,6 +844,9 @@ function V2WorkspaceContent() {
  									onBeforeCloseTab={onBeforeCloseTab}
  									onInteractionStateChange={onWorkspaceInteractionStateChange}
  									store={store}
