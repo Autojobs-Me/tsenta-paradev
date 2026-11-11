@@ -9,7 +9,7 @@
 # refuse the dev renderer's origin. Sign in once in its window; its URL scheme is superset-tsentadev, so the
 # sign-in callback reaches it and not another app. Paradev's hosted API does not accept the dev origin either,
 # so the app talks to it through scripts/fork/dev-proxy.ts on 127.0.0.1:5938 (API) and :5939 (streams).
-# REMOTE_DEBUGGING_PORT=<port> exposes the window over the Chrome DevTools protocol.
+# RENDERER_REMOTE_DEBUG_PORT=<port> exposes the window over the Chrome DevTools protocol.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 follow=""
