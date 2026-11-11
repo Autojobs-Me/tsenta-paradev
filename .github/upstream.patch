@@ -1,3 +1,17 @@
+diff --git a/apps/desktop/electron.vite.config.ts b/apps/desktop/electron.vite.config.ts
+index 13709a2741..21c23d97e0 100644
+--- a/apps/desktop/electron.vite.config.ts
++++ b/apps/desktop/electron.vite.config.ts
+@@ -120,6 +120,9 @@ export default defineConfig({
+ 		},
+ 
+ 		build: {
++			// tsenta:fork: electron-vite 6 externalizes `dependencies` by default;
++			// main bundles all but the explicit `external` list, as before.
++			externalizeDeps: false,
+ 			sourcemap: true,
+ 			rollupOptions: {
+ 				input: {
 diff --git a/apps/desktop/scripts/check-runtime-dependencies.ts b/apps/desktop/scripts/check-runtime-dependencies.ts
 index 4ad4ac3bd4..697ecff525 100644
 --- a/apps/desktop/scripts/check-runtime-dependencies.ts
