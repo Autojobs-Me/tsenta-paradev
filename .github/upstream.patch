@@ -1,3 +1,18 @@
+diff --git a/apps/desktop/scripts/check-runtime-dependencies.ts b/apps/desktop/scripts/check-runtime-dependencies.ts
+index 4ad4ac3bd4..697ecff525 100644
+--- a/apps/desktop/scripts/check-runtime-dependencies.ts
++++ b/apps/desktop/scripts/check-runtime-dependencies.ts
+@@ -17,8 +17,9 @@ const installedRoots = [
+ const shipped = new Set(["electron", ...Object.keys(dependencies)]);
+ 
+ // A quote before the call means generated code held in a string (ajv), not a real load.
++// tsenta:fork: so does a comment line; Vite 8 keeps bundled packages' doc comments.
+ const RUNTIME_LOAD =
+-	/(?<!["'`])\b(?:require(?:\$\d+)?(?:\.resolve)?|\)\.resolve|import)\s*\(\s*["']([^"'./][^"']*)["']/g;
++	/(?<!["'`])(?<!^[ \t]*(?:\*|\/\/)[^\n]*)\b(?:require(?:\$\d+)?(?:\.resolve)?|\)\.resolve|import)\s*\(\s*["']([^"'./][^"']*)["']/gm;
+ 
+ function packageName(specifier: string): string {
+ 	const parts = specifier.split("/");
 diff --git a/apps/desktop/src/lib/trpc/routers/index.ts b/apps/desktop/src/lib/trpc/routers/index.ts
 index 4ac730fb98..2b0a3b5744 100644
 --- a/apps/desktop/src/lib/trpc/routers/index.ts
