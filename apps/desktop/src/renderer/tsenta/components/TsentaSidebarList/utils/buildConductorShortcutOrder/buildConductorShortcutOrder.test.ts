@@ -134,18 +134,18 @@ describe("buildConductorShortcutOrder", () => {
 			...model.repos.flatMap((repo) => repo.rows.map((row) => row.id)),
 		];
 		expect(counted).toEqual(shown);
-		// ⌘1 to ⌘9: two pins (one cloud), then the agents folder's remote
-		// host row and cloud rows.
+		// ⌘1 to ⌘9: three pins (one cloud, one session), then the agents
+		// section's remote host row and cloud rows.
 		expect(counted.slice(0, 9)).toEqual([
 			"local-pinned",
 			"cloud-paradev-migration",
+			"session-pinned",
 			"remote-support-lead",
 			"cloud-seo",
 			"cloud-creator-overview",
 			"cloud-transcripts",
 			"cloud-interview-emails",
-			"session-agent-notes",
-			"local-support-likhit",
+			"cloud-norepo-agent",
 		]);
 	});
 });

@@ -86,6 +86,7 @@ describe("Conductor sidebar parity with the stock sidebar", () => {
 			"local-fix-prod-check",
 			"local-creating",
 			"local-main",
+			"local-deleting",
 		]);
 		expect(placement[`folder:${DASH}:agents`]).toEqual([
 			"remote-support-lead",
@@ -99,16 +100,21 @@ describe("Conductor sidebar parity with the stock sidebar", () => {
 			"cloud-tse-2241",
 			"local-tse-2206",
 			"cloud-tse-2222",
+			"remote-offline-tse-2240",
 		]);
 		expect(placement.pinned).toEqual([
 			"local-pinned",
 			"cloud-paradev-migration",
+			"session-pinned",
 		]);
 		expect(placement[`repo:${FIXTURE_IDS.scraperProjectId}`]).toEqual([
 			"cloud-scraper-status",
 		]);
 		expect(placement[`repo:${FIXTURE_IDS.noRepoProjectId}`]).toEqual([
 			"cloud-no-repo",
+		]);
+		expect(placement[`folder:${FIXTURE_IDS.noRepoProjectId}:agents`]).toEqual([
+			"cloud-norepo-agent",
 		]);
 		// Cloud rows keep the cloud identity their row behaviours key on.
 		const seo = model.sections
@@ -140,6 +146,7 @@ describe("Conductor sidebar parity with the stock sidebar", () => {
 			"cloud-creator-overview",
 			"cloud-transcripts",
 			"cloud-interview-emails",
+			"cloud-norepo-agent",
 			"session-agent-notes",
 		]);
 		expect(model.sections.map((section) => section.key)).toEqual([
@@ -183,6 +190,7 @@ describe("Conductor sidebar parity with the stock sidebar", () => {
 			"local-hospitals-app",
 			"local-hq-docs",
 			"cloud-mobile-release",
+			"local-hospitals-pinned",
 		]) {
 			expect(shown.has(hiddenRow)).toBe(false);
 		}
@@ -190,6 +198,21 @@ describe("Conductor sidebar parity with the stock sidebar", () => {
 		for (const projectId of hiddenIds) {
 			expect(projectWorkspaceIds(view.displayedGroups, projectId)).toEqual([]);
 		}
+	});
+
+	test("keeps an asleep host's row and a row being deleted, as stock does", () => {
+		const rows = [
+			...model.sections.flatMap((section) =>
+				section.rows.map((row) => row.workspace),
+			),
+			...model.repos.flatMap((repo) => repo.rows),
+		];
+		expect(
+			rows.find((row) => row.id === "remote-offline-tse-2240"),
+		).toMatchObject({ hostType: "remote-device", hostIsOnline: false });
+		expect(
+			rows.find((row) => row.id === "local-deleting")?.pendingTransaction?.type,
+		).toBe("delete");
 	});
 
 	test("leaves out the rows the stock list leaves out", () => {

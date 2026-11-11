@@ -5,13 +5,14 @@
  * for the same data.
  *
  * The data mirrors a real sidebar: one project holding local, remote-host
- * and cloud workspaces, loose and in tag folders; a collapsed project; cloud
- * workspaces whose repo no host has (stand-in projects); four hidden
- * projects (one a stand-in); sessions, loose and in a folder; pinned local
- * and cloud rows; a legacy folder; a row still being created; and rows
- * neither list may show (a hidden row, rows of hidden projects, someone
- * else's cloud workspace, a cloud workspace with no placement yet, a row
- * whose project has no placement).
+ * (one offline) and cloud workspaces, loose and in tag folders; a collapsed
+ * project; cloud workspaces whose repo no host has (stand-in projects, one
+ * with a tagged row); four hidden projects (one a stand-in); sessions,
+ * loose, in a folder and pinned; pinned local and cloud rows; a legacy
+ * folder; rows being created and deleted; and rows neither list may show (a
+ * hidden row, rows and a pin of hidden projects, someone else's cloud
+ * workspace, a cloud workspace with no placement yet, a row whose project
+ * has no placement).
  */
 
 import { cloudRepoProjectId } from "renderer/lib/github/cloudRepoProjectId";
@@ -56,6 +57,7 @@ import {
 
 export const MACHINE_ID = "machine-laptop";
 const REMOTE_HOST_ID = "machine-box";
+const OFFLINE_HOST_ID = "machine-asleep";
 export const USER_ID = "user-me";
 const OTHER_USER_ID = "user-teammate";
 const DATE = new Date("2026-11-01T00:00:00.000Z");
@@ -165,6 +167,25 @@ const hostWorkspaces: HostWorkspace[] = [
 		name: "",
 		branch: "main",
 	},
+	// Being deleted: both lists keep it until the host drops it.
+	{
+		id: "local-deleting",
+		projectId: DASH,
+		hostId: MACHINE_ID,
+		type: "worktree",
+		name: "",
+		branch: "pulkitgupta2/llm-cost-tracking",
+	},
+	// A remote host that is asleep: its row stays, marked offline.
+	{
+		id: "remote-offline-tse-2240",
+		projectId: DASH,
+		hostId: OFFLINE_HOST_ID,
+		type: "worktree",
+		name: "TSE-2240 Workday upload loops",
+		branch: "fix/tse-2240",
+		tags: ["fix-agents"],
+	},
 	// A remote host's row, in the agents folder beside cloud rows.
 	{
 		id: "remote-support-lead",
@@ -245,6 +266,15 @@ const hostWorkspaces: HostWorkspace[] = [
 		name: "",
 		branch: "pulkitgupta2/hr-attendance-salary-app",
 	},
+	// Pinned before its project was hidden: Pinned drops it with the project.
+	{
+		id: "local-hospitals-pinned",
+		projectId: HOSPITALS,
+		hostId: MACHINE_ID,
+		type: "worktree",
+		name: "",
+		branch: "pulkitgupta2/payroll-export",
+	},
 	{
 		id: "local-hq-docs",
 		projectId: HQ,
@@ -280,6 +310,14 @@ const hostWorkspaces: HostWorkspace[] = [
 		name: "Agent notes",
 		branch: "",
 		tags: ["agents"],
+	},
+	{
+		id: "session-pinned",
+		projectId: null,
+		hostId: MACHINE_ID,
+		type: "session",
+		name: "Pinned session",
+		branch: "",
 	},
 ];
 
@@ -358,6 +396,12 @@ const cloudWorkspaces: CloudWorkspace[] = [
 		minutes: 30,
 	}),
 	cloud("cloud-no-repo", "Interview Tools", { repo: null, minutes: 20 }),
+	// A stand-in project's row in a folder: the agents section takes it.
+	cloud("cloud-norepo-agent", "Creator Dashboard Overview", {
+		repo: null,
+		tags: ["agents"],
+		minutes: 19,
+	}),
 	// A hidden host project's repo, and a hidden stand-in's.
 	cloud("cloud-landing-copy", "Landing copy", {
 		repo: "Autojobs-Me/autojobs-landing",
@@ -465,6 +509,7 @@ const workspacePlacements: WorkspacePlacement[] = [
 	{ workspaceId: "local-fix-prod-check", projectId: DASH, tabOrder: 3 },
 	{ workspaceId: "local-creating", projectId: DASH, tabOrder: 4 },
 	{ workspaceId: "local-main", projectId: DASH, tabOrder: 5 },
+	{ workspaceId: "local-deleting", projectId: DASH, tabOrder: 6 },
 	{ workspaceId: "remote-support-lead", projectId: DASH, tabOrder: 20 },
 	{ workspaceId: "cloud-seo", projectId: DASH, tabOrder: 21 },
 	{ workspaceId: "cloud-creator-overview", projectId: DASH, tabOrder: 22 },
@@ -477,6 +522,7 @@ const workspacePlacements: WorkspacePlacement[] = [
 	{ workspaceId: "cloud-tse-2241", projectId: DASH, tabOrder: 41 },
 	{ workspaceId: "local-tse-2206", projectId: DASH, tabOrder: 42 },
 	{ workspaceId: "cloud-tse-2222", projectId: DASH, tabOrder: 43 },
+	{ workspaceId: "remote-offline-tse-2240", projectId: DASH, tabOrder: 44 },
 	{
 		workspaceId: "local-legacy-member",
 		projectId: DASH,
@@ -505,6 +551,12 @@ const workspacePlacements: WorkspacePlacement[] = [
 	{ workspaceId: "local-landing-disclosure", projectId: LANDING, tabOrder: 0 },
 	{ workspaceId: "cloud-landing-copy", projectId: LANDING, tabOrder: 1 },
 	{ workspaceId: "local-hospitals-app", projectId: HOSPITALS, tabOrder: 0 },
+	{
+		workspaceId: "local-hospitals-pinned",
+		projectId: HOSPITALS,
+		tabOrder: 1,
+		pinnedAt: 4,
+	},
 	{ workspaceId: "local-hq-docs", projectId: HQ, tabOrder: 0 },
 	{
 		workspaceId: "cloud-scraper-status",
@@ -512,6 +564,11 @@ const workspacePlacements: WorkspacePlacement[] = [
 		tabOrder: 0,
 	},
 	{ workspaceId: "cloud-no-repo", projectId: noRepoProjectId, tabOrder: 0 },
+	{
+		workspaceId: "cloud-norepo-agent",
+		projectId: noRepoProjectId,
+		tabOrder: 1,
+	},
 	{
 		workspaceId: "cloud-mobile-release",
 		projectId: mobileProjectId,
@@ -526,7 +583,31 @@ const workspacePlacements: WorkspacePlacement[] = [
 	{ workspaceId: "local-gone", projectId: GONE, tabOrder: 0 },
 	{ workspaceId: "session-scratch", projectId: null, tabOrder: 0 },
 	{ workspaceId: "session-agent-notes", projectId: null, tabOrder: 1 },
+	{
+		workspaceId: "session-pinned",
+		projectId: null,
+		tabOrder: 2,
+		pinnedAt: 3,
+	},
 ];
+
+/** workspace-creates: the rows a create or delete is still running for. */
+const pendingTypes: Record<string, "insert" | "delete"> = {
+	"local-creating": "insert",
+	"local-deleting": "delete",
+};
+function pendingTransactionOf(workspaceId: string) {
+	const type = pendingTypes[workspaceId];
+	if (!type) return null;
+	return {
+		id: `tx-${workspaceId}`,
+		workspaceId,
+		type,
+		state: "pending" as const,
+		createdAt: DATE,
+		updatedAt: DATE,
+	};
+}
 
 /** Paradev's sidebar data: what useDashboardSidebarData returns. */
 export interface StockSidebarData {
@@ -711,18 +792,8 @@ export function buildStockSidebarData(): StockSidebarData {
 				tags: tagsById.get(local.workspaceId),
 				isHidden: local.isHidden ?? false,
 				pinnedAt: local.pinnedAt ?? null,
-				hostIsOnline: true,
-				pendingTransaction:
-					local.workspaceId === "local-creating"
-						? {
-								id: "tx-1",
-								workspaceId: "local-creating",
-								type: "insert" as const,
-								state: "pending" as const,
-								createdAt: DATE,
-								updatedAt: DATE,
-							}
-						: null,
+				hostIsOnline: source.hostId !== OFFLINE_HOST_ID,
+				pendingTransaction: pendingTransactionOf(local.workspaceId),
 			},
 		];
 	});

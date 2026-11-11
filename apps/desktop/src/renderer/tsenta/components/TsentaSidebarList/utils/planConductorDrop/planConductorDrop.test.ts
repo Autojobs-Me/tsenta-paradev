@@ -420,6 +420,7 @@ describe("planConductorDrop with cloud rows", () => {
 				{ type: "workspace", id: "local-fix-prod-check" },
 				{ type: "workspace", id: "local-creating" },
 				{ type: "workspace", id: "local-main" },
+				{ type: "workspace", id: "local-deleting" },
 				{ type: "section", id: `${DASH}:agents` },
 				{ type: "section", id: `${DASH}:support` },
 				{ type: "section", id: `${DASH}:fix-agents` },
@@ -454,6 +455,7 @@ describe("planConductorDrop with cloud rows", () => {
 				{ workspaceId: "local-pinned", projectId: DASH },
 				{ workspaceId: "cloud-paradev-migration", projectId: DASH },
 				{ workspaceId: "cloud-seo", projectId: DASH },
+				{ workspaceId: "session-pinned", projectId: null },
 			],
 		});
 		expect(
