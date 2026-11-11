@@ -17,6 +17,13 @@ import {
 	getPresetIcon,
 	useIsDarkTheme,
 } from "renderer/assets/app-icons/preset-icons";
+// tsenta:conductor: ultracode, on through the user's Claude settings, shown as on.
+import { TsentaUltracodeRow } from "renderer/tsenta/components/TsentaUltracodeRow";
+import {
+	showsUltracode,
+	ULTRACODE_LABEL,
+} from "renderer/tsenta/composer/ultracode";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import {
 	MENU_PANEL_CLASS,
 	MENU_ROW_CLASS,
@@ -101,7 +108,14 @@ export function ModelPicker({
 	);
 	const fast = fastOption(settings);
 	const effort = settings.find((option) => option.category === "thought_level");
-	const effortLabel = currentLabel(effort);
+	const ultracode =
+		isConductorSkin() &&
+		showsUltracode({
+			effort,
+			presetId: agentSwitcher?.currentPresetId,
+			modelLabel: currentLabel(model) ?? model?.label,
+		});
+	const effortLabel = ultracode ? ULTRACODE_LABEL : currentLabel(effort);
 	// The slider card owns effort and the fast toggle; the rest stay as rows.
 	const rows = settings.filter(
 		(option) => option !== effort && (effort ? option !== fast : true),
@@ -238,6 +252,7 @@ export function ModelPicker({
 						{effort ? (
 							<EffortSliderCard effort={effort} fast={fast} onSelect={choose} />
 						) : null}
+						{ultracode ? <TsentaUltracodeRow /> : null}
 						{rows.map((option) => (
 							<DropdownMenuSub key={option.id}>
 								<DropdownMenuSubTrigger className={TRAIT_ROW_CLASS}>
