@@ -1,5 +1,8 @@
 import type { RendererContext } from "@superset/panes";
 import { useCallback } from "react";
+// tsenta:conductor: the workspace's pull request leads the Changes pane.
+import { TsentaChangesPrBar } from "renderer/tsenta/components/TsentaChangesPrBar";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { useChangesTab } from "../../../../components/WorkspaceSidebar/hooks/useChangesTab";
 import type {
 	DiffPaneData,
@@ -63,6 +66,9 @@ export function ChangesListPane({
 
 	return (
 		<div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
+			{isConductorSkin() && (
+				<TsentaChangesPrBar workspaceId={workspaceId} store={store} />
+			)}
 			{changesTab.content}
 		</div>
 	);

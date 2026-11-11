@@ -29,6 +29,7 @@ import { getV2NotificationSourcesForTab } from "renderer/stores/v2-notifications
 // tsenta:conductor (plan steps 9 and 10): packages/panes' Workspace with the
 // skin off; under it, Conductor's header row above the tab strip.
 import { TsentaWorkspace as Workspace } from "renderer/tsenta/components/TsentaWorkspace";
+import { isConductorSkin } from "renderer/tsenta/skin";
 import { useStore } from "zustand";
 import { usePendingCloudChat } from "../hooks/usePendingCloudChat";
 import { useWorkspace } from "../providers/WorkspaceProvider";
@@ -765,7 +766,8 @@ function V2WorkspaceContent() {
 											)}
 										>
 											<CloudWorkspaceTabBarControls workspaceId={workspaceId} />
-											{activityMenu}
+											{/* tsenta:conductor: no activity menu; the PR shows in the Changes pane. */}
+											{!isConductorSkin() && activityMenu}
 											{isRightPaneAreaEnabled ? (
 												!sidebarOpen && renderWorkspaceToolbar(false)
 											) : (
