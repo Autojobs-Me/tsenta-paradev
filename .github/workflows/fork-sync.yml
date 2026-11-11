@@ -14,9 +14,9 @@
 # workflow file (GitHub refuses that push without the Workflows permission).
 name: Fork sync
 
+# Manual only for now: the twice-daily rebase moves to an agent that can
+# resolve conflicts. Run it by hand to build and publish boxes-canary.
 on:
-  schedule:
-    - cron: "0 2,14 * * *"
   workflow_dispatch:
     inputs:
       force_build:
@@ -69,6 +69,9 @@ jobs:
           changed=${FORCE:-false}
           if [ "$new" = "$old" ]; then
             echo "Already on canary $new"
+          elif git merge-base --is-ancestor "$new" "$old"; then
+            # The fork sits on a newer upstream commit than the canary (synced by hand).
+            echo "fork-base ${old:0:9} is already past canary ${new:0:9}"
           elif ! git rebase --onto "$new" "$old" main; then
             files=$(git diff --name-only --diff-filter=U | head -20)
             git rebase --abort
@@ -186,7 +189,8 @@ jobs:
           fetch "$base/SHASUMS256.txt" "$RUNNER_TEMP/SHASUMS256.txt"
           want=$(grep " \*\?$name\$" "$RUNNER_TEMP/SHASUMS256.txt" | cut -d' ' -f1)
           [ -n "$want" ] || { echo "::error::$name not in SHASUMS256.txt"; exit 1; }
-          sha() { if command -v sha256sum >/dev/null; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1; }
+          # From stdin: sha256sum puts a backslash before the hash of a path that has one (Windows).
+          sha() { if command -v sha256sum >/dev/null; then sha256sum <"$1"; else shasum -a 256 <"$1"; fi | cut -d' ' -f1; }
           if [ -f "$dir/$name" ] && [ "$(sha "$dir/$name")" = "$want" ]; then
             echo "Cached: $name"; exit 0
           fi
