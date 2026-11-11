@@ -32,10 +32,13 @@ import { DeleteWorkspaceDialog } from "renderer/screens/main/components/Workspac
 import { useAutomationFailuresStore } from "renderer/stores/automation-failures";
 import { useDeleteWorkspaceIntent } from "renderer/stores/delete-workspace-intent";
 import { usePortsDisplayMode } from "renderer/stores/inline-workspace-ports";
+import { useNewWorkspaceModalStore } from "renderer/stores/new-workspace-modal";
 import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
 import { syncPersistedStoreAcrossWindows } from "renderer/stores/syncPersistedStoreAcrossWindows";
 import { useV2NotificationStore } from "renderer/stores/v2-notifications";
 import { useWorkspaceSidebarStore } from "renderer/stores/workspace-sidebar-state";
+// tsenta:conductor: ⌘N's new-workspace popup.
+import { TsentaNewWorkspaceDialog } from "renderer/tsenta/components/TsentaNewWorkspaceDialog";
 // tsenta:conductor (plan step 8): Conductor hides the collapsed sidebar.
 import { isConductorSkin } from "renderer/tsenta/skin";
 import { ContentBoundary } from "../components/ContentBoundary";
@@ -166,9 +169,18 @@ function DashboardLayout() {
 	});
 	useHotkey("TOGGLE_WORKSPACE_SIDEBAR", toggleWorkspaceSidebarCollapsed);
 	useHotkey("NEW_WORKSPACE", () =>
-		currentWorkspace?.projectId
-			? openNewWorkspace(currentWorkspace.projectId)
-			: openNewWorkspaceInViewedProject(),
+		// tsenta:conductor: a popup over the current view, as in Conductor.
+		isConductorSkin()
+			? useNewWorkspaceModalStore
+					.getState()
+					.openModal(
+						currentV2Workspace?.projectId ??
+							currentWorkspace?.projectId ??
+							undefined,
+					)
+			: currentWorkspace?.projectId
+				? openNewWorkspace(currentWorkspace.projectId)
+				: openNewWorkspaceInViewedProject(),
 	);
 	useHotkey(
 		"QUICK_CREATE_WORKSPACE",
@@ -293,6 +305,7 @@ function DashboardLayout() {
 		>
 			<PortForwardsProvider>
 				<RemotePortForwarder />
+				<TsentaNewWorkspaceDialog />
 				{isParadevShell ? (
 					<>
 						<CommandPaletteHost />
