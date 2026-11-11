@@ -115,7 +115,10 @@ export function FileViewLayout({
 	const tabHasTreePane =
 		context.pane.kind !== "files" &&
 		Object.values(context.tab.panes).some((pane) => pane.kind === "files");
-	if (!showTree || tabHasTreePane) return children;
+	// tsenta:conductor: a file tab is the file alone; the right panel holds the tree.
+	if (!showTree || tabHasTreePane || (isConductorSkin() && filePath)) {
+		return children;
+	}
 
 	const panelTransition =
 		animating && !isNarrow && "transition-[flex-grow] duration-200 ease-out";

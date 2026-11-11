@@ -1,9 +1,12 @@
 import type { RendererContext } from "@superset/panes";
+import { workspaceTrpc } from "@superset/workspace-client";
 import { useCallback } from "react";
 import {
+	openFileTab,
 	openInCenter,
 	useTsentaCenterStore,
 } from "renderer/tsenta/providers/TsentaCenterStore";
+import { toAbsoluteWorkspacePath } from "shared/absolute-paths";
 import { useChangesTab } from "../../../../components/WorkspaceSidebar/hooks/useChangesTab";
 import type {
 	DiffPaneData,
@@ -29,6 +32,10 @@ export function ChangesListPane({
 
 	// tsenta:conductor: from the right panel, diffs and files open in the center.
 	const centerStore = useTsentaCenterStore();
+	const worktreePath = workspaceTrpc.workspace.get.useQuery(
+		{ id: workspaceId },
+		{ enabled: centerStore !== null },
+	).data?.worktreePath;
 	const handleSelectFile = useCallback(
 		(path: string, openInNewTab?: boolean, changeKey?: string) => {
 			const pane = {
@@ -40,10 +47,17 @@ export function ChangesListPane({
 					focusTick: Date.now(),
 				} as DiffPaneData,
 			};
+			if (centerStore && worktreePath) {
+				return openFileTab(
+					centerStore,
+					toAbsoluteWorkspacePath(worktreePath, path),
+					"diff",
+				);
+			}
 			if (centerStore) return openInCenter(centerStore, pane);
 			openBesidePane(store, paneId, pane, openInNewTab);
 		},
-		[centerStore, store, paneId],
+		[centerStore, worktreePath, store, paneId],
 	);
 
 	const handleOpenFile = useCallback(

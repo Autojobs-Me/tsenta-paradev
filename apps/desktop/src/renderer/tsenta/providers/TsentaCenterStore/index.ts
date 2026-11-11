@@ -1,4 +1,5 @@
 export {
+	openFileTab,
 	openInCenter,
 	TsentaCenterStoreProvider,
 	useTsentaCenterStore,
