@@ -41,6 +41,7 @@ export interface TsentaSidebarListProps {
 	projects: DashboardSidebarProject[];
 	/** Every project in manual order, for the bulk-selection toolbar. */
 	allProjects: DashboardSidebarProject[];
+	/** Every pinned row; the list shows the ones the host filter keeps. */
 	pinnedWorkspaces: DashboardSidebarPinnedWorkspace[];
 	/** The Sessions lane: project-less rows and their folders. */
 	sessionChildren: DashboardSidebarProjectChild[];
@@ -50,7 +51,7 @@ export interface TsentaSidebarListProps {
 	onWorkspaceHover: (workspaceId: string) => void | Promise<void>;
 	sortMode: SidebarProjectSortMode;
 	onSortModeChange: (mode: SidebarProjectSortMode) => void;
-	/** Null hides the local and cloud filter. */
+	/** Null hides the local and cloud filter (and then it shows all). */
 	hostFilter: SidebarProjectHostFilter | null;
 	onHostFilterChange: (filter: SidebarProjectHostFilter) => void;
 	filterQuery: string;
@@ -98,8 +99,14 @@ export function TsentaSidebarList({
 	isProjectDragDisabled,
 }: TsentaSidebarListProps) {
 	const model = useMemo(
-		() => buildConductorSidebarModel({ projects, sessionChildren }),
-		[projects, sessionChildren],
+		() =>
+			buildConductorSidebarModel({
+				projects,
+				sessionChildren,
+				pinnedWorkspaces,
+				hostFilter: hostFilter ?? "all",
+			}),
+		[projects, sessionChildren, pinnedWorkspaces, hostFilter],
 	);
 	const {
 		createSection,
@@ -232,6 +239,8 @@ export function TsentaSidebarList({
 		],
 	);
 
+	// Drops reorder every pin, as the stock list's do, so the drag and drop
+	// works on all of them; a filter that hides some also disables drags.
 	const pinned = useMemo(
 		() =>
 			pinnedWorkspaces.map((workspace) => ({
@@ -283,7 +292,7 @@ export function TsentaSidebarList({
 				className="relative flex w-full min-w-0 flex-col pb-3"
 			>
 				<TsentaPinnedSection
-					pinnedWorkspaces={pinnedWorkspaces}
+					pinnedWorkspaces={model.pinned}
 					shortcutLabels={workspaceShortcutLabels}
 					onWorkspaceHover={onWorkspaceHover}
 				/>

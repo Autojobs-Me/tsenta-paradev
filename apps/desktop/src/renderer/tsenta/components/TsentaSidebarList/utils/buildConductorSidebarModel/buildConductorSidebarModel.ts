@@ -1,9 +1,12 @@
 import type {
+	DashboardSidebarPinnedWorkspace,
 	DashboardSidebarProject,
 	DashboardSidebarProjectChild,
 	DashboardSidebarSection,
 	DashboardSidebarWorkspace,
 } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
+import { matchesHostFilter } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/filterDashboardSidebarProjectsByHost";
+import type { SidebarProjectHostFilter } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal/schema";
 import {
 	laneProjectIdForScope,
 	parseSidebarFolderKey,
@@ -48,6 +51,8 @@ export interface ConductorRepoGroup {
 }
 
 export interface ConductorSidebarModel {
+	/** The pinned rows the stock list shows: pin order, host filtered. */
+	pinned: DashboardSidebarPinnedWorkspace[];
 	sections: ConductorFolderSection[];
 	/** Sessions in no folder. */
 	sessions: DashboardSidebarWorkspace[];
@@ -65,18 +70,32 @@ export function conductorSectionKey(section: DashboardSidebarSection): {
 }
 
 /**
- * Reshapes Paradev's sidebar tree (projects, each holding rows and folders,
- * plus the Sessions lane shaped the same way) into Conductor's flat list:
- * one section per folder tag across every lane, the Sessions lane's loose
- * rows, and each project's loose rows. Membership and order are Paradev's;
- * this only regroups what its tree already decided.
+ * Reshapes what the stock list renders into Conductor's flat list: the
+ * pinned rows, one section per folder tag across every lane, the Sessions
+ * lane's loose rows, and each project's loose rows.
+ *
+ * The input is DashboardSidebar's own data, unchanged: useDashboardSidebarData
+ * already decided every row (local, remote host and cloud, cloud rows filed
+ * under their repository's project), hid the hidden projects and rows, and
+ * DashboardSidebar sorted and filtered the projects. Membership and order
+ * are Paradev's; this only regroups them, so the two lists cannot show
+ * different rows (buildConductorSidebarModel.parity.test.ts holds them to
+ * that over a realistic sidebar).
  */
 export function buildConductorSidebarModel({
 	projects,
 	sessionChildren,
+	pinnedWorkspaces = [],
+	hostFilter = "all",
 }: {
+	/** DashboardSidebar's displayed projects: sorted, host and text filtered. */
 	projects: readonly DashboardSidebarProject[];
+	/** The Sessions lane, unfiltered, as the stock list renders it. */
 	sessionChildren: readonly DashboardSidebarProjectChild[];
+	/** Every pinned row, in pin order. */
+	pinnedWorkspaces?: readonly DashboardSidebarPinnedWorkspace[];
+	/** The local and cloud filter; "all" while it is hidden. */
+	hostFilter?: SidebarProjectHostFilter;
 }): ConductorSidebarModel {
 	const sections = new Map<string, ConductorFolderSection>();
 	const addFolder = (section: DashboardSidebarSection) => {
@@ -116,5 +135,13 @@ export function buildConductorSidebarModel({
 		rows: looseRows(project.children),
 	}));
 	const sessions = looseRows(sessionChildren);
-	return { sections: [...sections.values()], sessions, repos };
+	// DashboardSidebar's displayedPinnedWorkspaces: the stock Pinned section
+	// follows the local and cloud filter (its Sessions lane does not).
+	const pinned =
+		hostFilter === "all"
+			? [...pinnedWorkspaces]
+			: pinnedWorkspaces.filter((workspace) =>
+					matchesHostFilter(workspace, hostFilter),
+				);
+	return { pinned, sections: [...sections.values()], sessions, repos };
 }
