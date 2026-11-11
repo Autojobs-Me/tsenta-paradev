@@ -5,8 +5,6 @@ import type {
 	DashboardSidebarSection,
 	DashboardSidebarWorkspace,
 } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
-import { matchesHostFilter } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/filterDashboardSidebarProjectsByHost";
-import type { SidebarProjectHostFilter } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal/schema";
 import {
 	laneProjectIdForScope,
 	parseSidebarFolderKey,
@@ -51,7 +49,7 @@ export interface ConductorRepoGroup {
 }
 
 export interface ConductorSidebarModel {
-	/** The pinned rows the stock list shows: pin order, host filtered. */
+	/** The pinned rows the stock list shows: every pin, in pin order. */
 	pinned: DashboardSidebarPinnedWorkspace[];
 	sections: ConductorFolderSection[];
 	/** Sessions in no folder. */
@@ -86,7 +84,6 @@ export function buildConductorSidebarModel({
 	projects,
 	sessionChildren,
 	pinnedWorkspaces = [],
-	hostFilter = "all",
 }: {
 	/** DashboardSidebar's displayed projects: sorted, host and text filtered. */
 	projects: readonly DashboardSidebarProject[];
@@ -94,8 +91,6 @@ export function buildConductorSidebarModel({
 	sessionChildren: readonly DashboardSidebarProjectChild[];
 	/** Every pinned row, in pin order. */
 	pinnedWorkspaces?: readonly DashboardSidebarPinnedWorkspace[];
-	/** The local and cloud filter; "all" while it is hidden. */
-	hostFilter?: SidebarProjectHostFilter;
 }): ConductorSidebarModel {
 	const sections = new Map<string, ConductorFolderSection>();
 	const addFolder = (section: DashboardSidebarSection) => {
@@ -135,13 +130,12 @@ export function buildConductorSidebarModel({
 		rows: looseRows(project.children),
 	}));
 	const sessions = looseRows(sessionChildren);
-	// DashboardSidebar's displayedPinnedWorkspaces: the stock Pinned section
-	// follows the local and cloud filter (its Sessions lane does not).
-	const pinned =
-		hostFilter === "all"
-			? [...pinnedWorkspaces]
-			: pinnedWorkspaces.filter((workspace) =>
-					matchesHostFilter(workspace, hostFilter),
-				);
+	// Every pin, whatever the local and cloud filter, as the stock list
+	// shows them: DashboardSidebar hands its drag and drop provider the
+	// unfiltered pins, and the expanded Pinned section renders the
+	// provider's items (the filtered list it is also handed only reaches
+	// the icon rail, where the filter is always "all"). The Sessions lane
+	// works the same way.
+	const pinned = [...pinnedWorkspaces];
 	return { pinned, sections: [...sections.values()], sessions, repos };
 }

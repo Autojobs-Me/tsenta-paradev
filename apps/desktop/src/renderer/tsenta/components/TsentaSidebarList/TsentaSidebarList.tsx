@@ -41,7 +41,7 @@ export interface TsentaSidebarListProps {
 	projects: DashboardSidebarProject[];
 	/** Every project in manual order, for the bulk-selection toolbar. */
 	allProjects: DashboardSidebarProject[];
-	/** Every pinned row; the list shows the ones the host filter keeps. */
+	/** Every pinned row, all shown whatever the filters, as in the stock list. */
 	pinnedWorkspaces: DashboardSidebarPinnedWorkspace[];
 	/** The Sessions lane: project-less rows and their folders. */
 	sessionChildren: DashboardSidebarProjectChild[];
@@ -104,9 +104,8 @@ export function TsentaSidebarList({
 				projects,
 				sessionChildren,
 				pinnedWorkspaces,
-				hostFilter: hostFilter ?? "all",
 			}),
-		[projects, sessionChildren, pinnedWorkspaces, hostFilter],
+		[projects, sessionChildren, pinnedWorkspaces],
 	);
 	const {
 		createSection,
@@ -239,8 +238,7 @@ export function TsentaSidebarList({
 		],
 	);
 
-	// Drops reorder every pin, as the stock list's do, so the drag and drop
-	// works on all of them; a filter that hides some also disables drags.
+	// Drops reorder every pin, as the stock list's do.
 	const pinned = useMemo(
 		() =>
 			pinnedWorkspaces.map((workspace) => ({

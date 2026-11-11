@@ -39,10 +39,7 @@ import type {
 	DashboardSidebarWorkspace,
 } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
 import { filterDashboardSidebarProjects } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/filterDashboardSidebarProjects";
-import {
-	filterDashboardSidebarProjectsByHost,
-	matchesHostFilter,
-} from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/filterDashboardSidebarProjectsByHost";
+import { filterDashboardSidebarProjectsByHost } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/filterDashboardSidebarProjectsByHost";
 import { sortDashboardSidebarProjects } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/sortDashboardSidebarProjects";
 import { isInCloudSidebar } from "renderer/routes/_authenticated/_dashboard/utils/buildCloudSidebar";
 import { getVisibleSidebarWorkspaces } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal";
@@ -794,8 +791,6 @@ export interface StockSidebarView extends StockSidebarData {
 	sortedGroups: DashboardSidebarProject[];
 	/** Sorted, then host and text filtered: the projects the list shows. */
 	displayedGroups: DashboardSidebarProject[];
-	/** The Pinned rows the stock list shows (host filtered). */
-	displayedPinnedWorkspaces: DashboardSidebarPinnedWorkspace[];
 	hostFilter: SidebarProjectHostFilter;
 }
 
@@ -811,17 +806,10 @@ export function buildStockSidebarView(
 		filterDashboardSidebarProjectsByHost(sortedGroups, controls.hostFilter),
 		controls.filterQuery,
 	);
-	const displayedPinnedWorkspaces =
-		controls.hostFilter === "all"
-			? data.pinnedWorkspaces
-			: data.pinnedWorkspaces.filter((workspace) =>
-					matchesHostFilter(workspace, controls.hostFilter),
-				);
 	return {
 		...data,
 		sortedGroups,
 		displayedGroups,
-		displayedPinnedWorkspaces,
 		hostFilter: controls.hostFilter,
 	};
 }
@@ -858,16 +846,20 @@ function placeChildren(
 }
 
 /**
- * The rows the stock list renders and where: its Pinned section (the host
- * filtered pinned rows), its Sessions lane, and every displayed project's
- * flat item list (useSidebarDnd's buildFlatItems: loose rows, and each
- * folder's members, rendered even while collapsed so they can animate).
+ * The rows the expanded stock list renders and where, all read from its
+ * drag and drop provider (useSidebarDnd), as DashboardSidebar hands it the
+ * data: the Pinned section's pinnedItems (every pin: the provider gets the
+ * unfiltered pins, and the host filtered list DashboardSidebar also passes
+ * the section only reaches the icon rail), the Sessions lane's items (the
+ * unfiltered lane), and every displayed project's flat item list
+ * (buildFlatItems: loose rows, and each folder's members, rendered even
+ * while collapsed so they can animate).
  */
 export function stockSidebarPlacement(
 	view: StockSidebarView,
 ): SidebarPlacement {
 	const placement: SidebarPlacement = {};
-	for (const workspace of view.displayedPinnedWorkspaces) {
+	for (const workspace of view.pinnedWorkspaces) {
 		place(placement, "pinned", workspace.id);
 	}
 	placeChildren(placement, view.sessionChildren, "sessions");

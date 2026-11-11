@@ -22,7 +22,6 @@ function conductorModel(view: StockSidebarView): ConductorSidebarModel {
 		projects: view.displayedGroups,
 		sessionChildren: view.sessionChildren,
 		pinnedWorkspaces: view.pinnedWorkspaces,
-		hostFilter: view.hostFilter,
 	});
 }
 
@@ -205,26 +204,17 @@ describe("Conductor sidebar parity with the stock sidebar", () => {
 		}
 	});
 
-	test("follows the local and cloud filter in Pinned as the stock list does", () => {
-		const cloudOnly = conductorModel(
-			buildStockSidebarView({
+	test("keeps every pin under the local and cloud filter, as the stock list does", () => {
+		for (const hostFilter of ["local", "cloud"] as const) {
+			const filtered = buildStockSidebarView({
 				sortMode: "manual",
-				hostFilter: "cloud",
+				hostFilter,
 				filterQuery: "",
-			}),
-		);
-		expect(cloudOnly.pinned.map((workspace) => workspace.id)).toEqual([
-			"cloud-paradev-migration",
-		]);
-		const localOnly = conductorModel(
-			buildStockSidebarView({
-				sortMode: "manual",
-				hostFilter: "local",
-				filterQuery: "",
-			}),
-		);
-		expect(localOnly.pinned.map((workspace) => workspace.id)).toEqual([
-			"local-pinned",
-		]);
+			});
+			expect(stockSidebarPlacement(filtered).pinned).toEqual(placement.pinned);
+			expect(
+				conductorModel(filtered).pinned.map((workspace) => workspace.id),
+			).toEqual(placement.pinned);
+		}
 	});
 });
