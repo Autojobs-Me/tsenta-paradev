@@ -9,8 +9,7 @@ import { useHotkeyDisplay } from "renderer/hotkeys";
 import supersetEmptyStateWordmark from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/assets/superset-empty-state-wordmark.svg";
 import { EmptyTabActionButton } from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/components/EmptyTabActionButton";
 import { useTheme } from "renderer/stores/theme";
-// tsenta:conductor: Tsenta's mark under the skin.
-import tsentaMark from "renderer/tsenta/assets/tsenta-mark.svg";
+// tsenta:conductor: no logo in the empty state; it flashed as a new chat opened.
 import { isConductorSkin } from "renderer/tsenta/skin";
 
 interface WorkspaceEmptyStateProps {
@@ -112,7 +111,10 @@ export function WorkspaceEmptyState({
 	return (
 		<div className="flex h-full flex-1 items-center justify-center px-6 py-10">
 			<div className="w-full max-w-xl">
-				<div className="mb-7 flex items-center justify-center py-3">
+				<div
+					className="mb-7 flex items-center justify-center py-3"
+					hidden={isConductorSkin()}
+				>
 					<img
 						alt="Paradev"
 						className={`h-8 w-auto select-none ${
@@ -121,7 +123,7 @@ export function WorkspaceEmptyState({
 								: "brightness-0 opacity-75"
 						}`}
 						draggable={false}
-						src={isConductorSkin() ? tsentaMark : supersetEmptyStateWordmark}
+						src={supersetEmptyStateWordmark}
 					/>
 				</div>
 				<div className="mx-auto grid w-full max-w-md gap-0.5">
