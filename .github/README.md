@@ -28,11 +28,11 @@ stock Paradev back.
 | Change | Code |
 | --- | --- |
 | Conductor-style layout: sidebar, workspace header, tab strip, transcript, composer | `apps/desktop/src/renderer/tsenta/` |
-| Tsenta's logo: app icon, dock, sign-in, loading, empty workspace | `apps/desktop/fork/icons/`, `scripts/fork/build.sh`, `tsenta/components/TsentaLogo` |
+| Tsenta's black-and-white icon (app, dock) and mark (sign-in, loading, onboarding) | `apps/desktop/fork/icons/`, `scripts/fork/build.sh`, `tsenta/components/TsentaLogo` |
 | `+` in the tab strip opens a chat with the default model, no menu | `tsenta/components/TsentaWorkspace` |
-| The pull request shows at the top of the Changes pane; no PR button in the header | `tsenta/components/TsentaChangesPrBar` |
+| No PR pill or activity menu in the header; the PR and commit/push/create-PR control sit in the right panel's top bar | `page.tsx` hook (ChangesControl) |
 | ⌘N opens the new-workspace popup over the current view | `tsenta/components/TsentaNewWorkspaceDialog` |
-| The right sidebar opens on fixed tabs (Changes, Files, Browser, Terminal, Pages, Desktop on cloud boxes), each loaded on first open; Changes shows a tree | `tsenta/hooks/useTsentaRightTabs` |
+| The right panel is Conductor's: fixed boxed tabs that wrap (Changes, Files, Browser, Terminal, Pages, Desktop on cloud boxes), each loaded on first open, no header rows; Changes is a tree list and Files a full tree, and what you pick opens in the center | `tsenta/hooks/useTsentaRightTabs`, `tsenta/providers/TsentaCenterStore`, `tsenta/styles/workspace.css` |
 | Model pickers show "Ultracode" on Claude models (on through `"ultracode": true` in `~/.claude/settings.json`) | `tsenta/composer/ultracode` |
 | Paradev Boxes: workspaces on Daytona, E2B or Blaxel sandboxes | [BOXES.md](BOXES.md) |
 
