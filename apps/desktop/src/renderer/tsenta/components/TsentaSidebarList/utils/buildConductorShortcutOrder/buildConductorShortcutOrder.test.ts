@@ -6,6 +6,8 @@ import type {
 	DashboardSidebarWorkspace,
 } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
 import { getProjectChildrenWorkspaces } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/utils/projectChildren";
+import { buildConductorSidebarModel } from "../buildConductorSidebarModel";
+import { buildStockSidebarView } from "../buildConductorSidebarModel/fixtures/stockSidebar";
 import { buildConductorShortcutOrder } from "./buildConductorShortcutOrder";
 
 const workspace = (id: string, projectId: string | null) =>
@@ -101,5 +103,49 @@ describe("buildConductorShortcutOrder", () => {
 		]);
 		const first = order.groups[0]?.children[0];
 		expect(first?.type === "section" && first.section.isCollapsed).toBe(true);
+	});
+
+	test("numbers cloud rows like any other, in the order the list shows them", () => {
+		// A real sidebar from Paradev's builders, as DashboardSidebar hands it.
+		const view = buildStockSidebarView({
+			sortMode: "manual",
+			hostFilter: "all",
+			filterQuery: "",
+		});
+		const order = buildConductorShortcutOrder({
+			projects: view.sortedGroups,
+			sessionChildren: view.sessionChildren,
+			pinnedWorkspaces: view.pinnedWorkspaces,
+		});
+		const counted = order.groups.flatMap((group) =>
+			getProjectChildrenWorkspaces(group.children).map((row) => row.id),
+		);
+		const model = buildConductorSidebarModel({
+			projects: view.displayedGroups,
+			sessionChildren: view.sessionChildren,
+			pinnedWorkspaces: view.pinnedWorkspaces,
+		});
+		const shown = [
+			...model.pinned.map((row) => row.id),
+			...model.sections.flatMap((section) =>
+				section.rows.map((row) => row.workspace.id),
+			),
+			...model.sessions.map((row) => row.id),
+			...model.repos.flatMap((repo) => repo.rows.map((row) => row.id)),
+		];
+		expect(counted).toEqual(shown);
+		// ⌘1 to ⌘9: two pins (one cloud), then the agents folder's remote
+		// host row and cloud rows.
+		expect(counted.slice(0, 9)).toEqual([
+			"local-pinned",
+			"cloud-paradev-migration",
+			"remote-support-lead",
+			"cloud-seo",
+			"cloud-creator-overview",
+			"cloud-transcripts",
+			"cloud-interview-emails",
+			"session-agent-notes",
+			"local-support-likhit",
+		]);
 	});
 });

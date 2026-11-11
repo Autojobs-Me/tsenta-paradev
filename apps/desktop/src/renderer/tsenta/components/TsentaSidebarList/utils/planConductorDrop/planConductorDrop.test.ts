@@ -6,6 +6,10 @@ import type {
 } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
 import { buildConductorSidebarModel } from "../buildConductorSidebarModel";
 import {
+	buildStockSidebarView,
+	FIXTURE_IDS,
+} from "../buildConductorSidebarModel/fixtures/stockSidebar";
+import {
 	type ConductorDropContext,
 	planConductorDrop,
 } from "./planConductorDrop";
@@ -323,6 +327,149 @@ describe("planConductorDrop", () => {
 				{ type: "workspace", id: "d" },
 				{ type: "workspace", id: "x" },
 			],
+		});
+	});
+});
+
+describe("planConductorDrop with cloud rows", () => {
+	// A real sidebar from Paradev's builders: cloud rows loose, in folders,
+	// pinned and under a stand-in project, as the Conductor list gets them.
+	const view = buildStockSidebarView({
+		sortMode: "manual",
+		hostFilter: "all",
+		filterQuery: "",
+	});
+	const cloudModel = buildConductorSidebarModel({
+		projects: view.displayedGroups,
+		sessionChildren: view.sessionChildren,
+		pinnedWorkspaces: view.pinnedWorkspaces,
+	});
+	const cloudContext: ConductorDropContext = {
+		pinned: view.pinnedWorkspaces.map((workspace) => ({
+			workspaceId: workspace.id,
+			projectId: workspace.projectId,
+		})),
+		sections: cloudModel.sections,
+		laneChildren: (laneProjectId) =>
+			laneProjectId === null
+				? view.sessionChildren
+				: (view.displayedGroups.find((project) => project.id === laneProjectId)
+						?.children ?? null),
+	};
+	const { DASH, PARADEV, scraperProjectId } = FIXTURE_IDS;
+
+	test("files a loose cloud row into a folder beside host and cloud rows", () => {
+		expect(
+			planConductorDrop(
+				loose("cloud-job-freshness", DASH),
+				{
+					kind: "section",
+					sectionKey: "tag:agents",
+					overId: "cloud-seo",
+					placement: "before",
+				},
+				cloudContext,
+			),
+		).toEqual({
+			type: "folder",
+			laneProjectId: DASH,
+			sectionId: `${DASH}:agents`,
+			workspaceIds: [
+				"remote-support-lead",
+				"cloud-job-freshness",
+				"cloud-seo",
+				"cloud-creator-overview",
+				"cloud-transcripts",
+				"cloud-interview-emails",
+			],
+			unpin: false,
+		});
+	});
+
+	test("files a stand-in project's cloud row under the section's tag", () => {
+		expect(
+			planConductorDrop(
+				loose("cloud-scraper-status", scraperProjectId),
+				{ kind: "section", sectionKey: "tag:fix-agents" },
+				cloudContext,
+			),
+		).toEqual({
+			type: "folder",
+			laneProjectId: scraperProjectId,
+			sectionId: `${scraperProjectId}:fix-agents`,
+			workspaceIds: ["cloud-scraper-status"],
+			unpin: false,
+		});
+	});
+
+	test("takes a cloud row out of its folder to its repository, below the folder", () => {
+		expect(
+			planConductorDrop(
+				loose("cloud-tse-2239", DASH),
+				{ kind: "loose", laneProjectId: DASH },
+				cloudContext,
+			),
+		).toEqual({
+			type: "loose",
+			laneProjectId: DASH,
+			unpin: false,
+			items: [
+				{ type: "workspace", id: "cloud-job-freshness" },
+				{ type: "workspace", id: "cloud-form-filling" },
+				{ type: "workspace", id: "cloud-answering" },
+				{ type: "workspace", id: "local-fix-prod-check" },
+				{ type: "workspace", id: "local-creating" },
+				{ type: "workspace", id: "local-main" },
+				{ type: "section", id: `${DASH}:agents` },
+				{ type: "section", id: `${DASH}:support` },
+				{ type: "section", id: `${DASH}:fix-agents` },
+				{ type: "workspace", id: "cloud-tse-2239" },
+				{ type: "section", id: FIXTURE_IDS.LEGACY_FOLDER_ID },
+			],
+		});
+		// Never into another project's repository.
+		expect(
+			planConductorDrop(
+				loose("cloud-tse-2239", DASH),
+				{ kind: "loose", laneProjectId: PARADEV },
+				cloudContext,
+			),
+		).toBeNull();
+	});
+
+	test("pins a cloud row, and unpins the pinned cloud row into a folder", () => {
+		expect(
+			planConductorDrop(
+				loose("cloud-seo", DASH),
+				{
+					kind: "pinned",
+					overId: "cloud-paradev-migration",
+					placement: "after",
+				},
+				cloudContext,
+			),
+		).toEqual({
+			type: "pin",
+			pins: [
+				{ workspaceId: "local-pinned", projectId: DASH },
+				{ workspaceId: "cloud-paradev-migration", projectId: DASH },
+				{ workspaceId: "cloud-seo", projectId: DASH },
+			],
+		});
+		expect(
+			planConductorDrop(
+				{
+					workspaceId: "cloud-paradev-migration",
+					laneProjectId: DASH,
+					isPinned: true,
+				},
+				{ kind: "section", sectionKey: "tag:agents" },
+				cloudContext,
+			),
+		).toMatchObject({
+			type: "folder",
+			sectionId: `${DASH}:agents`,
+			unpin: true,
 		});
 	});
 });
