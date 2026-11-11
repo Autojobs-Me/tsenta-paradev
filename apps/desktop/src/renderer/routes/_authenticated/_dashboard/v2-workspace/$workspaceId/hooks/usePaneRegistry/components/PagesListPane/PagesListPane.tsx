@@ -9,6 +9,7 @@ import { useDebouncedValue } from "renderer/hooks/useDebouncedValue";
 import { usePagePolicy } from "renderer/lib/clickPolicy";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import { usePagesList } from "renderer/routes/_authenticated/_dashboard/hooks/usePagesList";
+import { TsentaPageContextMenu } from "renderer/tsenta/components/TsentaPageContextMenu";
 import { useStore } from "zustand";
 import { NewPageComposer } from "../../../../components/NewPageComposer";
 import {
@@ -116,12 +117,14 @@ export function PagesListPane({
 	const cards = (pages: PagesListItem[]) => (
 		<div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2 px-1">
 			{pages.map((page) => (
-				<PagesListCard
-					key={page.id}
-					page={page}
-					isActive={page.id === activePageId}
-					onOpen={handleOpen}
-				/>
+				// tsenta:conductor: right-click a page to download it.
+				<TsentaPageContextMenu key={page.id} page={page}>
+					<PagesListCard
+						page={page}
+						isActive={page.id === activePageId}
+						onOpen={handleOpen}
+					/>
+				</TsentaPageContextMenu>
 			))}
 		</div>
 	);

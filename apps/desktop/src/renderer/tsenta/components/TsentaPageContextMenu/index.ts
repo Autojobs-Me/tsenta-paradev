@@ -1,0 +1,1 @@
+export { TsentaPageContextMenu } from "./TsentaPageContextMenu";

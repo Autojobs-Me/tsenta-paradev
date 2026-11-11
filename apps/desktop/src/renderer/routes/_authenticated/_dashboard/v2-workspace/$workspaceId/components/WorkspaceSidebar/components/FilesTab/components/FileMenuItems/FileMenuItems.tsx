@@ -12,6 +12,7 @@ import {
 	Trash2,
 } from "lucide-react";
 import { modifierLabel, useSidebarFilePolicy } from "renderer/lib/clickPolicy";
+import { TsentaDownloadMenuItem } from "renderer/tsenta/components/TsentaDownloadMenuItem";
 import { PathActions } from "../PathActions";
 
 interface FileMenuItemsProps {
@@ -62,6 +63,8 @@ export function FileMenuItems({
 			</DropdownMenuItem>
 			<DropdownMenuSeparator />
 			<PathActions absolutePath={absolutePath} relativePath={relativePath} />
+			{/* tsenta:conductor: Download, under the skin. */}
+			<TsentaDownloadMenuItem absolutePath={absolutePath} />
 			<DropdownMenuSeparator />
 			<DropdownMenuItem onSelect={() => setTimeout(onRename, 0)}>
 				<Pencil />
