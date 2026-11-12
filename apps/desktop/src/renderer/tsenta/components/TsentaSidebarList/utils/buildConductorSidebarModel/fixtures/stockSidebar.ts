@@ -338,7 +338,7 @@ const cloud = (
 	createdAt: at(0),
 	updatedAt: at(options.minutes),
 	agentStatusAt: at(options.minutes),
-	createdBy: { userId: options.createdBy ?? USER_ID },
+	createdBy: { userId: options.createdBy ?? USER_ID, name: "Teammate", image: null },
 	status: options.status ?? "ready",
 	repo:
 		options.repo === undefined

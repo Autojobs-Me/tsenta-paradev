@@ -122,11 +122,8 @@ allowlist=(
 	'apps/desktop/src/renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePaneRegistry/components/ChangesListPane/ChangesListPane.tsx'
 	# Fork's right sidebar tabs (useTsentaRightTabs) and no new-tab picker.
 	# (page.tsx is listed above.)
-	# Vite 8 keeps bundled packages' doc comments; the runtime-dependency
-	# check skips comment lines so require('express') in a JSDoc is not a load.
-	'apps/desktop/scripts/check-runtime-dependencies.ts'
-	# electron-vite 6 externalizes `dependencies` by default; main bundles them
-	# again (externalizeDeps: false), as validate-native-runtime expects.
+	# The renderer resolves @tanstack/react-router to the fork's useMatchRoute
+	# shim (tsenta/router), so route matches follow the route under React Compiler.
 	'apps/desktop/electron.vite.config.ts'
 	# Conductor's right panel: All files is the tree alone until a file opens,
 	# and files picked there open in the center (TsentaCenterStore).
