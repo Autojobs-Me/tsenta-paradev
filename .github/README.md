@@ -9,6 +9,10 @@ over.
 
 Not affiliated with Superset Inc. or the Paradev project. MIT, like upstream.
 
+![A workspace: sidebar, chat and composer, and the right panel's boxed tabs with Changes as a tree](screenshots/workspace.png)
+
+<sub>Workspace names, chat and branches are blurred.</sub>
+
 ## Download
 
 | Where | What |
@@ -35,6 +39,8 @@ stock Paradev back.
 | The right panel is Conductor's: fixed boxed tabs that wrap (Changes, Files, Browser, Terminal, Pages, Desktop on cloud boxes), each loaded on first open, no header rows; Changes is a tree list and Files a full tree, and what you pick opens in the center | `tsenta/hooks/useTsentaRightTabs`, `tsenta/providers/TsentaCenterStore`, `tsenta/styles/workspace.css` |
 | Model pickers show "Ultracode" on Claude models (on through `"ultracode": true` in `~/.claude/settings.json`) | `tsenta/composer/ultracode` |
 | Paradev Boxes: workspaces on Daytona, E2B or Blaxel sandboxes | [BOXES.md](BOXES.md) |
+
+<img src="screenshots/model-picker.png" width="480" alt="The model picker with the Ultracode row">
 
 Every change the fork makes to Paradev's own files is in one diff:
 [`upstream.patch`](upstream.patch).
