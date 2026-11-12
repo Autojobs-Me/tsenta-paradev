@@ -1,5 +1,5 @@
 diff --git a/apps/desktop/electron.vite.config.ts b/apps/desktop/electron.vite.config.ts
-index 13709a2741..24e34bf9e4 100644
+index 8282634475..a07eb259cd 100644
 --- a/apps/desktop/electron.vite.config.ts
 +++ b/apps/desktop/electron.vite.config.ts
 @@ -1,4 +1,5 @@
@@ -26,17 +26,7 @@ index 13709a2741..24e34bf9e4 100644
  export default defineConfig({
  	main: {
  		plugins: [linguiMacroPlugin(), copyResourcesPlugin()],
-@@ -120,6 +131,9 @@ export default defineConfig({
- 		},
- 
- 		build: {
-+			// tsenta:fork: electron-vite 6 externalizes `dependencies` by default;
-+			// main bundles all but the explicit `external` list, as before.
-+			externalizeDeps: false,
- 			sourcemap: true,
- 			rollupOptions: {
- 				input: {
-@@ -264,7 +278,20 @@ export default defineConfig({
+@@ -266,7 +277,20 @@ export default defineConfig({
  			htmlEnvTransformPlugin(),
  		],
  
@@ -58,21 +48,6 @@ index 13709a2741..24e34bf9e4 100644
  
  		worker: {
  			format: "es",
-diff --git a/apps/desktop/scripts/check-runtime-dependencies.ts b/apps/desktop/scripts/check-runtime-dependencies.ts
-index 4ad4ac3bd4..697ecff525 100644
---- a/apps/desktop/scripts/check-runtime-dependencies.ts
-+++ b/apps/desktop/scripts/check-runtime-dependencies.ts
-@@ -17,8 +17,9 @@ const installedRoots = [
- const shipped = new Set(["electron", ...Object.keys(dependencies)]);
- 
- // A quote before the call means generated code held in a string (ajv), not a real load.
-+// tsenta:fork: so does a comment line; Vite 8 keeps bundled packages' doc comments.
- const RUNTIME_LOAD =
--	/(?<!["'`])\b(?:require(?:\$\d+)?(?:\.resolve)?|\)\.resolve|import)\s*\(\s*["']([^"'./][^"']*)["']/g;
-+	/(?<!["'`])(?<!^[ \t]*(?:\*|\/\/)[^\n]*)\b(?:require(?:\$\d+)?(?:\.resolve)?|\)\.resolve|import)\s*\(\s*["']([^"'./][^"']*)["']/gm;
- 
- function packageName(specifier: string): string {
- 	const parts = specifier.split("/");
 diff --git a/apps/desktop/src/lib/trpc/routers/index.ts b/apps/desktop/src/lib/trpc/routers/index.ts
 index 4ac730fb98..2b0a3b5744 100644
 --- a/apps/desktop/src/lib/trpc/routers/index.ts
@@ -470,10 +445,10 @@ index 871d76ec3c..5ad9e7dd2c 100644
  				onMouseDown={handleExpandedMouseDown}
  				onContextMenu={handleExpandedContextMenu}
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/DashboardSidebarExpandedWorkspaceRow.tsx b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/DashboardSidebarExpandedWorkspaceRow.tsx
-index cf8955630a..9d31a3e979 100644
+index 00a3bdaf07..b7acf2c2e5 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/DashboardSidebarExpandedWorkspaceRow.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/DashboardSidebarExpandedWorkspaceRow.tsx
-@@ -27,6 +27,10 @@ import { getStatusTooltip } from "renderer/screens/main/components/StatusIndicat
+@@ -28,6 +28,10 @@ import { getStatusTooltip } from "renderer/screens/main/components/StatusIndicat
  import { RenameInput } from "renderer/screens/main/components/WorkspaceSidebar/RenameInput";
  import { useInlineWorkspacePortsEnabled } from "renderer/stores/inline-workspace-ports";
  import { usePullRequestPaneIntent } from "renderer/stores/pull-request-pane-intent";
@@ -484,7 +459,7 @@ index cf8955630a..9d31a3e979 100644
  import type { ActivePaneStatus } from "shared/tabs-types";
  import type {
  	DashboardSidebarWorkspace,
-@@ -171,7 +175,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
+@@ -174,7 +178,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
  				: sandboxStatus === "provisioning"
  					? t({ message: "Creating the sandbox" })
  					: null;
@@ -495,7 +470,7 @@ index cf8955630a..9d31a3e979 100644
  			<DashboardSidebarWorkspaceLeadIndicator
  				workspaceStatus={workspaceStatus}
  				isCreatePending={isPending}
-@@ -200,6 +206,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
+@@ -203,6 +209,9 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
  					className,
  				)}
  				data-selected={isSelected || undefined}
@@ -505,7 +480,7 @@ index cf8955630a..9d31a3e979 100644
  				{...props}
  			>
  				{/* biome-ignore lint/a11y/useSemanticElements: The row contains nested action buttons, so it cannot be a native button. */}
-@@ -219,6 +228,8 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
+@@ -222,6 +231,8 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
  					onDoubleClick={onDoubleClick}
  					onFocus={handleRowFocus}
  					onBlur={handleRowBlur}
@@ -514,7 +489,7 @@ index cf8955630a..9d31a3e979 100644
  					className={cn(
  						"group relative flex h-7 w-full items-center pr-2",
  						resolvedIndentation === "top-level"
-@@ -339,7 +350,10 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
+@@ -342,7 +353,10 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
  						</Tooltip>
  					)}
  
@@ -526,7 +501,7 @@ index cf8955630a..9d31a3e979 100644
  						{isRenaming ? (
  							<RenameInput
  								value={renameValue}
-@@ -398,6 +412,10 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
+@@ -414,6 +428,10 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
  											"group-hover:invisible group-[:focus-within:not(:focus:not(:focus-visible))]:invisible",
  									)}
  								>
@@ -537,7 +512,7 @@ index cf8955630a..9d31a3e979 100644
  									{isCloudWorkspace && isActive ? (
  										<DashboardSidebarOpenCloudHostGlyph
  											workspaceId={workspace.id}
-@@ -434,6 +452,7 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
+@@ -450,6 +468,7 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
  														}
  													}}
  													className="flex size-5 items-center justify-center rounded text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
@@ -1582,7 +1557,7 @@ index 4b9da04529..f29943e606 100644
  						</DropdownMenuSub>
  					</>
 diff --git a/apps/desktop/src/renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/NewWorkspaceScreen/NewWorkspaceScreen.tsx b/apps/desktop/src/renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/NewWorkspaceScreen/NewWorkspaceScreen.tsx
-index 84d6740697..3a7edb70d6 100644
+index 150a9c629a..10a6ed36a0 100644
 --- a/apps/desktop/src/renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/NewWorkspaceScreen/NewWorkspaceScreen.tsx
 +++ b/apps/desktop/src/renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/NewWorkspaceScreen/NewWorkspaceScreen.tsx
 @@ -49,6 +49,7 @@ import {
@@ -1593,7 +1568,7 @@ index 84d6740697..3a7edb70d6 100644
  import { CreateEnvironmentFlow } from "renderer/routes/_authenticated/components/CreateEnvironmentFlow";
  import { EnvironmentPickerPill } from "renderer/routes/_authenticated/components/EnvironmentPickerPill";
  import { MachineSizePickerPill } from "renderer/routes/_authenticated/components/MachineSizePickerPill";
-@@ -1122,6 +1123,11 @@ export function NewWorkspaceScreen({
+@@ -1119,6 +1120,11 @@ export function NewWorkspaceScreen({
  							</div>
  							<div className="flex shrink-0 items-center gap-1.5">
  								{setupButton}
@@ -1605,7 +1580,7 @@ index 84d6740697..3a7edb70d6 100644
  								{selectedAgent !== "none" && (
  									<ModelPicker
  										configOptions={launchOptions}
-@@ -1224,6 +1230,11 @@ export function NewWorkspaceScreen({
+@@ -1221,6 +1227,11 @@ export function NewWorkspaceScreen({
  							{contextPickers}
  						</div>
  						{setupButton}
