@@ -1,8 +1,12 @@
+import { AvatarStack } from "@superset/ui/atoms/AvatarStack";
 import type { ReactNode } from "react";
+import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
+import { authClient } from "renderer/lib/auth-client";
 import { useSandboxIsConnecting } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/components/DashboardSidebarOpenCloudHostGlyph/hooks/useSandboxIsConnecting";
 import { DashboardSidebarWorkspaceHostGlyph } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarWorkspaceItem/components/DashboardSidebarExpandedWorkspaceRow/components/DashboardSidebarWorkspaceHostGlyph";
 import { useSidebarWorkspaceStatus } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/DashboardSidebarWorkspaceStatusProvider";
 import type { DashboardSidebarWorkspace } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/types";
+import { useCloudWorkspacePresence } from "renderer/routes/_authenticated/_dashboard/hooks/useCloudWorkspacePresence";
 import { RowDiffStat } from "renderer/tsenta/components/RowDiffStat";
 import { useMinuteClock } from "./hooks/useMinuteClock";
 import { formatRowTime } from "./utils/formatRowTime";
@@ -91,6 +95,9 @@ function RowMeta({
 
 	return (
 		<span data-tsenta="ws-row-meta" className="flex shrink-0 items-center">
+			{workspace.hostType === "cloud" && (
+				<RowPresence workspaceId={workspace.id} />
+			)}
 			{hostWarning}
 			{hasDiff ? (
 				<RowDiffStat workspaceId={workspace.id} />
@@ -101,6 +108,42 @@ function RowMeta({
 			) : (
 				<span aria-hidden="true" className="size-3" />
 			)}
+		</span>
+	);
+}
+
+/**
+ * Teammates in a cloud workspace right now, as small avatars before the time.
+ * Watches the header's presence room in observe mode, so the sidebar never
+ * counts as a visit; you are left out.
+ * ponytail: one realtime socket per cloud row; an org-wide feed if rows get many.
+ */
+function RowPresence({ workspaceId }: { workspaceId: string }) {
+	const organizationId = useActiveOrganizationId() ?? undefined;
+	const { data: session } = authClient.useSession();
+	const visitors = useCloudWorkspacePresence(workspaceId, {
+		organizationId,
+		observe: true,
+	});
+	const here = visitors.filter(
+		(visitor) => visitor.active && visitor.userId !== session?.user?.id,
+	);
+	if (here.length === 0) return null;
+	return (
+		<span
+			data-tsenta="ws-row-presence"
+			title={here.map((visitor) => visitor.name).join(", ")}
+		>
+			<AvatarStack
+				people={here.map((visitor) => ({
+					id: visitor.userId,
+					name: visitor.name,
+					image: visitor.image,
+				}))}
+				size={14}
+				max={2}
+				className="px-0.5"
+			/>
 		</span>
 	);
 }
